@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование пользователя</title>
+</head>
+<body>
+<h2>Редактирование пользователя: {{ user.username }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label>Имя пользователя:</label><br>
+    <input type="text" name="username" value="{{ user.username }}"><br>
+
+    <label>Email:</label><br>
+    <input type="email" name="email" value="{{ user.email }}"><br>
+
+    {% if profile %}
+        <label>Телефон:</label><br>
+        <input type="text" name="phone_number" value="{{ profile.phone_number }}"><br>
+
+        <label>Адрес:</label><br>
+        <input type="text" name="address" value="{{ profile.address }}"><br>
+    {% endif %}
+
+    <br><button type="submit">Сохранить</button>
+</form>
+
+{% if profile %}
+<hr>
+<h3>Профиль</h3>
+<p><strong>Дата рождения:</strong> {{ profile.birth_date }}</p>
+<p><strong>Роль:</strong> {{ profile.role }}</p>
+{% endif %}
+
+{% if passport %}
+<hr>
+<h3>Паспорт</h3>
+<p><strong>Номер:</strong> {{ passport.number }}</p>
+<p><strong>Дата выдачи:</strong> {{ passport.issue_date }}</p>
+<p><strong>Срок действия:</strong> {{ passport.expiry_date }}</p>
+<p><strong>Гражданство:</strong> {{ passport.nationality }}</p>
+{% endif %}
+
+{% if license %}
+<hr>
+<h3>Водительские права</h3>
+<p><strong>Номер:</strong> {{ license.license_number }}</p>
+<p><strong>Дата выдачи:</strong> {{ license.issue_date }}</p>
+<p><strong>Срок действия:</strong> {{ license.expiry_date }}</p>
+<p><strong>Категория:</strong> {{ license.category }}</p>
+{% endif %}
+
+{% if history %}
+<hr>
+<h3>История действий</h3>
+<ul>
+    {% for h in history %}
+        <li>{{ h.date }} — {{ h.action }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<a href="{% url 'user_list' %}">← Назад к списку</a>
+</body>
+</html>

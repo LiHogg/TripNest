@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TripNest — Моя Страница</title>
+    <link rel="stylesheet" href="{% static 'trip/css/home.css' %}">
+</head>
+<body>
+
+<!-- Шапка -->
+
+<header>
+    <div class="logo">
+        <a href="/">
+            <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
+        </a>
+    </div>
+
+    <nav>
+        <ul>
+           <li><a href="{% url 'hotel_list' %}">Жильё</a></li>
+            <li><a href="#">Рестораны</a></li>
+            <li><a href="#">Экскурсии</a></li>
+            <li><a href="#">Транспорт</a></li>
+            <li><a href="#">Заказ еды</a></li>
+        </ul>
+    </nav>
+<div class="auth-buttons">
+    <a href="/user/profile/" class="btn">Профиль</a>
+
+    <form action="{% url 'logout' %}" method="post" class="logout-form">
+        {% csrf_token %}
+        <button type="submit" class="btn logout-btn">Выйти</button>
+    </form>
+</div>
+
+</header>
+
+<!-- Главный блок -->
+<section class="hero">
+    <div class="hero-text">
+        <h2>Добро пожаловать, {{ request.user.first_name }}!</h2>
+        <a href="#services" class="btn">Мои бронирования</a>
+    </div>
+</section>
+
+<!-- Наши услуги -->
+<section id="services">
+    <h2>Наши сервисы</h2>
+    <div class="services-container">
+        <div class="service-item">
+            <img src="{% static 'trip/icons/restaurant.png' %}" alt="Рестораны">
+            <h3>Рестораны</h3>
+            <p>Бронирование лучших ресторанов в вашем городе.</p>
+        </div>
+        <div class="service-item">
+            <img src="{% static 'trip/icons/food.png' %}" alt="Заказ еды">
+            <h3>Заказ еды</h3>
+            <p>Быстрая доставка вкусной еды прямо к вам домой.</p>
+        </div>
+        <div class="service-item">
+            <img src="{% static 'trip/icons/excursion.png' %}" alt="Экскурсии">
+            <h3>Экскурсии</h3>
+            <p>Лучшие экскурсии с проверенными гидами.</p>
+        </div>
+        <div class="service-item">
+            <img src="{% static 'trip/icons/transport.png' %}" alt="Транспорт">
+            <h3>Транспорт</h3>
+            <p>Надежное бронирование транспорта на любой случай.</p>
+        </div>
+        <div class="service-item">
+            <img src="{% static 'trip/icons/hotel.png' %}" alt="Жильё">
+            <h3>Жильё</h3>
+            <p>Бронирование отелей, апартаментов и хостелов.</p>
+        </div>
+        <div class="service-item">
+            <img src="{% static 'trip/icons/happy.png' %}" alt="Настроение">
+            <h3>Отличное настроение</h3>
+            <p>Мы заботимся о вашем комфорте и настроении.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Подвал -->
+<footer>
+    <div class="footer-content">
+        <h1>Trip <span>Nest</span></h1>
+        <p>© TripNest, 2025. Все права защищены.</p>
+    </div>
+</footer>
+
+</body>
+</html>
+""

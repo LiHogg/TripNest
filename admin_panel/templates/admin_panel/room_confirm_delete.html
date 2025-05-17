@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Удалить {{ room.room_class }}</title>
+  <link rel="stylesheet" href="/static/admin_panel/css/style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/admin_panel/">Панель управления</a></li>
+        <li><a href="/admin_panel/location/hotel/">Отели</a></li>
+        <li><a href="/admin_panel/location/room/">Комнаты</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Удалить {{ room.room_class }}?</h1>
+    <p>Отель: {{ room.hotel.name }}, Цена за ночь: {{ room.price_per_night }} ₽</p>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit">Подтвердить удаление</button>
+      <a href="/admin_panel/location/room/">Отмена</a>
+    </form>
+  </main>
+</body>
+</html>

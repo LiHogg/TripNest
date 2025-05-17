@@ -1,0 +1,139 @@
+/* hotel/static/hotel/css/room_detail.css */
+
+/* Подключение фоновых фигур */
+body {
+  position: relative;
+  background-color: #171717;
+  color: #e0e0e0;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: -150px;
+  width: 400px;
+  height: 400px;
+  background: url('/static/hotel/img/blob1.svg') no-repeat center/cover;
+  opacity: 0.4;
+  z-index: -1;
+}
+
+body::after {
+  content: '';
+  position: absolute;
+  bottom: -120px;
+  right: -200px;
+  width: 500px;
+  height: 500px;
+  background: url('/static/hotel/img/blob2.svg') no-repeat center/cover;
+  opacity: 0.4;
+  z-index: -1;
+}
+
+/* Header */
+.header, .footer {
+  padding: 20px 40px;
+  background-color: #1C1C1C;
+}
+
+.header a {
+  color: #9643FC;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.header a:hover {
+  text-decoration: underline;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #fce643;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  margin: 20px 0;
+  font-size: 0.9rem;
+}
+.breadcrumb a {
+  color: #9643FC;
+  text-decoration: none;
+}
+.breadcrumb span {
+  color: #a0a0a0;
+}
+
+/* Room Info Section */
+.room-info {
+  background-color: #1e1e1e;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  margin-bottom: 40px;
+}
+.room-info h2 {
+  margin-top: 0;
+  font-size: 1.75rem;
+  color: #fce643;
+}
+.room-info p {
+  margin: 12px 0;
+  line-height: 1.6;
+}
+
+/* Booking Action */
+.booking-action {
+  text-align: center;
+  margin-bottom: 60px;
+}
+.btn {
+  display: inline-block;
+  padding: 14px 28px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+.btn-primary {
+  background-color: #9643FC;
+  color: #ffffff;
+  font-weight: 600;
+}
+.btn-primary:hover {
+  background-color: #7c2df5;
+}
+.btn-secondary {
+  background-color: #555555;
+  color: #cccccc;
+}
+.btn-secondary:hover {
+  background-color: #666666;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+}
+.footer .container {
+  font-size: 0.9rem;
+}
+.footer p {
+  margin: 0;
+  color: #a0a0a0;
+}

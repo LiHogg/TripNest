@@ -1,0 +1,27 @@
+<!-- templates/user_profile/login.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход — TripNest</title>
+    <link rel="stylesheet" href="{% static 'user_profile/css/login.css' %}">
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo-container">
+            <img src="{% static '/img/logo.png' %}" alt="TripNest Logo" style="height: 50px;">
+        </div>
+        <h2>Вход в TripNest</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Войти</button>
+        </form>
+
+        <a href="{% url 'password_reset' %}" class="forgot-password">Забыли пароль?</a>
+
+        <p>Нет аккаунта? <a href="/user/register/" class="register-link">Зарегистрируйтесь</a></p>
+    </div>
+</body>
+</html>

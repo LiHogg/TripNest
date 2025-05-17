@@ -1,0 +1,16 @@
+<h2>Список городов</h2>
+<a href="{% url 'dashboard' %}">← Назад к панели администратора</a>
+<br>
+<a href="{% url 'admin_city_create' %}">Добавить город</a>
+
+<ul>
+  {% for city in cities %}
+    <li>
+      {{ city.name }} ({{ city.country.name }})
+      — <a href="{% url 'admin_city_edit' city.pk %}">Изменить</a>
+      | <a href="{% url 'admin_city_delete' city.pk %}">Удалить</a>
+    </li>
+  {% empty %}
+    <li>Нет городов.</li>
+  {% endfor %}
+</ul>

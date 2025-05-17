@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Выбор отеля — TripNest</title>
+  <link rel="stylesheet" href="{% static 'hotel/css/hotel.css' %}">
+</head>
+<body class="dark-theme">
+
+<!-- Header -->
+<header class="header">
+  <div class="container">
+    <div class="logo">
+      <img src="{% static 'user_profile/img/logo.png' %}" alt="TripNest Logo" height="40">
+    </div>
+    <nav class="nav">
+      <a href="/hotels/">Жильё</a>
+      <a href="#">Рестораны</a>
+      <a href="#">Экскурсии</a>
+      <a href="#">Транспорт</a>
+      <a href="#">Заказ еды</a>
+    </nav>
+    <div class="auth-buttons">
+<a href="{% url 'profile' %}">Профиль</a>
+      <a href="/logout/">Выйти</a>
+    </div>
+  </div>
+</header>
+
+<main class="hotel-main">
+
+  <!-- Форма выбора отеля -->
+  <section class="hotel-search">
+    <div class="form-container">
+      <h2>Выбор подходящего отеля</h2>
+      <p>Пожалуйста, заполните информацию:</p>
+      <form method="get" action="">
+        <!-- Страна -->
+        <label for="country-select">Страна</label>
+        <select id="country-select" name="country">
+          <option value="">Выберите страну</option>
+          {% for country in countries %}
+            <option value="{{ country.id }}">{{ country.name }}</option>
+          {% endfor %}
+        </select>
+
+        <!-- Город (заполняется динамически) -->
+        <label for="city-select">Город</label>
+        <select id="city-select" name="city" disabled>
+          <option value="">Сначала выберите страну</option>
+        </select>
+
+        <!-- Дата -->
+        <label for="check_in">Дата заезда</label>
+        <input type="date" name="check_in" id="check_in">
+
+        <!-- Кол-во человек -->
+        <label for="people">Количество людей</label>
+        <input type="number" name="people" placeholder="Выберите количество людей" id="people">
+
+        <!-- С детьми -->
+        <div class="checkbox-group">
+          <input type="checkbox" name="kids" id="kids">
+          <label for="kids">С детьми</label>
+        </div>
+
+        <!-- Тип отеля -->
+        <input type="text" name="type" placeholder="Выберите тип отеля (необязательно)">
+
+        <!-- Диапазон цены -->
+        <div class="price-filter">
+          <input type="number" name="price_min" placeholder="Цена от">
+          <input type="number" name="price_max" placeholder="Цена до">
+        </div>
+
+        <button type="submit">Найти отели</button>
+      </form>
+    </div>
+
+    <div class="img-preview">
+      <img src="{% static 'hotel/img/reception.jpg' %}" alt="Reception">
+    </div>
+  </section>
+
+  <!-- Список отелей -->
+  <section class="hotel-listing">
+    <h2>Отели</h2>
+    <div class="hotel-grid">
+      {% for hotel in hotels %}
+        <div class="hotel-card">
+          <img src="{{ hotel.image.url }}" alt="{{ hotel.name }}">
+          <h3>Отель “{{ hotel.name }}”</h3>
+          <p>{{ hotel.description|truncatechars:150 }}</p>
+          <a class="btn" href="{% url 'hotel_detail' hotel.id %}">Подробнее</a>
+        </div>
+      {% empty %}
+        <p>Нет доступных отелей.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-logo">
+      <img src="{% static 'user_profile/img/logo.png' %}" alt="TripNest Logo" height="30">
+      <p>
+        TripNest — всё для вашего комфорта в одном месте: отели, доставка еды, экскурсии, транспорт.<br>
+        Поддержка 24/7 • support@tripnest.com
+      </p>
+    </div>
+    <div class="social">
+      <p>Мы в социальных сетях:</p>
+      <a href="#">VK</a>
+      <a href="#">Skype</a>
+      <a href="#">Telegram</a>
+    </div>
+  </div>
+
+  <div class="footer-blob">
+    <svg viewBox="0 0 1440 320">
+      <path fill="#6829b5" fill-opacity="1"
+        d="M0,160L40,165.3C80,171,160,181,240,170.7C320,160,400,128,480,106.7C560,85,640,75,720,90.7C800,107,880,149,960,176C1040,203,1120,213,1200,208C1280,203,1360,181,1400,170.7L1440,160L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z">
+      </path>
+    </svg>
+  </div>
+
+  <p class="copyright">© TripNest, 2025. Все права защищены</p>
+</footer>
+
+<!-- JS для подгрузки городов -->
+<script src="{% static 'hotel/js/city_loader.js' %}"></script>
+</body>
+</html>

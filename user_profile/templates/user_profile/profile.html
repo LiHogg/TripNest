@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль — TripNest</title>
+    <link rel="stylesheet" href="{% static 'user_profile/css/profile.css' %}">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+        <!-- ЛОГОТИП СЛЕВА -->
+            <div class="navbar-logo">
+                <a href="/home/" class="logo">
+                    <img src="{% static 'img/logo.png' %}" alt="TripNest Logo">
+                </a>
+            </div>
+
+        <!-- МЕНЮ ПО ЦЕНТРУ -->
+            <nav class="navbar-menu">
+                <a href="/home/">Главная</a>
+                <a href="/excursion/">Экскурсии</a>
+                <a href="/transport/">Транспорт</a>
+                <a href="/hotels/">Отели</a>
+            </nav>
+
+        <!-- ВЫХОД СПРАВА -->
+            <div class="navbar-exit">
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn" style="background: none; border: none; cursor: pointer; color: inherit;">
+                        Выйти
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </header>
+
+
+{% if messages %}
+    <div class="toast-container">
+        {% for message in messages %}
+            <div class="toast-message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+    <main>
+        <section class="profile-info">
+<div class="profile-header">
+    {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" alt="Avatar" style="width: 150px; height: 150px; border-radius: 50%;">
+    {% else %}
+        <img src="{% static 'user_profile/img/avatar.png' %}" alt="Avatar" style="width: 150px; height: 150px; border-radius: 50%;">
+    {% endif %}
+    <div class="profile-details">
+        <p>Ваше имя: {{ profile.full_name }}</p>
+        <p>Ваш email: {{ profile.user.email }}</p>
+        <p>Ваш телефон: {{ profile.phone_number }}</p>
+    </div>
+</div>
+            <div class="profile-actions">
+                <button onclick="window.location.href='/user/profile/edit/'">Редактировать</button>
+                <button class="btn" onclick="window.location.href='{% url 'profile_details' %}'">Посмотреть всю информацию</button>
+                <button class="btn" onclick="window.location.href='/calendar/'">Календарь планов</button>
+            </div>
+        </section>
+
+        <section class="history-section">
+            <h2>История заказов</h2>
+            <div class="history-buttons">
+                <button>Жильё</button>
+                <button>Рестораны</button>
+                <button>Экскурсии</button>
+                <button>Транспорт</button>
+                <button>Заявки</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© TripNest, 2025. Все права защищены</p>
+        <div class="social-icons">
+            <a href="#">VK</a>
+            <a href="#">Telegram</a>
+            <a href="#">WhatsApp</a>
+        </div>
+    </footer>
+</body>
+<script>
+    // Находим все сообщения
+    const toasts = document.querySelectorAll('.toast-message');
+
+    // Настраиваем таймер на каждое сообщение
+    toasts.forEach((toast, index) => {
+        setTimeout(() => {
+            toast.classList.add('hide');
+        }, 3000 + (index * 500)); // каждое сообщение исчезает через 3 сек
+    });
+
+    // Удаляем элемент из DOM после анимации
+    setTimeout(() => {
+        toasts.forEach(toast => toast.remove());
+    }, 3500 + (toasts.length * 500));
+</script>
+
+</html>

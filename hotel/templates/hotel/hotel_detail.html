@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ hotel.name }} — TripNest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'hotel/css/hotel_detail.css' %}">
+</head>
+<body class="dark-theme">
+
+  <header class="header">
+    <div class="container">
+      <a href="{% url 'hotel_list' %}" class="back-link">&larr; Все отели</a>
+      <h1 class="page-title">{{ hotel.name }}</h1>
+    </div>
+  </header>
+
+  <main class="hotel-detail container">
+    <div class="hotel-detail-card">
+      <img src="{{ hotel.image.url }}" alt="{{ hotel.name }}" class="hotel-detail-image">
+      <div class="hotel-info">
+        <h2>{{ hotel.name }}</h2>
+        <p><strong>Город:</strong> {{ hotel.city.name }}</p>
+        <p><strong>Адрес:</strong> {{ hotel.address }}</p>
+        <p><strong>Рейтинг:</strong> {{ hotel.rating }}</p>
+        <p><strong>Описание:</strong><br>{{ hotel.description|linebreaks }}</p>
+        {% if hotel.price %}<p><strong>Цена:</strong> {{ hotel.price }} ₽</p>{% endif %}
+        {% if hotel.for_kids %}<p><strong>Подходит для детей:</strong> Да</p>{% endif %}
+      </div>
+    </div>
+
+    <section class="room-dropdown">
+      <h2>Выберите номер</h2>
+      <select id="room-select">
+        <option value="">-- Выберите класс номера --</option>
+        {% for room in rooms %}
+          <option value="{% url 'room_detail' room.pk %}">
+            {{ room.room_class }} — {{ room.price_per_night }} ₽/ночь
+          </option>
+        {% empty %}
+          <option disabled>Номера пока не добавлены</option>
+        {% endfor %}
+      </select>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© TripNest, 2025</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('room-select').addEventListener('change', function() {
+      var url = this.value;
+      if (url) {
+        window.location.href = url;
+      }
+    });
+  </script>
+
+</body>
+</html>

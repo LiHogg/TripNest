@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация пользователя</title>
+    <link rel="stylesheet" href="{% static 'user_profile/css/register.css' %}">
+</head>
+<body>
+
+<header>
+    <div class="logo-container">
+        <img src="{% static '/img/logo.png' %}" alt="Логотип">
+    </div>
+</header>
+
+<form method="post">
+    {% csrf_token %}
+    <h2>Регистрация пользователя</h2>
+    {{ form.as_p }}
+    <button type="submit">Зарегистрироваться</button>
+    <p class="login-link">
+        Уже есть аккаунт?  <a href="/user/login/">Войти</a>
+    </p>
+
+</form>
+
+</body>
+</html>

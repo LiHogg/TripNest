@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать профиль — TripNest</title>
+    <link rel="stylesheet" href="{% static 'user_profile/css/edit_profile.css' %}">
+</head>
+<body>
+    <header>
+        <a href="/home/">
+            <img src="{% static '/img/logo.png' %}" alt="TripNest Logo" style="height: 40px;">
+        </a>
+    </header>
+
+
+    <div class="edit-profile-container">
+        <h2>Редактировать профиль</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            <h3>Общая информация</h3>
+                {{ user_form.as_p }}
+                {{ form.as_p }}
+
+            <div class="accordion">
+                <h3 onclick="toggleSection('documents')">Документы ⯆</h3>
+                <div id="documents" class="hidden">
+                    <fieldset>
+                        <legend>Паспорт</legend>
+                        {{ passport_form.as_p }}
+                    </fieldset>
+                    <fieldset>
+                        <legend>Водительское удостоверение</legend>
+                        {{ license_form.as_p }}
+                    </fieldset>
+                </div>
+
+                <h3 onclick="toggleSection('security')">Безопасность ⯆</h3>
+                <div id="security" class="hidden">
+                    {{ security_form.as_p }}
+                </div>
+            </div>
+
+            <button type="submit" class="btn-save">Сохранить изменения</button>
+        </form>
+    </div>
+
+    <script>
+        function toggleSection(id) {
+            const section = document.getElementById(id);
+            section.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>

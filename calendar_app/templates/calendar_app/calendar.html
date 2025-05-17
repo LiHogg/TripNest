@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Календарь планов</title>
+    <link rel="stylesheet" href="{% static 'calendar_app/css/calendar.css' %}">
+</head>
+<body class="dark-theme">
+<header class="calendar-header">
+    <a href="{% url 'profile' %}" class="back">&larr; Назад в профиль</a>
+    <h1>Календарь планов</h1>
+</header>
+
+<main class="calendar-wrapper">
+    <section class="calendar">
+        <div class="calendar-header-box">
+            <button class="nav-btn">&larr;</button>
+            <div class="month">April</div>
+            <button class="nav-btn">&rarr;</button>
+        </div>
+        <div class="weekdays">
+            <span>m</span><span>t</span><span>w</span><span>t</span><span>f</span><span>s</span><span>s</span>
+        </div>
+        <div class="days">
+            {% for day in days %}
+                <span class="{% if day.active %}active{% endif %}">{{ day.number }}</span>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="booking-info">
+        <h3>Бронь:</h3>
+        <p>Отель: Черноречье, заезд: <strong>12:00</strong>, стоимость: <strong>2000₽</strong></p>
+        <div class="booking-buttons">
+            <button class="btn">Ок</button>
+            <button class="btn">Редактировать</button>
+        </div>
+    </section>
+</main>
+<script src="{% static 'calendar_app/js/calendar.js' %}"></script>
+
+</body>
+</html>

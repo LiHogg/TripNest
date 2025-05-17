@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ room.get_room_class_display }} — TripNest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'hotel/css/room_detail.css' %}">
+</head>
+<body class="dark-theme">
+
+  <header class="header">
+    <div class="container">
+      <a href="{% url 'hotel_detail' room.hotel.pk %}" class="back-link">&larr; Назад к отелю</a>
+      <h1 class="page-title">{{ room.get_room_class_display }}</h1>
+    </div>
+  </header>
+
+  <main class="room-detail container">
+    <div class="room-detail-card">
+      <h2 class="room-title">{{ room.get_room_class_display }}</h2>
+      <p class="room-price"><strong>Цена за ночь:</strong> {{ room.price_per_night }} ₽</p>
+      <ul class="room-info-list">
+        {% for line in room.description.splitlines %}
+          <li>{{ line }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="booking-action">
+      <button class="btn btn-primary">Забронировать</button>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© TripNest, 2025</p>
+    </div>
+  </footer>
+
+</body>
+</html>

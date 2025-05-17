@@ -1,0 +1,103 @@
+/* Подключение шрифта, если используется локально */
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Основные переменные */
+:root {
+  --bg: #171717;
+  --container-bg: #1C1C1C;
+  --accent: #9643FC;
+  --accent-hover: #7b2ce1;
+  --highlight: #fce643;
+  --text: #e0e0e0;
+  --font: 'Poppins', sans-serif;
+}
+
+/* Общие стили */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Контейнер */
+.container {
+  background-color: var(--container-bg);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(150, 67, 252, 0.3);
+  max-width: 500px;
+  width: 90%;
+}
+
+/* Заголовки */
+h2 {
+  color: var(--highlight);
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+/* Форма */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  background-color: #2A2A2A;
+  color: var(--text);
+  padding: 12px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+button {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--accent-hover);
+}
+
+a {
+  color: var(--highlight);
+  text-decoration: none;
+  font-size: 14px;
+  text-align: center;
+  display: block;
+  margin-top: 20px;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Сообщения */
+p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  text-align: center;
+}

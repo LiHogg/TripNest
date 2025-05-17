@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Панель Администратора</title>
+    <link rel="stylesheet" href="{% static 'admin_panel/css/style.css' %}">
+</head>
+<body>
+    <h1>Добро пожаловать в админ-панель TripNest!</h1>
+    <p>Вы можете управлять всеми аспектами сайта прямо здесь.</p>
+
+    <ul>
+        <li><a href="/admin_panel/users/">Пользователи</a></li>
+        <li><a href="/admin_panel/bookings/">Бронирования</a></li>
+        <li><a href="/admin_panel/transport/">Транспорт</a></li>
+        <li><a href="/admin_panel/location/hotel/">Отели</a></li>
+        <li><a href="/admin_panel/location/room/">Номера</a></li>
+        <li><a href="/admin/location/country/">Страны</a></li>
+        <li><a href="/admin/location/city/">Города</a></li>
+    </ul>
+<hr>
+<p>Переходы на главную:</p>
+<ul>
+    <li><a href="/home/">Главная страница (зарегистрированный пользователь)</a></li>
+    <li><a href="/">Главная страница (гость)</a></li>
+</ul>
+</body>
+</html>

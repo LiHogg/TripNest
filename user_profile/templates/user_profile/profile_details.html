@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>TripNest — Полная информация</title>
+    <link rel="stylesheet" href="{% static 'user_profile/css/profile_details.css' %}">
+</head>
+<body>
+    <header>
+        <a href="/home/">
+            <img src="{% static '/img/logo.png' %}" alt="TripNest Logo" style="height: 40px;">
+        </a>
+    </header>
+
+    <div class="container">
+        <h1>Полная информация</h1>
+
+        <!-- ОСНОВНЫЕ ДАННЫЕ -->
+        <div class="card">
+            <h2>Основное</h2>
+            <p><strong>Логин:</strong> {{ user.username }}</p>
+            <p><strong>Имя:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+        </div>
+
+        <!-- ПРОФИЛЬ -->
+        <div class="card">
+            <h2>Профиль</h2>
+            {% if profile %}
+                <p><strong>Номер телефона:</strong> {{ profile.phone_number }}</p>
+                <p><strong>Адрес:</strong> {{ profile.address }}</p>
+                <p><strong>Дата рождения:</strong> {{ profile.birth_date }}</p>
+            {% else %}
+                <p class="empty">Профиль не заполнен.</p>
+            {% endif %}
+        </div>
+
+        <!-- ПАСПОРТ -->
+        <div class="card">
+            <h2>Паспорт</h2>
+            {% if passport %}
+                <p><strong>Номер:</strong> {{ passport.number }}</p>
+                <p><strong>Дата выдачи:</strong> {{ passport.issue_date }}</p>
+                <p><strong>Срок действия:</strong> {{ passport.expiry_date }}</p>
+                <p><strong>Гражданство:</strong> {{ passport.nationality }}</p>
+            {% else %}
+                <p class="empty">Паспортные данные не указаны.</p>
+            {% endif %}
+        </div>
+
+        <!-- ПРАВА -->
+        <div class="card">
+            <h2>Водительское удостоверение</h2>
+            {% if license %}
+                <p><strong>Номер:</strong> {{ license.license_number }}</p>
+                <p><strong>Дата выдачи:</strong> {{ license.issue_date }}</p>
+                <p><strong>Срок действия:</strong> {{ license.expiry_date }}</p>
+                <p><strong>Категория:</strong> {{ license.category }}</p>
+            {% else %}
+                <p class="empty">Права не указаны.</p>
+            {% endif %}
+        </div>
+
+        <div class="back">
+            <a href="{% url 'profile' %}" class="btn">← Назад в профиль</a>
+        </div>
+    </div>
+</body>
+</html>

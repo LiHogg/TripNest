@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Список пользователей</title>
+</head>
+<body>
+<h2>Список пользователей</h2>
+<br>
+<a href="{% url 'dashboard' %}">← Назад к панели администратора</a>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя пользователя</th>
+            <th>Email</th>
+            <th>Роль</th>
+            <th>Телефон</th>
+            <th>Адрес</th>
+            <th>Дата рождения</th>
+            <th>Паспорт</th>
+            <th>Права</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+                {% if user.profile %}
+                    {{ user.profile.role }}
+                {% else %}
+                    —
+                {% endif %}
+            </td>
+            <td>{{ user.profile.phone_number|default:"—" }}</td>
+            <td>{{ user.profile.address|default:"—" }}</td>
+            <td>{{ user.profile.birth_date|default:"—" }}</td>
+            <td>
+                {% if user.profile.passport %}
+                    ✅
+                {% else %}
+                    —
+                {% endif %}
+            </td>
+            <td>
+                {% if user.profile.driverlicense %}
+                    ✅
+                {% else %}
+                    —
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'user_edit' user.id %}">Редактировать</a> |
+                <a href="{% url 'user_deactivate' user.id %}" onclick="return confirm('Деактивировать пользователя?');">Деактивировать</a> |
+                <a href="{% url 'user_delete' user.id %}" onclick="return confirm('Удалить пользователя навсегда?');">Удалить</a>
+            </td>
+
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
