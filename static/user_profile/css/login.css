@@ -4,7 +4,7 @@ body {
   color: #fce643;
   margin: 0;
   padding: 0;
-  background-image: url('/static/user_profile/img/blob1.png'), url('/static/user_profile/img/blob2.png');
+  background-image: url('/static/img/blob1.png'), url('/static/img/blob2.png');
   background-repeat: no-repeat, no-repeat;
   background-position: top left, bottom right;
   background-size: 350px, 400px;

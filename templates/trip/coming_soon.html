@@ -3,7 +3,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Экскурсии — TripNest</title>
+  <title>Скоро будет — TripNest</title>
   <link rel="stylesheet" href="{% static 'excursion/css/excursion_list.css' %}">
 </head>
 <body class="dark-theme">
@@ -13,7 +13,7 @@
   <div class="container">
     <div class="logo">
       <a href="/">
-        <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" height="40">
+        <img src="{% static 'user_profile/img/logo.png' %}" alt="TripNest Logo">
       </a>
     </div>
     <nav class="nav">
@@ -30,36 +30,25 @@
   </div>
 </header>
 
+<!-- Coming Soon -->
 <main class="excursion-main">
-
-  <h1>Экскурсии</h1>
-
-  <ul>
-    {% for excursion in excursions %}
-      <li>
-        {% if excursion.image %}
-          <img src="{{ excursion.image.url }}" alt="{{ excursion.name }}">
-        {% endif %}
-        <div class="info">
-          <h2>{{ excursion.name }}</h2>
-          <p><strong>Город:</strong> {{ excursion.city }}</p>
-          <p><strong>Длительность:</strong> {{ excursion.duration_hours }} ч</p>
-          <p><strong>Цена:</strong> {{ excursion.price_per_person }} ₽/чел</p>
-          <a class="button" href="{% url 'excursion:excursion_detail' excursion.id %}">Подробнее</a>
-        </div>
-      </li>
-    {% empty %}
-      <li>Экскурсий не найдено.</li>
-    {% endfor %}
-  </ul>
-
+  <div class="detail-container" style="text-align:center; padding: 100px 20px;">
+    <h1 style="color: var(--brand-primary); font-size: 3em; margin-bottom: 20px;">
+      Скоро здесь будет новый раздел
+    </h1>
+    <p style="font-size: 1.2em; color: #ccc; margin-bottom: 40px;">
+      Мы работаем над созданием этой страницы.<br>
+      Возвращайтесь чуть позже!
+    </p>
+    <a class="button" href="/">← Вернуться на главную</a>
+  </div>
 </main>
 
 <!-- Footer -->
 <footer class="footer">
   <div class="container">
     <div class="footer-logo">
-      <img src="{% static '/img/logo.png' %}" alt="TripNest Logo" height="30">
+      <img src="{% static 'user_profile/img/logo.png' %}" alt="TripNest Logo">
       <p>
         TripNest — всё для вашего комфорта в одном месте: отели, доставка еды, экскурсии, транспорт.<br>
         Поддержка 24/7 • support@tripnest.com
@@ -72,9 +61,6 @@
       <a href="#">Telegram</a>
     </div>
   </div>
-
-
-  <p class="copyright">© TripNest, 2025. Все права защищены</p>
 </footer>
 
 </body>

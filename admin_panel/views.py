@@ -203,14 +203,16 @@ def room_delete(request, pk):
 # === EXCURSION CRUD ===
 
 def excursion_list(request):
-    excursions = Excursion.objects.select_related('city').all()
+    excursions = Excursion.objects.all().order_by('id')
+    # если нужна пагинация, оберните через Paginator
     return render(request, 'admin_panel/excursion_list.html', {
-        'excursions': excursions
+        'excursions': excursions,
+        'page_obj': excursions,  # без пагинации можно просто передать тот же queryset
     })
 
 def excursion_create(request):
     if request.method == 'POST':
-        form = ExcursionForm(request.POST)
+        form = ExcursionForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('admin_excursion_list')
@@ -218,13 +220,13 @@ def excursion_create(request):
         form = ExcursionForm()
     return render(request, 'admin_panel/excursion_form.html', {
         'form': form,
-        'title': 'Добавить экскурсию'
+        'title': 'Создать экскурсию',
     })
 
 def excursion_edit(request, pk):
     excursion = get_object_or_404(Excursion, pk=pk)
     if request.method == 'POST':
-        form = ExcursionForm(request.POST, instance=excursion)
+        form = ExcursionForm(request.POST, request.FILES, instance=excursion)
         if form.is_valid():
             form.save()
             return redirect('admin_excursion_list')
@@ -232,7 +234,7 @@ def excursion_edit(request, pk):
         form = ExcursionForm(instance=excursion)
     return render(request, 'admin_panel/excursion_form.html', {
         'form': form,
-        'title': 'Редактировать экскурсию'
+        'title': 'Редактировать экскурсию',
     })
 
 def excursion_delete(request, pk):
@@ -241,5 +243,5 @@ def excursion_delete(request, pk):
         excursion.delete()
         return redirect('admin_excursion_list')
     return render(request, 'admin_panel/excursion_confirm_delete.html', {
-        'excursion': excursion
+        'object': excursion,
     })

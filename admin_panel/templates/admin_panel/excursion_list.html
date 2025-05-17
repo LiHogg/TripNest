@@ -1,63 +1,75 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Список экскурсий — Admin Panel</title>
-  <link rel="stylesheet" href="/static/admin_panel/css/style.css">
+  <title>Список экскурсий</title>
 </head>
 <body>
-  <header>
-    <nav>
-      <ul>
-        <li><a href="/admin_panel/">Панель управления</a></li>
-        <li><a href="/admin_panel/location/hotel/">Отели</a></li>
-        <li><a href="/admin_panel/location/room/">Комнаты</a></li>
-        <li><strong>Экскурсии</strong></li>
-        <li><a href="/admin_panel/location/country/">Страны</a></li>
-        <li><a href="/admin_panel/location/city/">Города</a></li>
-      </ul>
-    </nav>
-  </header>
 
-  <main>
-    <h1>Список экскурсий</h1>
-    <p><a class="btn" href="/admin_panel/excursion/create/">Добавить экскурсию</a></p>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Название</th>
-          <th>Город</th>
-          <th>Длительность (ч)</th>
-          <th>Цена (₽/чел)</th>
-          <th>Гид</th>
-          <th>Язык</th>
-          <th>Действия</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for excursion in excursions %}
-        <tr>
-          <td>{{ excursion.id }}</td>
-          <td>{{ excursion.name }}</td>
-          <td>{{ excursion.city.name }}</td>
-          <td>{{ excursion.duration_hours }}</td>
-          <td>{{ excursion.price_per_person }}</td>
-          <td>{{ excursion.guide_name }}</td>
-          <td>{{ excursion.language }}</td>
-          <td>
-            <a href="/admin_panel/excursion/edit/{{ excursion.pk }}/">Изменить</a> |
-            <a href="/admin_panel/excursion/delete/{{ excursion.pk }}/">Удалить</a>
-          </td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="8">Экскурсии не найдены.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </main>
+<h1>Список экскурсий</h1>
+
+<p>
+  <a href="{% url 'admin_excursion_create' %}">Добавить новую экскурсию</a>
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Название</th>
+      <th>Город</th>
+      <th>Цена за чел.</th>
+      <th>Язык</th>
+      <th>Гид</th>
+      <th>Действия</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for excursion in excursions %}
+      <tr>
+        <td>{{ excursion.id }}</td>
+        <td>{{ excursion.name }}</td>
+        <td>{{ excursion.city }}</td>
+        <td>{{ excursion.price_per_person }}</td>
+        <td>{{ excursion.language }}</td>
+        <td>{{ excursion.guide_name }}</td>
+        <td>
+          <a href="{% url 'admin_excursion_edit' excursion.id %}">ред.</a>
+          <a href="{% url 'admin_excursion_delete' excursion.id %}" onclick="return confirm('Удалить эту экскурсию?');">уд.</a>
+        </td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="7">Экскурсий не найдено.</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if page_obj.has_other_pages %}
+  <ul>
+    {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}">«</a></li>
+    {% else %}
+      <li>«</li>
+    {% endif %}
+
+    {% for i in page_obj.paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li><strong>{{ i }}</strong></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <li><a href="?page={{ page_obj.next_page_number }}">»</a></li>
+    {% else %}
+      <li>»</li>
+    {% endif %}
+  </ul>
+{% endif %}
+
 </body>
 </html>

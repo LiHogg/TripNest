@@ -1,10 +1,71 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>{{ excursion.name }} — TripNest</title>
+  <link rel="stylesheet" href="{% static 'excursion/css/excursion_list.css' %}">
 </head>
-<body>
+<body class="dark-theme">
+
+<!-- Header -->
+<header class="header">
+  <div class="container">
+    <div class="logo">
+      <a href="/">
+        <img src="{% static '/img/logo.png' %}" alt="TripNest Logo">
+      </a>
+    </div>
+    <nav class="nav">
+      <a href="/">Главная</a>
+      <a href="/hotels/">Жильё</a>
+      <a href="#">Рестораны</a>
+      <a href="#">Транспорт</a>
+      <a href="#">Заказ еды</a>
+    </nav>
+    <div class="auth-buttons">
+      <a href="{% url 'profile' %}">Профиль</a>
+      <a href="/logout/">Выйти</a>
+    </div>
+  </div>
+</header>
+
+<!-- Main Detail -->
+<main class="excursion-main">
+  <div class="detail-container" style="max-width: 800px; margin: 40px auto;">
+    {% if excursion.image %}
+      <img src="{{ excursion.image.url }}" alt="{{ excursion.name }}" style="width:100%; height:auto; border-radius:12px;">
+    {% endif %}
+    <div class="info" style="padding:20px;">
+      <h1 style="color: var(--brand-primary); margin-bottom:20px; text-align:center;">{{ excursion.name }}</h1>
+      <p><strong>Город:</strong> {{ excursion.city }}</p>
+      <p><strong>Длительность:</strong> {{ excursion.duration_hours }} ч</p>
+      <p><strong>Цена:</strong> {{ excursion.price_per_person }} ₽/чел</p>
+      <p><strong>Описание:</strong> {{ excursion.description }}</p>
+      <p><strong>Доступные даты:</strong> {{ excursion.availability_dates }}</p>
+      <a class="button" href="{% url 'excursion:excursion_list' %}" style="margin-top:30px;">← Назад к списку</a>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-logo">
+      <img src="{% static '/img/logo.png' %}" alt="TripNest Logo">
+      <p>
+        TripNest — всё для вашего комфорта в одном месте: отели, доставка еды, экскурсии, транспорт.<br>
+        Поддержка 24/7 • support@tripnest.com
+      </p>
+    </div>
+    <div class="social">
+      <p>Мы в социальных сетях:</p>
+      <a href="#">VK</a>
+      <a href="#">Skype</a>
+      <a href="#">Telegram</a>
+    </div>
+  </div>
+</footer>
 
 </body>
 </html>
