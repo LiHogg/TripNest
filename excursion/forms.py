@@ -16,7 +16,7 @@ class ExcursionForm(forms.ModelForm):
             'language',
             'item_type',
             'description',
-            'image_url',
+            'image',
             'availability_dates',
         ]
         widgets = {

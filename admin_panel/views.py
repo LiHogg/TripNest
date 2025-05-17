@@ -5,7 +5,8 @@ from location.models import Country, City
 from hotel.models import Hotel, Room
 from .forms import CountryForm, CityForm, HotelForm
 from hotel.forms import RoomForm
-
+from excursion.models import Excursion
+from excursion.forms import ExcursionForm
 # === DASHBOARD ===
 def dashboard(request):
     return render(request, 'admin_panel/dashboard.html')
@@ -198,3 +199,47 @@ def room_delete(request, pk):
         room.delete()
         return redirect('admin_room_list')
     return render(request, 'admin_panel/room_confirm_delete.html', {'room': room})
+
+# === EXCURSION CRUD ===
+
+def excursion_list(request):
+    excursions = Excursion.objects.select_related('city').all()
+    return render(request, 'admin_panel/excursion_list.html', {
+        'excursions': excursions
+    })
+
+def excursion_create(request):
+    if request.method == 'POST':
+        form = ExcursionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_excursion_list')
+    else:
+        form = ExcursionForm()
+    return render(request, 'admin_panel/excursion_form.html', {
+        'form': form,
+        'title': 'Добавить экскурсию'
+    })
+
+def excursion_edit(request, pk):
+    excursion = get_object_or_404(Excursion, pk=pk)
+    if request.method == 'POST':
+        form = ExcursionForm(request.POST, instance=excursion)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_excursion_list')
+    else:
+        form = ExcursionForm(instance=excursion)
+    return render(request, 'admin_panel/excursion_form.html', {
+        'form': form,
+        'title': 'Редактировать экскурсию'
+    })
+
+def excursion_delete(request, pk):
+    excursion = get_object_or_404(Excursion, pk=pk)
+    if request.method == 'POST':
+        excursion.delete()
+        return redirect('admin_excursion_list')
+    return render(request, 'admin_panel/excursion_confirm_delete.html', {
+        'excursion': excursion
+    })

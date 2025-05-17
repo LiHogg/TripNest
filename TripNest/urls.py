@@ -13,5 +13,8 @@ urlpatterns = [
     path('accounts/logout/', auth_views.LogoutView.as_view(next_page='home_guest'), name='logout'),  # <-- Добавлено
     path('hotels/', include('hotel.urls')),
     path('calendar/', include('calendar_app.urls')),
+    path('excursion/', include('excursion.urls')),
 
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+              ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

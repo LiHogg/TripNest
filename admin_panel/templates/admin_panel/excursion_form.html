@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }} — Управление экскурсиями</title>
+  <link rel="stylesheet" href="/static/admin_panel/css/style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/admin_panel/">Панель управления</a></li>
+        <li><a href="/admin_panel/location/hotel/">Отели</a></li>
+        <li><a href="/admin_panel/location/room/">Комнаты</a></li>
+        <li><a href="/admin_panel/excursion/">Экскурсии</a></li>
+        <li><a href="/admin_panel/location/country/">Страны</a></li>
+        <li><a href="/admin_panel/location/city/">Города</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="admin-form container">
+    <h1>{{ title }}</h1>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <table>
+        <tr>
+          <th><label for="id_name">Название экскурсии</label></th>
+          <td>{{ form.name }}</td>
+        </tr>
+        <tr>
+          <th><label for="id_city">Город</label></th>
+          <td>{{ form.city }}</td>
+        </tr>
+        <tr>
+          <th><label for="id_duration_hours">Длительность (часы)</label></th>
+          <td>{{ form.duration_hours }}</td>
+        </tr>
+        <tr>
+          <th><label for="id_price_per_person">Цена за человека</label></th>
+          <td>{{ form.price_per_person }}</td>
+        </tr>
+        <tr>
+          <th><label for="id_max_participants">Максимум участников</label></th>
+          <td>{{ form.max_participants }}</td>
+        </tr>
+        <tr>
+          <th><label for="id_meeting_point">Место встречи</label></th>
+          <td>{{ form.meeting_point }}</td>
+        </tr>
+        <tr>
+          <th><label for="id_guide_name">Имя гида</label></th>
+          <td>{{ form.guide_name }}</td>
+        </tr>
+        <tr>
+          <th><label for="id_language">Язык экскурсии</label></th>
+          <td>{{ form.language }}</td>
+        </tr>
+        <tr>
+          <th><label for="id_item_type">Тип услуги</label></th>
+          <td>{{ form.item_type }}</td>
+        </tr>
+        <tr>
+          <th><label for="id_description">Описание</label></th>
+          <td>{{ form.description }}</td>
+        </tr>
+        <tr>
+          <th><label for="id_image_url">URL изображения</label></th>
+          <td>{{ form.image_url }}</td>
+        </tr>
+        <tr>
+          <th><label for="id_availability_dates">Доступные даты</label></th>
+          <td>{{ form.availability_dates }}</td>
+        </tr>
+      </table>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a href="/admin_panel/excursion/" class="btn btn-secondary">Отмена</a>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

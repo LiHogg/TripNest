@@ -1,6 +1,7 @@
 from django.db import models
 from location.models import City
 
+
 class Excursion(models.Model):
     name = models.CharField('Название экскурсии', max_length=255)
     city = models.ForeignKey(
@@ -20,7 +21,15 @@ class Excursion(models.Model):
         decimal_places=2
     )
     description = models.TextField('Описание')
-    image_url = models.URLField('URL изображения', max_length=255, blank=True, null=True)
+
+    # Загрузка изображения с компьютера
+    image = models.ImageField(
+        'Изображение',
+        upload_to='excursions/',
+        blank=True,
+        null=True
+    )
+
     availability_dates = models.TextField(
         'Доступные даты',
         help_text='Перечислите доступные даты через запятую или диапазоны',

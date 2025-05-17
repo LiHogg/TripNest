@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Экскурсии — TripNest</title>
+  <link rel="stylesheet" href="{% static 'hotel/css/hotel.css' %}">
+</head>
+<body class="dark-theme">
+
+<!-- Header -->
+<header class="header">
+  <div class="container">
+    <div class="logo">
+      <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" height="40">
+    </div>
+    <nav class="nav">
+      <a href="/hotels/">Жильё</a>
+      <a href="/excursion/" class="active">Экскурсии</a>
+      <a href="#">Рестораны</a>
+      <a href="#">Транспорт</a>
+      <a href="#">Заказ еды</a>
+    </nav>
+    <div class="auth-buttons">
+      {% if user.is_authenticated %}
+        <a href="{% url 'profile' %}">Профиль</a>
+        <a href="/logout/">Выйти</a>
+      {% else %}
+        <a href="{% url 'login' %}">Войти</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+<main class="hotel-main">
+
+  <!-- Список экскурсий (аналог hotel-listing) -->
+  <section class="hotel-listing">
+    <h2>Экскурсии</h2>
+    <div class="hotel-grid">
+      {% for excursion in excursions %}
+      <div class="hotel-card">
+        {% if excursion.image_url %}
+          <img src="{{ excursion.image }}" alt="{{ excursion.name }}">
+        {% else %}
+          <img src="{% static 'hotel/img/reception.jpg' %}" alt="{{ excursion.name }}">
+        {% endif %}
+        <h3>{{ excursion.name }}</h3>
+        <p><strong>Город:</strong> {{ excursion.city.name }}</p>
+        <p><strong>Длительность:</strong> {{ excursion.duration_hours }} ч</p>
+        <p><strong>Цена:</strong> {{ excursion.price_per_person }} ₽/чел</p>
+        <a class="btn" href="{% url 'excursion:excursion_detail' excursion.id %}">Подробнее</a>
+      </div>
+      {% empty %}
+      <p>Нет доступных экскурсий.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-logo">
+      <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" height="30">
+      <p>
+        TripNest — всё для вашего комфорта в одном месте: отели, доставка еды, экскурсии, транспорт.<br>
+        Поддержка 24/7 • support@tripnest.com
+      </p>
+    </div>
+    <div class="social">
+      <p>Мы в социальных сетях:</p>
+      <a href="#">VK</a>
+      <a href="#">Skype</a>
+      <a href="#">Telegram</a>
+    </div>
+  </div>
+
+  <div class="footer-blob">
+    <svg viewBox="0 0 1440 320">
+      <path fill="#6829b5" fill-opacity="1"
+        d="M0,160L40,165.3C80,171,160,181,240,170.7C320,160,400,128,480,106.7C560,85,640,75,720,90.7C800,107,880,149,960,176C1040,203,1120,213,1200,208C1280,203,1360,181,1400,170.7L1440,160L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z">
+      </path>
+    </svg>
+  </div>
+
+  <p class="copyright">© TripNest, 2025. Все права защищены</p>
+</footer>
+
+</body>
+</html>

@@ -37,7 +37,7 @@ class ExcursionAdmin(admin.ModelAdmin):
             )
         }),
         ('Контент', {
-            'fields': ('description', 'image_url', 'availability_dates')
+             'fields': ('description', 'image', 'availability_dates')
         }),
         ('Временные метки', {
             'fields': ('created_at', 'updated_at'),
