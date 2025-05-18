@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Детали рейса {{ flight.flight_number }}</title>
+    <link rel="stylesheet" href="{% static 'css/flight_detail.css' %}">
+</head>
+<body>
+    <header>
+        <!-- Вставь свой header, если нужен -->
+    </header>
+
+    <div class="flight-detail-container">
+        <div class="flight-header">
+            <div class="flight-main-info">
+                <h1>Рейс {{ flight.flight_number }}</h1>
+                <div class="flight-meta">
+                    <span><b>Авиакомпания:</b> {{ flight.airline }}</span>
+                    <span><b>Самолёт:</b> {{ flight.plane_type }}</span>
+                    <span><b>Дата и время вылета:</b> {{ flight.departure_date|date:"d.m.Y H:i" }}</span>
+                    <span><b>Откуда:</b> {{ flight.departure_city }}, {{ flight.departure_city.country }}</span>
+                    <span><b>Куда:</b> {{ flight.arrival_city }}, {{ flight.arrival_city.country }}</span>
+                    <span><b>Время прибытия:</b> {{ flight.arrival_date|date:"d.m.Y H:i" }}</span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="tickets-section">
+            <h2>Доступные билеты</h2>
+            <div class="ticket-list">
+                {% for ticket in tickets %}
+                    <div class="ticket-card">
+                        <div class="class">Класс: {{ ticket.get_flight_class_display }}</div>
+                        <div class="seat">Место: {{ ticket.seat_number }}</div>
+                        <div class="price">Цена: {{ ticket.price }} ₽</div>
+                        <div class="status">
+                            {% if ticket.is_booked %}
+                                <span class="booked">Занято</span>
+                            {% else %}
+                                <span class="free">Свободно</span>
+                                <form method="post" action="{% url 'cart:add_ticket' ticket.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit">В корзину</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>Билеты не найдены.</p>
+                {% endfor %}
+            </div>
+        </div>
+        <a href="{% url 'transport:flight_list' %}" class="back-link">← К списку рейсов</a>
+    </div>
+</body>
+</html>

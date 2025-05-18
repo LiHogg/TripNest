@@ -8,7 +8,7 @@ from hotel.forms import RoomForm
 from excursion.models import Excursion
 from excursion.forms import ExcursionForm
 from transport.models import Flight
-from transport.forms import FlightForm
+from admin_panel.forms import FlightForm
 
 # === DASHBOARD ===
 def dashboard(request):

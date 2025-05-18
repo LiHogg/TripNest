@@ -18,10 +18,10 @@
 
         <!-- МЕНЮ ПО ЦЕНТРУ -->
             <nav class="navbar-menu">
-                <a href="/home/">Главная</a>
-                <a href="/excursion/">Экскурсии</a>
-                <a href="/transport/">Транспорт</a>
-                <a href="/hotels/">Отели</a>
+                <a href="/">Главная</a>
+                <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
+                <a href="{% url 'transport:transport_list' %}">Транспорт</a>
+                <a href="{% url 'hotel:hotel_list' %}">Отели</a>
             </nav>
 
         <!-- ВЫХОД СПРАВА -->
