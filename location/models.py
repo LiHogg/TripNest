@@ -8,7 +8,9 @@ class Country(models.Model):
 
 class City(models.Model):
     name = models.CharField(max_length=100)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='cities')
+    country = models.ForeignKey('Country', on_delete=models.CASCADE)
+    has_airport = models.BooleanField("Есть аэропорт", default=False)
+    has_train_station = models.BooleanField("Есть ж/д вокзал", default=False)
 
     def __str__(self):
-        return f"{self.name}, {self.country.name}"
+        return f"{self.name} ({self.country.name})"

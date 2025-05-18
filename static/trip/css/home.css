@@ -14,76 +14,82 @@ body {
 /* Шапка */
 header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     background-color: #1C1C1C;
     padding: 15px 40px;
     position: fixed;
     width: 100%;
     z-index: 100;
+    box-sizing: border-box;
+    justify-content: flex-start; /* выравнивание влево */
+    gap: 56px; /* расстояние между logo, nav и кнопками */
 }
 
-header .logo h1 {
-    color: #fce643;
-    font-size: 28px;
+header nav {
+    flex: 1;
+    display: flex;
+    justify-content: center;
 }
+
 
 header nav ul {
-    list-style: none;
     display: flex;
     gap: 20px;
-}
-
-header nav ul li a {
-    color: #fce643;
-    text-decoration: none;
-    font-size: 18px;
-}
-
-/* Кнопки авторизации */
-.auth-buttons {
-    display: flex;
-    gap: 15px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    justify-content: flex-start;
     align-items: center;
 }
-
-/* Стили для кнопки "Профиль" */
-.auth-buttons .btn {
-    color: #fce643;
-    background-color: #9643FC;
-    padding: 8px 20px;
-    border-radius: 5px;
+header nav ul li a {
+    color: #fce643 !important;
     text-decoration: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+header nav ul li a:hover,
+header nav ul li a:focus {
+    color: #9643FC !important;
+    text-decoration: underline;
+}
+.auth-buttons {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-left: 40px;
 }
 
-/* Специальные стили для кнопки "Выйти" */
-.logout-form {
+.auth-buttons .btn {
+    background: transparent;
+    color: #9643FC;
+    border: 2px solid #9643FC;
+    border-radius: 12px;
+    padding: 6px 18px;        /* Было 10px 32px */
+    font-size: 16px;          /* Было 20px */
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s, border 0.15s;
+    box-shadow: none;
     display: inline-block;
-    margin-right: 50px;
+    outline: none;
 }
 
-.logout-btn {
-    background-color: #d32f2f; /* Ярко-красный цвет */
-    color: #ffffff;
-    padding: 10px 25px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s, transform 0.1s;
+.auth-buttons .btn:hover,
+.auth-buttons .btn:focus {
+    background: #9643FC;
+    color: #fce643;
+    border-color: #9643FC;
 }
 
-.logout-btn:hover {
-    background-color: #b71c1c;
+.logout-form {
+    margin: 0;
 }
 
-.logout-btn:active {
-    transform: scale(0.95);
-}
+
 
 /* Главный баннер */
 .hero {

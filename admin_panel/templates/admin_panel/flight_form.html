@@ -1,0 +1,17 @@
+{% load static %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить рейс</title>
+    <link rel="stylesheet" href="{% static 'admin_panel/css/admin.css' %}">
+</head>
+<body>
+    <h1>Добавить рейс</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Создать рейс и билеты</button>
+        <a href="{% url 'admin_panel:flight_list' %}">Назад</a>
+    </form>
+</body>
+</html>

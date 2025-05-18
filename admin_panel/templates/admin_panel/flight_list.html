@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Рейсы — Админка TripNest</title>
+    <link rel="stylesheet" href="{% static 'admin_panel/css/admin.css' %}">
+</head>
+<body>
+    <h1>Список рейсов</h1>
+    <a href="{% url 'admin_panel:flight_create' %}" class="btn">Добавить рейс</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>№ рейса</th>
+                <th>Авиакомпания</th>
+                <th>Откуда</th>
+                <th>Куда</th>
+                <th>Дата и время вылета</th>
+                <th>Дата и время прилёта</th>
+                <th>Эконом</th>
+                <th>Стандарт</th>
+                <th>Бизнес</th>
+                <th>Первый</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for flight in flights %}
+            <tr>
+                <td>{{ flight.id }}</td>
+                <td>{{ flight.flight_number }}</td>
+                <td>{{ flight.airline }}</td>
+                <td>{{ flight.departure_airport }}</td>
+                <td>{{ flight.arrival_airport }}</td>
+                <td>{{ flight.departure_date|date:"d.m.Y H:i" }}</td>
+                <td>{{ flight.arrival_date|date:"d.m.Y H:i" }}</td>
+                <td>{{ flight.seats_economy }}</td>
+                <td>{{ flight.seats_standard }}</td>
+                <td>{{ flight.seats_business }}</td>
+                <td>{{ flight.seats_first }}</td>
+                <td>
+                    <a href="{% url 'admin_panel:flight_update' flight.id %}">✏️</a>
+                    <a href="{% url 'admin_panel:flight_delete' flight.id %}">🗑️</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

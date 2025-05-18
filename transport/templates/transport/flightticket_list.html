@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Выбор авиабилетов — TripNest</title>
+    <link rel="stylesheet" href="{% static 'transport/css/flightticket.css' %}">
+</head>
+<body>
+
+<!-- Шапка -->
+<header>
+    <div class="logo">
+        <a href="/">
+            <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
+        </a>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="{% url 'hotel:hotel_list' %}">Жильё</a></li>
+            <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
+            <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
+            <li><a href="{% url 'transport:transport_main' %}">Транспорт</a></li>
+            <li><a href="{% url 'trip:coming_soon' %}">Заказ еды</a></li>
+        </ul>
+    </nav>
+    <div class="auth-buttons">
+        <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+        <form action="{% url 'logout' %}" method="post" class="logout-form" style="margin: 0;">
+            {% csrf_token %}
+            <button type="submit" class="btn logout-btn">Выйти</button>
+        </form>
+    </div>
+</header>
+
+<main>
+    <section class="flight-tickets">
+        <h1>Выберите авиабилет</h1>
+        <div class="tickets-list">
+            {% for ticket in flights %}
+            <div class="ticket-card">
+                <div class="ticket-header">
+                    <span class="flight-number">Рейс {{ ticket.flight_number }}</span>
+                    <span class="airline">{{ ticket.airline }}</span>
+                </div>
+                <div class="ticket-info">
+                    <div>
+                        <span class="label">Откуда:</span>
+                        <span>{{ ticket.departure_airport }}</span>
+                    </div>
+                    <div>
+                        <span class="label">Куда:</span>
+                        <span>{{ ticket.arrival_airport }}</span>
+                    </div>
+                    <div>
+                        <span class="label">Вылет:</span>
+                        <span>{{ ticket.departure_date|date:"d.m.Y H:i" }}</span>
+                    </div>
+                    <div>
+                        <span class="label">Прилет:</span>
+                        <span>{{ ticket.arrival_date|date:"d.m.Y H:i" }}</span>
+                    </div>
+                    <div>
+                        <span class="label">Цена:</span>
+                        <span class="price">{{ ticket.price }} ₽</span>
+                    </div>
+                </div>
+                <form method="post" action="{% url 'transport:add_to_cart' ticket.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn add-to-cart">Добавить в корзину</button>
+                </form>
+            </div>
+            {% empty %}
+                <p style="margin: 40px 0; color: #ccc; font-size: 1.2rem;">Нет доступных билетов по вашему запросу.</p>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+
+<!-- Подвал -->
+<footer>
+    <div class="footer-content">
+        <a href="/" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img" style="height:36px;">
+        </a>
+        <p>© TripNest, 2025. Все права защищены.</p>
+    </div>
+</footer>
+
+</body>
+</html>

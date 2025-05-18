@@ -4,38 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48dc6d84-0096-48af-a9d3-a6abdcbc6f52" name="Changes" comment="Initial commit of TripNest project&#10;&#10;- Set up Django project structure with virtual environment&#10;- Created base apps: trip (home), user (auth/profile), transport, hotel_booking, excursion_booking, etc.&#10;- Configured MySQL database and settings.py&#10;- Implemented custom user model with extended Profile (passport, driver license, phone, etc.)&#10;- Added user authentication (registration, login, logout)&#10;- Created templates for home (guest and logged in), profile, login, registration&#10;- Added static and media file handling&#10;- Set up custom admin panel with user/role management&#10;- Implemented responsive design and basic CSS theme&#10;- Connected email service for password reset&#10;- Prepared models and CRUD interfaces for hotel rooms and excursions&#10;&#10;TripNest — multi-functional travel assistant with booking, transport, and profile management">
+    <list default="true" id="48dc6d84-0096-48af-a9d3-a6abdcbc6f52" name="Changes" comment="Improve link stability and namespace consistency&#10;&#10;- Correct URL namespaces across all routing configurations&#10;- Updated `{% url %}` tags in admin panel and site templates to use proper namespaces&#10;- Fixed numerous NoReverseMatch errors by aligning route names and patterns&#10;- Refactored `urlpatterns` order for precise matching and prevent unintended overrides&#10;- Ensured all custom admin_panel links resolve to the intended CRUD views">
+      <change afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/flight_confirm_delete.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/flight_form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/flight_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/img/car.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/img/plane.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/transport/css/flightticket.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/transport/css/transport.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transport/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transport/templates/transport/flightticket_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transport/templates/transport/transport_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transport/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TripNest/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/TripNest/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TripNest/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/TripNest/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/city_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/city_form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/city_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/city_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/country_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/country_form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/country_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/country_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_panel/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/excursion_confirm_delete.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/excursion_confirm_delete.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/excursion_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/excursion_form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/excursion_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/excursion_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/hotel_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/hotel_form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/hotel_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/hotel_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/room_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/room_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/user_edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/user_edit.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/user_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/user_list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin_panel/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/excursion/templates/excursion/excursion_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/excursion/templates/excursion/excursion_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/excursion/templates/excursion/excursion_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/excursion/templates/excursion/excursion_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hotel/templates/hotel/hotel_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/hotel/templates/hotel/hotel_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hotel/templates/hotel/hotel_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/hotel/templates/hotel/hotel_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hotel/templates/hotel/room_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/hotel/templates/hotel/room_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/trip/home_guest.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/trip/home_guest.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_panel/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/booking/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/location/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/location/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/trip/css/home.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/trip/css/home.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/trip/home_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/trip/home_user.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trip/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/trip/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trip/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/trip/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_profile/templates/user_profile/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/user_profile/templates/user_profile/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_profile/templates/user_profile/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/user_profile/templates/user_profile/profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_profile/templates/user_profile/profile_details.html" beforeDir="false" afterPath="$PROJECT_DIR$/user_profile/templates/user_profile/profile_details.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_profile/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_profile/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_profile/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_profile/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transport/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/transport/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transport/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/transport/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transport/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/transport/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,26 +71,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Notification.DisplayName-DoNotAsk-Database detector": "Database detector",
-    "Notification.DoNotAsk-Database detector": "true",
-    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "django.template.preview.state": "SHOW_EDITOR",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/сергей/Desktop/CourseWork/TripNest/static/excursion",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Notification.DisplayName-DoNotAsk-Database detector&quot;: &quot;Database detector&quot;,
+    &quot;Notification.DoNotAsk-Database detector&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/сергей/Desktop/CourseWork/TripNest/static/excursion&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\сергей\Desktop\CourseWork\TripNest\static\excursion" />
@@ -164,7 +157,9 @@
       <workItem from="1747351035598" duration="14244000" />
       <workItem from="1747425924343" duration="3605000" />
       <workItem from="1747436339683" duration="3818000" />
-      <workItem from="1747481013990" duration="23761000" />
+      <workItem from="1747481013990" duration="24012000" />
+      <workItem from="1747553536556" duration="5635000" />
+      <workItem from="1747565629954" duration="8501000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit of TripNest project&#10;&#10;- Set up Django project structure with virtual environment&#10;- Created base apps: trip (home), user (auth/profile), transport, hotel_booking, excursion_booking, etc.&#10;- Configured MySQL database and settings.py&#10;- Implemented custom user model with extended Profile (passport, driver license, phone, etc.)&#10;- Added user authentication (registration, login, logout)&#10;- Created templates for home (guest and logged in), profile, login, registration&#10;- Added static and media file handling&#10;- Set up custom admin panel with user/role management&#10;- Implemented responsive design and basic CSS theme&#10;- Connected email service for password reset&#10;- Prepared models and CRUD interfaces for hotel rooms and excursions&#10;&#10;TripNest — multi-functional travel assistant with booking, transport, and profile management">
       <option name="closed" value="true" />
@@ -198,7 +193,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747521727126</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Improve link stability and namespace consistency&#10;&#10;- Correct URL namespaces across all routing configurations&#10;- Updated `{% url %}` tags in admin panel and site templates to use proper namespaces&#10;- Fixed numerous NoReverseMatch errors by aligning route names and patterns&#10;- Refactored `urlpatterns` order for precise matching and prevent unintended overrides&#10;- Ensured all custom admin_panel links resolve to the intended CRUD views">
+      <option name="closed" value="true" />
+      <created>1747531497902</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1747531497902</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -206,6 +209,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit of TripNest project&#10;&#10;- Set up Django project structure with virtual environment&#10;- Created base apps: trip (home), user (auth/profile), transport, hotel_booking, excursion_booking, etc.&#10;- Configured MySQL database and settings.py&#10;- Implemented custom user model with extended Profile (passport, driver license, phone, etc.)&#10;- Added user authentication (registration, login, logout)&#10;- Created templates for home (guest and logged in), profile, login, registration&#10;- Added static and media file handling&#10;- Set up custom admin panel with user/role management&#10;- Implemented responsive design and basic CSS theme&#10;- Connected email service for password reset&#10;- Prepared models and CRUD interfaces for hotel rooms and excursions&#10;&#10;TripNest — multi-functional travel assistant with booking, transport, and profile management" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial commit of TripNest project&#10;&#10;- Set up Django project structure with virtual environment&#10;- Created base apps: trip (home), user (auth/profile), transport, hotel_booking, excursion_booking, etc.&#10;- Configured MySQL database and settings.py&#10;- Implemented custom user model with extended Profile (passport, driver license, phone, etc.)&#10;- Added user authentication (registration, login, logout)&#10;- Created templates for home (guest and logged in), profile, login, registration&#10;- Added static and media file handling&#10;- Set up custom admin panel with user/role management&#10;- Implemented responsive design and basic CSS theme&#10;- Connected email service for password reset&#10;- Prepared models and CRUD interfaces for hotel rooms and excursions&#10;&#10;TripNest — multi-functional travel assistant with booking, transport, and profile management" />
+    <MESSAGE value="Improve link stability and namespace consistency&#10;&#10;- Correct URL namespaces across all routing configurations&#10;- Updated `{% url %}` tags in admin panel and site templates to use proper namespaces&#10;- Fixed numerous NoReverseMatch errors by aligning route names and patterns&#10;- Refactored `urlpatterns` order for precise matching and prevent unintended overrides&#10;- Ensured all custom admin_panel links resolve to the intended CRUD views" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve link stability and namespace consistency&#10;&#10;- Correct URL namespaces across all routing configurations&#10;- Updated `{% url %}` tags in admin panel and site templates to use proper namespaces&#10;- Fixed numerous NoReverseMatch errors by aligning route names and patterns&#10;- Refactored `urlpatterns` order for precise matching and prevent unintended overrides&#10;- Ensured all custom admin_panel links resolve to the intended CRUD views" />
   </component>
 </project>

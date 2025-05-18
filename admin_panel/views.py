@@ -7,6 +7,9 @@ from .forms import CountryForm, CityForm, HotelForm
 from hotel.forms import RoomForm
 from excursion.models import Excursion
 from excursion.forms import ExcursionForm
+from transport.models import Flight
+from transport.forms import FlightForm
+
 # === DASHBOARD ===
 def dashboard(request):
     return render(request, 'admin_panel/dashboard.html')
@@ -118,7 +121,7 @@ def city_edit(request, pk):
         form = CityForm(request.POST, instance=city)
         if form.is_valid():
             form.save()
-            return redirect('admin_city_list')
+            return redirect('admin_panel:admin_city_list')
     else:
         form = CityForm(instance=city)
     return render(request, 'admin_panel/city_form.html', {'form': form, 'title': 'Редактировать город'})
@@ -127,7 +130,8 @@ def city_edit(request, pk):
 def city_delete(request, pk):
     city = get_object_or_404(City, pk=pk)
     city.delete()
-    return redirect('admin_city_list')
+    return redirect('admin_panel:admin_city_list')
+
 
 # === HOTEL LIST ===
 def hotel_list(request):
@@ -245,3 +249,37 @@ def excursion_delete(request, pk):
     return render(request, 'admin_panel/excursion_confirm_delete.html', {
         'object': excursion,
     })
+
+def flight_admin_list(request):
+    flights = Flight.objects.all()
+    return render(request, 'admin_panel/flight_list.html', {'flights': flights})
+
+def flight_admin_create(request):
+    if request.method == 'POST':
+        form = FlightForm(request.POST)
+        if form.is_valid():
+            flight = form.save()
+            # Можно тут вызывать генерацию билетов!
+            # create_tickets_for_flight(flight)
+            return redirect('admin_panel:flight_list')
+    else:
+        form = FlightForm()
+    return render(request, 'admin_panel/flight_form.html', {'form': form})
+
+def flight_admin_update(request, pk):
+    flight = get_object_or_404(Flight, pk=pk)
+    if request.method == 'POST':
+        form = FlightForm(request.POST, instance=flight)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_panel:flight_list')
+    else:
+        form = FlightForm(instance=flight)
+    return render(request, 'admin_panel/flight_form.html', {'form': form, 'flight': flight})
+
+def flight_admin_delete(request, pk):
+    flight = get_object_or_404(Flight, pk=pk)
+    if request.method == 'POST':
+        flight.delete()
+        return redirect('admin_panel:flight_list')
+    return render(request, 'admin_panel/flight_confirm_delete.html', {'flight': flight})

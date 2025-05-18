@@ -27,6 +27,7 @@ urlpatterns = [
     path('excursions/', include(('excursion.urls','excursion'), namespace='excursion')),
     path('calendar/',   include(('calendar_app.urls','calendar_app'), namespace='calendar_app')),
     path('admin_panel/',include(('admin_panel.urls','admin_panel'), namespace='admin_panel')),
+    path('transport/', include(('transport.urls', 'trabsport'), namespace='transport')),
 
 ]
 

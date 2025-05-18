@@ -9,7 +9,6 @@
 <body>
 
 <!-- Шапка -->
-
 <header>
     <div class="logo">
         <a href="/">
@@ -22,19 +21,18 @@
             <li><a href="{% url 'hotel:hotel_list' %}">Жильё</a></li>
             <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
             <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
-            <li><a href="#">Транспорт</a></li>
+            <li><a href="{% url 'transport:transport_main' %}">Транспорт</a></li>
             <li><a href="{% url 'trip:coming_soon' %}">Заказ еды</a></li>
         </ul>
     </nav>
-<div class="auth-buttons">
-<a href="{% url 'user_profile:profile' %}">Профиль</a>
 
-    <form action="{% url 'logout' %}" method="post" class="logout-form">
-        {% csrf_token %}
-        <button type="submit" class="btn logout-btn">Выйти</button>
-    </form>
-</div>
-
+    <div class="auth-buttons">
+        <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+        <form action="{% url 'logout' %}" method="post" class="logout-form" style="margin: 0;">
+            {% csrf_token %}
+            <button type="submit" class="btn logout-btn">Выйти</button>
+        </form>
+    </div>
 </header>
 
 <!-- Главный блок -->

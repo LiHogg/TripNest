@@ -40,4 +40,10 @@ urlpatterns = [
     path('excursion/create/', views.excursion_create, name='admin_excursion_create'),
     path('excursion/edit/<int:pk>/',   views.excursion_edit,   name='admin_excursion_edit'),
     path('excursion/delete/<int:pk>/', views.excursion_delete, name='admin_excursion_delete'),
+
+    path('flights/', views.flight_admin_list, name='flight_list'),
+    path('flights/create/', views.flight_admin_create, name='flight_create'),
+    path('flights/<int:pk>/edit/', views.flight_admin_update, name='flight_update'),
+    path('flights/<int:pk>/delete/', views.flight_admin_delete, name='flight_delete'),
+
 ]

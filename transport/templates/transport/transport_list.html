@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Транспорт — TripNest</title>
+    <link rel="stylesheet" href="{% static 'transport/css/transport.css' %}">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <a href="/">
+                <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
+            </a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/">Главная</a></li>
+                <li><a href="{% url 'hotel:hotel_list' %}">Жильё</a></li>
+                <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
+                <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
+                <li><a href="{% url 'trip:coming_soon' %}">Заказ еды</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+            <form action="{% url 'logout' %}" method="post" class="logout-form" style="margin: 0;">
+                {% csrf_token %}
+                <button type="submit" class="btn logout-btn">Выйти</button>
+            </form>
+        </div>
+    </header>
+
+    <main>
+        <section class="transport-main">
+            <h1>Выберите категорию транспорта</h1>
+            <div class="transport-cards">
+                <!-- Авиа -->
+                <div class="transport-card">
+                    <img src="{% static 'img/plane.png' %}" alt="Авиабилеты" style="width: 100px;">
+                    <h2>Авиабилеты</h2>
+                    <p>Покупка и бронирование авиабилетов</p>
+                    <a href="{% url 'transport:flight_list' %}" class="btn">Перейти</a>
+                </div>
+                <!-- ЖД -->
+                <div class="transport-card">
+                    <img src="{% static 'img/train.png' %}" alt="ЖД билеты" style="width: 100px;">
+                    <h2>ЖД билеты</h2>
+                    <p>Бронирование и покупка билетов на поезд</p>
+                    <a href="{% url 'transport:train_list' %}" class="btn">Перейти</a>
+                </div>
+                <!-- Автомобили -->
+                <div class="transport-card">
+                    <img src="{% static 'img/car.png' %}" alt="Авто" style="width: 100px;">
+                    <h2>Автомобили</h2>
+                    <p>Аренда автомобилей для путешествий</p>
+                    <a href="{% url 'transport:car_list' %}" class="btn">Перейти</a>
+                </div>
+                <!-- Мотоциклы -->
+                <div class="transport-card">
+                    <img src="{% static 'img/moto.png' %}" alt="Мотоциклы" style="width: 100px;">
+                    <h2>Мотоциклы</h2>
+                    <p>Аренда мотоциклов для поездок</p>
+                    <a href="{% url 'transport:moto_list' %}" class="btn">Перейти</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <a href="/" class="logo">
+                <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img" style="height:40px;">
+            </a>
+            <p>© TripNest, 2025. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>
