@@ -1,15 +1,15 @@
 <h2>Список стран</h2>
 
-<a href="{% url 'dashboard' %}">← Назад к панели администратора</a>
+<a href="{% url 'admin_panel:dashboard' %}">← Назад к панели администратора</a>
 <br>
 <br>
-<a href="{% url 'admin_country_create' %}">Добавить страну</a>
+<a href="{% url 'admin_panel:admin_country_create' %}">Добавить страну</a>
 <ul>
   {% for country in countries %}
     <li>
       {{ country.name }}
-      — <a href="{% url 'admin_country_edit' country.pk %}">Изменить</a>
-      | <a href="{% url 'admin_country_delete' country.pk %}">Удалить</a>
+      — <a href="{% url 'admin_panel:admin_country_edit' country.pk %}">Изменить</a>
+      | <a href="{% url 'admin_panel:admin_country_delete' country.pk %}">Удалить</a>
     </li>
   {% empty %}
     <li>Нет стран.</li>

@@ -16,15 +16,7 @@
         </a>
     </div>
 
-    <nav>
-        <ul>
-           <li><a href="{% url 'hotel_list' %}">Жильё</a></li>
-            <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
-            <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
-            <li><a href="#">Транспорт</a></li>
-            <li><a href="{% url 'trip:coming_soon' %}">Заказ еды</a></li>
-        </ul>
-    </nav>
+
     <div class="auth-buttons">
         <a href="/user/register/" class="btn">Регистрация</a>
         <a href="/user/login/" class="btn" style="margin-right: 50px;">Войти</a>
@@ -39,37 +31,45 @@
     </div>
 </section>
 
+<section class="login-prompt">
+    <div class="container">
+        <p style="text-align:center; font-size:1.2em; margin:40px 0;">
+            Чтобы получить полный доступ ко всем возможностям TripNest, пожалуйста, войдите в систему или зарегистрируйтесь.
+        </p>
+    </div>
+</section>
+
 <!-- Наши услуги -->
 <section id="services">
     <h2>Наши сервисы</h2>
     <div class="services-container">
         <div class="service-item">
-            <img src="{% static 'trip/icons/restaurant.png' %}" alt="Рестораны">
+            <img src="{% static '/icons/restaurant.png' %}" alt="Рестораны">
             <h3>Рестораны</h3>
             <p>Бронирование лучших ресторанов в вашем городе.</p>
         </div>
         <div class="service-item">
-            <img src="{% static 'trip/icons/food.png' %}" alt="Заказ еды">
+            <img src="{% static '/icons/food.png' %}" alt="Заказ еды">
             <h3>Заказ еды</h3>
             <p>Быстрая доставка вкусной еды прямо к вам домой.</p>
         </div>
         <div class="service-item">
-            <img src="{% static 'trip/icons/excursion.png' %}" alt="Экскурсии">
+            <img src="{% static '/icons/excursion.png' %}" alt="Экскурсии">
             <h3>Экскурсии</h3>
             <p>Лучшие экскурсии с проверенными гидами.</p>
         </div>
         <div class="service-item">
-            <img src="{% static 'trip/icons/transport.png' %}" alt="Транспорт">
+            <img src="{% static '/icons/transport.png' %}" alt="Транспорт">
             <h3>Транспорт</h3>
             <p>Надежное бронирование транспорта на любой случай.</p>
         </div>
         <div class="service-item">
-            <img src="{% static 'trip/icons/hotel.png' %}" alt="Жильё">
+            <img src="{% static '/icons/hotel.png' %}" alt="Жильё">
             <h3>Жильё</h3>
             <p>Бронирование отелей, апартаментов и хостелов.</p>
         </div>
         <div class="service-item">
-            <img src="{% static 'trip/icons/happy.png' %}" alt="Настроение">
+            <img src="{% static '/icons/happy.png' %}" alt="Настроение">
             <h3>Отличное настроение</h3>
             <p>Мы заботимся о вашем комфорте и настроении.</p>
         </div>

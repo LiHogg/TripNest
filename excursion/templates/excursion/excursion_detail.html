@@ -18,13 +18,13 @@
     </div>
     <nav class="nav">
       <a href="/">Главная</a>
-      <a href="/hotels/">Жильё</a>
+      <a href="{% url 'hotel:hotel_list' %}">Жильё</a>
       <a href="#">Рестораны</a>
       <a href="#">Транспорт</a>
       <a href="#">Заказ еды</a>
     </nav>
     <div class="auth-buttons">
-      <a href="{% url 'profile' %}">Профиль</a>
+      <a href="{% url 'user_profile:profile' %}">Профиль</a>
       <a href="/logout/">Выйти</a>
     </div>
   </div>

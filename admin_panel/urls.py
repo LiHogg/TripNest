@@ -1,11 +1,12 @@
 from django.urls import path
 from . import views
+app_name = 'admin_panel'
 
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
 
     # === USER CRUD ===
-    path('users/', views.user_list, name='user_list'),
+    path('admin_panel:users/', views.user_list, name='user_list'),
     path('users/edit/<int:id>/', views.user_edit, name='user_edit'),
     path('users/deactivate/<int:id>/', views.user_deactivate, name='user_deactivate'),
     path('users/delete/<int:id>/', views.user_delete, name='user_delete'),

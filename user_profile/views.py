@@ -125,9 +125,9 @@ def user_login(request):
             login(request, user)
 
             if getattr(user.profile.role, 'name', None) == 'admin':
-                return redirect('dashboard')
+                return redirect('admin_panel:dashboard')
             else:
-                return redirect('home_user')
+                return redirect('trip:home_user')
     else:
         form = AuthenticationForm()
 

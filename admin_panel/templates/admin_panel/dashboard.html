@@ -1,6 +1,6 @@
-<!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Панель Администратора</title>
@@ -11,21 +11,24 @@
     <p>Вы можете управлять всеми аспектами сайта прямо здесь.</p>
 
     <ul>
-        <li><a href="/admin_panel/users/">Пользователи</a></li>
-        <li><a href="/admin_panel/bookings/">Бронирования</a></li>
-        <li><a href="/admin_panel/transport/">Транспорт</a></li>
-        <li><a href="/admin_panel/location/hotel/">Отели</a></li>
-        <li><a href="/admin_panel/location/room/">Номера</a></li>
-        <li><a href="/admin/location/country/">Страны</a></li>
-        <li><a href="/admin/location/city/">Города</a></li>
-        <li><a href="/admin/excursion/">Экскурсии</a></li>
+        <li><a href="{% url 'admin_panel:user_list' %}">Пользователи</a></li>
+        {# Если есть бронирования в admin_panel, добавьте соответствующий URL #}
+        {# <li><a href="{% url 'admin_panel:booking_list' %}">Бронирования</a></li> #}
+        {# Если есть транспорт в admin_panel, добавьте соответствующий URL #}
+        {# <li><a href="{% url 'admin_panel:transport_list' %}">Транспорт</a></li> #}
 
+        <li><a href="{% url 'admin_panel:admin_hotel_list' %}">Отели</a></li>
+        <li><a href="{% url 'admin_panel:admin_room_list' %}">Номера</a></li>
+        <li><a href="{% url 'admin_panel:admin_country_list' %}">Страны</a></li>
+        <li><a href="{% url 'admin_panel:admin_city_list' %}">Города</a></li>
+        <li><a href="{% url 'admin_panel:admin_excursion_list' %}">Экскурсии</a></li>
     </ul>
-<hr>
-<p>Переходы на главную:</p>
-<ul>
-    <li><a href="/home/">Главная страница (зарегистрированный пользователь)</a></li>
-    <li><a href="/">Главная страница (гость)</a></li>
-</ul>
+
+    <hr>
+    <p>Переходы на главную:</p>
+    <ul>
+        <li><a href="{% url 'trip:home_user' %}">Главная страница (зарегистрированный пользователь)</a></li>
+        <li><a href="{% url 'trip:home' %}">Главная страница (гость)</a></li>
+    </ul>
 </body>
 </html>

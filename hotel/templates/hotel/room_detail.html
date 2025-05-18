@@ -11,7 +11,7 @@
 
   <header class="header">
     <div class="container">
-      <a href="{% url 'hotel_detail' room.hotel.pk %}" class="back-link">&larr; Назад к отелю</a>
+      <a href="{% url 'hotel:hotel_detail' room.hotel.pk %}" class="back-link">&larr; Назад к отелю</a>
       <h1 class="page-title">{{ room.get_room_class_display }}</h1>
     </div>
   </header>

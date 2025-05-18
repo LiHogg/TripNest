@@ -4,7 +4,13 @@ from . import views
 app_name = 'trip'
 
 urlpatterns = [
-    path('', views.home_user,   name='home_user'),
+    # 1) Главная точка входа — всегда попадает в views.home
+    path('', views.home, name='home'),
+
+    # 2) Только когда пользователь уже авторизован — свой dashboard
+    path('user/', views.home_user, name='home_user'),
+
+    # 3) Страница “скоро будет”
     path('coming-soon/', views.coming_soon, name='coming_soon'),
-    # остальные пути…
+    # …и другие урлы, если есть
 ]

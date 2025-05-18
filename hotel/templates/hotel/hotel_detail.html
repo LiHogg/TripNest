@@ -11,7 +11,7 @@
 
   <header class="header">
     <div class="container">
-      <a href="{% url 'hotel_list' %}" class="back-link">&larr; Все отели</a>
+      <a href="{% url 'hotel:hotel_list' %}" class="back-link">&larr; Все отели</a>
       <h1 class="page-title">{{ hotel.name }}</h1>
     </div>
   </header>
@@ -35,7 +35,7 @@
       <select id="room-select">
         <option value="">-- Выберите класс номера --</option>
         {% for room in rooms %}
-          <option value="{% url 'room_detail' room.pk %}">
+          <option value="{% url 'hotel:room_detail' room.pk %}">
             {{ room.room_class }} — {{ room.price_per_night }} ₽/ночь
           </option>
         {% empty %}

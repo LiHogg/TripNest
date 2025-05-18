@@ -27,7 +27,7 @@
         </ul>
     </nav>
 <div class="auth-buttons">
-    <a href="/user/profile/" class="btn">Профиль</a>
+<a href="{% url 'user_profile:profile' %}">Профиль</a>
 
     <form action="{% url 'logout' %}" method="post" class="logout-form">
         {% csrf_token %}

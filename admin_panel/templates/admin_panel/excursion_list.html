@@ -8,9 +8,10 @@
 <body>
 
 <h1>Список экскурсий</h1>
+<a href="{% url 'admin_panel:dashboard' %}">← Назад к панели администратора</a>
 
 <p>
-  <a href="{% url 'admin_excursion_create' %}">Добавить новую экскурсию</a>
+  <a href="{% url 'admin_panel:admin_excursion_create' %}">Добавить новую экскурсию</a>
 </p>
 
 <table>
@@ -35,8 +36,8 @@
         <td>{{ excursion.language }}</td>
         <td>{{ excursion.guide_name }}</td>
         <td>
-          <a href="{% url 'admin_excursion_edit' excursion.id %}">ред.</a>
-          <a href="{% url 'admin_excursion_delete' excursion.id %}" onclick="return confirm('Удалить эту экскурсию?');">уд.</a>
+          <a href="{% url 'admin_panel:admin_excursion_edit' excursion.id %}">ред.</a>
+          <a href="{% url 'admin_panel:admin_excursion_delete' excursion.id %}" onclick="return confirm('Удалить эту экскурсию?');">уд.</a>
         </td>
       </tr>
     {% empty %}

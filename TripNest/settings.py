@@ -27,7 +27,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
-
+# Куда редиректить неавторизованного
+LOGIN_URL = '/user/login/'
+# Куда редиректить после логина
+LOGIN_REDIRECT_URL = '/'
+# Куда редиректить после логаута
+LOGOUT_REDIRECT_URL = '/'
 # Application definition
 
 INSTALLED_APPS = [

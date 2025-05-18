@@ -2,6 +2,8 @@ from django.urls import path
 from .views import edit_profile_view, register, user_login, profile_details_view,profile_view
 from django.contrib.auth import views as auth_views
 
+app_name = 'user_profile'
+
 urlpatterns = [
     path('register/', register, name='register'),
     path('login/', user_login, name='custom_login'),

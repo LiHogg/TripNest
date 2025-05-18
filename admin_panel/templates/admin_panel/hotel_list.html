@@ -1,12 +1,12 @@
 <h2>Список отелей</h2>
-<a href="{% url 'dashboard' %}">&larr; Назад в панель администратора</a>
+<a href="{% url 'admin_panel:dashboard' %}">← Назад к панели администратора</a>
 <br><br>
-<a href="{% url 'admin_hotel_create' %}">Добавить отель</a>
+<a href="{% url 'admin_panel:admin_hotel_create' %}">Добавить отель</a>
 <ul>
   {% for hotel in hotels %}
     <li>
-      {{ hotel.name }} ({{ hotel.city.name }}) — <a href="{% url 'admin_hotel_edit' hotel.id %}">Изменить</a> |
-      <a href="{% url 'admin_hotel_delete' hotel.id %}" onclick="return confirm('Удалить отель?');">Удалить</a>
+      {{ hotel.name }} ({{ hotel.city.name }}) — <a href="{% url 'admin_panel:admin_hotel_edit' hotel.id %}">Изменить</a> |
+      <a href="{% url 'admin_panel:admin_hotel_delete' hotel.id %}" onclick="return confirm('Удалить отель?');">Удалить</a>
     </li>
   {% empty %}
     <li>Нет отелей.</li>

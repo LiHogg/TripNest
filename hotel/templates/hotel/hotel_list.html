@@ -17,13 +17,13 @@
     <nav class="nav">
       <a href="/">Главная</a>
       <a href="#">Рестораны</a>
-      <a href="/excursion">Экскурсии</a>
+      <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
       <a href="#">Транспорт</a>
       <a href="#">Заказ еды</a>
     </nav>
     <div class="auth-buttons">
-<a href="{% url 'profile' %}">Профиль</a>
-      <a href="/logout/">Выйти</a>
+<a href="{% url 'user_profile:profile' %}">Профиль</a>
+        <a href="/logout/">Выйти</a>
     </div>
   </div>
 </header>
@@ -92,7 +92,7 @@
           <img src="{{ hotel.image.url }}" alt="{{ hotel.name }}">
           <h3>Отель “{{ hotel.name }}”</h3>
           <p>{{ hotel.description|truncatechars:150 }}</p>
-          <a class="btn" href="{% url 'hotel_detail' hotel.id %}">Подробнее</a>
+          <a class="btn" href="{% url 'hotel:hotel_detail' hotel.id %}">Подробнее</a>
         </div>
       {% empty %}
         <p>Нет доступных отелей.</p>
@@ -106,7 +106,7 @@
 <footer class="footer">
   <div class="container">
     <div class="footer-logo">
-      <img src="{% static 'user_profile/img/logo.png' %}" alt="TripNest Logo" height="30">
+      <img src="{% static '/img/logo.png' %}" alt="TripNest Logo" height="30">
       <p>
         TripNest — всё для вашего комфорта в одном месте: отели, доставка еды, экскурсии, транспорт.<br>
         Поддержка 24/7 • support@tripnest.com
