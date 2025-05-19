@@ -47,7 +47,7 @@ INSTALLED_APPS = [
 
     'booking',
     'hotel',
-    'transport',
+    'transport.apps.TransportConfig',
     'user_profile',
     'admin_panel',
     'location',

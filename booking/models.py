@@ -1,54 +1,65 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
-# === BOOKING ===
-class Booking(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookings')
-    status = models.CharField(max_length=50, null=True, blank=True)
-    check_in = models.DateField(null=True, blank=True)
-    check_out = models.DateField(null=True, blank=True)
-    total_price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+# Черновик корзины (DraftBooking) — не подтвержденные бронирования (корзина пользователя)
+class DraftBooking(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='draft_bookings')
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Booking #{self.id} — {self.user.username}"
+        return f"Корзина пользователя {self.user.username}"
+
+# Элемент корзины: пока только авиабилеты, но тут могут быть и номера, авто и т.д.
+class BookingItem(models.Model):
+    draft = models.ForeignKey(DraftBooking, on_delete=models.CASCADE, related_name='items')
+    flight_ticket = models.ForeignKey('transport.FlightTicket', null=True, blank=True, on_delete=models.CASCADE)
+    # Тут позже можно добавить hotel_room, car, excursion и т.д.
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        if self.flight_ticket:
+            return f"Авиабилет {self.flight_ticket}"
+        # elif self.hotel_room:
+        #     return f"Номер {self.hotel_room}"
+        # elif self.car:
+        #     return f"Авто {self.car}"
+        return f"Элемент корзины {self.id}"
+
+# Подтвержденное бронирование (Booking)
+class Booking(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookings')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Бронирование #{self.id} пользователя {self.user.username}"
+
+# Состав бронирования: билеты (аналогично — номера, авто и т.д.)
+class BookingTicket(models.Model):
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name='tickets')
+    flight_ticket = models.ForeignKey('transport.FlightTicket', on_delete=models.CASCADE)
+    # Можно добавить другие связи по мере расширения функционала
+
+    def __str__(self):
+        return f"Билет {self.flight_ticket} в бронировании #{self.booking.id}"
+
+class HotelBooking(models.Model):
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name='hotel_bookings')
+    hotel_name = models.CharField(max_length=255)
+    room_type = models.CharField(max_length=100)
+    check_in = models.DateField()
+    check_out = models.DateField()
+    guests = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"Гостиница: {self.hotel_name} ({self.check_in} – {self.check_out})"
 
 
-# # === BOOKING TYPE MAPPING ===
-# class BookingTypeMapping(models.Model):
-#     booking = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name='type_mappings')
-#     draftbooking = models.ForeignKey('DraftBooking', on_delete=models.SET_NULL, null=True, blank=True)
-#     item = models.ForeignKey('Item', on_delete=models.CASCADE, related_name='mappings')
-#     recommendation_id = models.BigIntegerField()
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-#
-#     def __str__(self):
-#         return f"Mapping {self.id} — Booking {self.booking.id}"
-#
-#
-# # === DRAFTBOOKING ===
-# class DraftBooking(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='draft_bookings')
-#     draft_detail = models.JSONField(null=True, blank=True)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-#
-#     def __str__(self):
-#         return f"DraftBooking {self.id} — User {self.user.username}"
-#
-#
-# # === ITEM ===
-# class Item(models.Model):
-#     name = models.CharField(max_length=255)
-#     description = models.TextField(null=True, blank=True)
-#     price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-#     reference_id = models.BigIntegerField(null=True, blank=True)
-#     item_type = models.CharField(max_length=100)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-#
-#     def __str__(self):
-#         return f"{self.name} - {self.price} ₽"
+class ExcursionBooking(models.Model):
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name='excursion_bookings')
+    excursion_title = models.CharField(max_length=255)
+    guide_name = models.CharField(max_length=100)
+    date = models.DateField()
+    people = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"Экскурсия: {self.excursion_title} ({self.date})"

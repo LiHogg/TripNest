@@ -3,21 +3,21 @@ from .models import Flight, FlightTicket, TrainTicket, CarReservation, MotoReser
 from location.models import Country, City
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
+from django.db.models import Q
+from django.utils import timezone
 
-# Главная страница транспорта
+# Главная страница транспорта (меню выбора транспорта)
 class TransportMainView(TemplateView):
     template_name = 'transport/transport_list.html'
 
-# ---------------------------
-#       Авиарейсы
-# ---------------------------
+# --- Авиарейсы ---
 
 def flight_list(request):
     flights = Flight.objects.all().order_by('departure_date')
     countries = Country.objects.all()
     airlines = Flight.objects.values_list('airline', flat=True).distinct().order_by('airline')
 
-    # Для фильтрации
+    # Получение фильтров из GET-запроса
     departure_country_id = request.GET.get('departure_country')
     departure_city_id = request.GET.get('departure_city')
     arrival_country_id = request.GET.get('arrival_country')
@@ -26,10 +26,10 @@ def flight_list(request):
     departure_date = request.GET.get('departure_date')
 
     # Для выпадающих списков городов
-    departure_cities = City.objects.filter(country_id=departure_country_id) if departure_country_id else City.objects.none()
-    arrival_cities = City.objects.filter(country_id=arrival_country_id) if arrival_country_id else City.objects.none()
+    departure_cities = City.objects.filter(country_id=departure_country_id, has_airport=True) if departure_country_id else City.objects.none()
+    arrival_cities = City.objects.filter(country_id=arrival_country_id, has_airport=True) if arrival_country_id else City.objects.none()
 
-    # Фильтрация по параметрам
+    # Применение фильтров к выборке рейсов
     if departure_country_id:
         flights = flights.filter(departure_city__country__id=departure_country_id)
     if departure_city_id:
@@ -51,22 +51,29 @@ def flight_list(request):
         "arrival_cities": arrival_cities,
     })
 
-# Для ajax-запроса списка городов по стране
+# Ajax-запрос для получения городов по стране
 def cities_by_country(request):
     country_id = request.GET.get('country_id')
-    cities = City.objects.filter(country_id=country_id).order_by('name')
+    # Показывать только города с аэропортом
+    cities = City.objects.filter(country_id=country_id, has_airport=True).order_by('name')
     data = [{'id': city.id, 'name': city.name} for city in cities]
     return JsonResponse({'cities': data})
 
-# Деталка по рейсу
+# Детальная страница по рейсу
 class FlightDetailView(DetailView):
     model = Flight
     template_name = 'transport/flight_detail.html'
     context_object_name = 'flight'
 
-# ---------------------------
-#       ЖД, авто, мото
-# ---------------------------
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tickets'] = self.object.tickets.filter(
+            is_booked=False
+        ).filter(
+            Q(reserved_until__isnull=True) | Q(reserved_until__lte=timezone.now())
+        )
+        return context
+# --- ЖД билеты ---
 
 class TrainTicketListView(ListView):
     model = TrainTicket
@@ -78,6 +85,8 @@ class TrainTicketDetailView(DetailView):
     model = TrainTicket
     template_name = 'transport/trainticket_detail.html'
     context_object_name = 'train'
+
+# --- Авто и мото ---
 
 class CarReservationListView(ListView):
     model = CarReservation
@@ -101,9 +110,7 @@ class MotoReservationDetailView(DetailView):
     template_name = 'transport/motoreservation_detail.html'
     context_object_name = 'moto'
 
-# ---------------------------
-# Генерация билетов под рейс
-# ---------------------------
+# --- Автоматическая генерация билетов под рейс ---
 def create_tickets_for_flight(flight, prices=None):
     prices = prices or {
         'economy': 5000,
@@ -122,5 +129,5 @@ def create_tickets_for_flight(flight, prices=None):
                 flight=flight,
                 seat_number=seat,
                 flight_class=flight_class,
-                price=prices[flight_class]
+                price=prices.get(flight_class, 0)
             )

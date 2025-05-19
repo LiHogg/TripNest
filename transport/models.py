@@ -15,7 +15,12 @@ class Flight(models.Model):
     seats_standard = models.PositiveIntegerField("Мест в стандарт-классе", default=0)
     seats_business = models.PositiveIntegerField("Мест в бизнес-классе", default=0)
     seats_first = models.PositiveIntegerField("Мест в первом классе", default=0)
-
+    STATUS_CHOICES = [
+        ('scheduled', 'Запланирован'),
+        ('in_progress', 'Выполняется'),
+        ('completed', 'Выполнен'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='scheduled')
     def __str__(self):
         return f"{self.flight_number} {self.departure_airport} → {self.arrival_airport}"
 
@@ -31,8 +36,9 @@ class FlightTicket(models.Model):
     flight_class = models.CharField("Класс", max_length=10, choices=FLIGHT_CLASS_CHOICES)
     price = models.DecimalField("Цена", max_digits=8, decimal_places=2)
     is_booked = models.BooleanField("Забронирован", default=False)
+    reserved_until = models.DateTimeField("Временно забронирован до", null=True, blank=True)
 
-        # тут можно добавить связь с бронированием или пользователем (booking, user и т.д.)
+    # тут можно добавить связь с бронированием или пользователем (booking, user и т.д.)
 
     def __str__(self):
         return f"{self.flight.flight_number} | {self.get_flight_class_display()} #{self.seat_number}"

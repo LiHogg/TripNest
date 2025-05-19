@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Успешное бронирование</title>
+    <link rel="stylesheet" href="{% static 'booking/css/cart.css' %}">
+</head>
+<body>
+
+<header>
+    <h1>Бронирование успешно</h1>
+    <nav>
+        <a href="/">На главную</a>
+        <a href="{% url 'booking:my_bookings' %}">Мои бронирования</a>
+        <a href="{% url 'logout' %}">Выйти</a>
+    </nav>
+</header>
+
+<main style="text-align:center; padding: 100px 20px;">
+    <h2 style="color: #fce643;">Спасибо за бронирование!</h2>
+    <p style="font-size: 18px; color: #aaa;">Ваши билеты успешно оформлены и добавлены в список ваших бронирований.</p>
+    <a href="{% url 'booking:my_bookings' %}" style="margin-top: 30px; display: inline-block; background: #9643FC; color: #fce643; padding: 12px 24px; border-radius: 10px; text-decoration: none; font-weight: 600;">Перейти к бронированиям</a>
+</main>
+
+</body>
+</html>

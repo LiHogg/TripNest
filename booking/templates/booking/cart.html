@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина — TripNest</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'booking/css/cart.css' %}" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <h1>Моя корзина</h1>
+    <nav>
+        <a href="/">На главную</a>
+        <a href="{% url 'booking:my_bookings' %}">Мои бронирования</a>
+        <a href="{% url 'logout' %}">Выйти</a>
+    </nav>
+</header>
+
+<main>
+    {% if items %}
+        <section class="cart-items">
+            {% for item in items %}
+                <div class="cart-item">
+                    <div class="info">
+                       <h3>Билет на рейс: {{ item.flight_ticket.flight.flight_number }}</h3>
+                        <p>Маршрут: {{ item.flight_ticket.flight.departure_city.name }} → {{ item.flight_ticket.flight.arrival_city.name }}</p>
+                        <p>Дата вылета: {{ item.flight_ticket.flight.departure_date|date:"d.m.Y H:i" }}</p>
+                        <p>Класс: {{ item.flight_ticket.get_flight_class_display }}</p>
+                        <p>Место: {{ item.flight_ticket.seat_number }}</p>
+                        <p>Цена: {{ item.flight_ticket.price|floatformat:2 }} ₽</p>
+
+                        <form method="post" action="{% url 'booking:remove_from_cart' item.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Удалить</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+
+        <section class="confirm">
+            <h2>Подтверждение бронирования</h2>
+            <form method="post" action="{% url 'booking:confirm_booking' %}">
+                {% csrf_token %}
+                <p>Вы уверены, что хотите оформить бронирование этих билетов?</p>
+                <button type="submit">Оформить</button>
+            </form>
+        </section>
+    {% else %}
+        <p class="empty">Ваша корзина пуста.</p>
+    {% endif %}
+</main>
+
+</body>
+</html>

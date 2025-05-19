@@ -27,12 +27,13 @@
     </nav>
 
     <div class="auth-buttons">
-        <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
-        <form action="{% url 'logout' %}" method="post" class="logout-form" style="margin: 0;">
-            {% csrf_token %}
-            <button type="submit" class="btn logout-btn">Выйти</button>
-        </form>
-    </div>
+    <a href="{% url 'booking:cart' %}" class="btn">Корзина</a>
+    <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+    <form action="{% url 'logout' %}" method="post" class="logout-form" style="margin: 0;">
+        {% csrf_token %}
+        <button type="submit" class="btn logout-btn">Выйти</button>
+    </form>
+</div>
 </header>
 
 <!-- Главный блок -->

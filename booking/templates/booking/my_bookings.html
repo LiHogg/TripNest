@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои бронирования — TripNest</title>
+    <link rel="stylesheet" href="{% static 'booking/css/cart.css' %}">
+    <style>
+        .filter-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 40px 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: #9643FC;
+            color: #fce643;
+            padding: 12px 26px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            transition: background 0.2s;
+        }
+
+        .filter-btn:hover {
+            background-color: #7c2de2;
+        }
+
+        .booking-card {
+            background-color: #1C1C1C;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(150, 67, 252, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .booking-card h3 {
+            margin-top: 0;
+            color: #fce643;
+        }
+
+        .booking-card p {
+            margin: 6px 0;
+            color: #fce643;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 style="padding: 30px;">Мои бронирования</h1>
+</header>
+
+<section class="filter-buttons">
+    <a href="{% url 'booking:my_bookings' %}?type=hotel" class="filter-btn">Жильё</a>
+    <a href="{% url 'booking:my_bookings' %}?type=excursion" class="filter-btn">Экскурсии</a>
+    <a href="{% url 'booking:my_bookings' %}?type=transport" class="filter-btn">Транспорт</a>
+</section>
+
+<main style="padding: 0 30px; max-width: 1000px; margin: 0 auto;">
+    {% if tickets %}
+        {% for ticket in tickets %}
+            <div class="booking-card">
+                <h3>Рейс: {{ ticket.flight_ticket.flight.flight_number }}</h3>
+                <p>Маршрут: {{ ticket.flight_ticket.flight.departure_city }} → {{ ticket.flight_ticket.flight.arrival_city }}</p>
+                <p>Дата: {{ ticket.flight_ticket.flight.departure_date|date:"d.m.Y H:i" }}</p>
+                <p>Класс: {{ ticket.flight_ticket.get_flight_class_display }}</p>
+                <p>Место: {{ ticket.flight_ticket.seat_number }}</p>
+                <p>Цена: {{ ticket.flight_ticket.price }} ₽</p>
+            </div>
+        {% endfor %}
+    {% elif hotels %}
+        {% for booking in hotels %}
+            <div class="booking-card">
+                <h3>Отель: {{ booking.hotel_name }}</h3>
+                <p>Тип номера: {{ booking.room_type }}</p>
+                <p>Дата заезда: {{ booking.check_in }}</p>
+                <p>Дата выезда: {{ booking.check_out }}</p>
+                <p>Гостей: {{ booking.guests }}</p>
+            </div>
+        {% endfor %}
+    {% elif excursions %}
+        {% for booking in excursions %}
+            <div class="booking-card">
+                <h3>Экскурсия: {{ booking.excursion_title }}</h3>
+                <p>Гид: {{ booking.guide_name }}</p>
+                <p>Дата: {{ booking.date }}</p>
+                <p>Участников: {{ booking.people }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p style="text-align:center; color: #888;">Бронирования не найдены.</p>
+    {% endif %}
+</main>
+
+</body>
+</html>
