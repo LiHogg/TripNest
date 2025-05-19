@@ -21,8 +21,25 @@ body.dark-theme {
     flex-wrap: wrap;
 }
 
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .logo img {
     height: 40px;
+}
+
+.logo span {
+    color: #fce643;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.nav {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .nav a {
@@ -32,13 +49,32 @@ body.dark-theme {
     font-weight: bold;
 }
 
-.auth-buttons a {
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth-buttons a,
+.logout-form .logout-btn {
     color: #9643FC;
     border: 1px solid #9643FC;
-    padding: 5px 10px;
-    margin-left: 10px;
-    border-radius: 6px;
+    padding: 6px 12px;
+    border-radius: 8px;
     text-decoration: none;
+    font-size: 14px;
+    background: transparent;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.auth-buttons a:hover,
+.logout-form .logout-btn:hover {
+    background-color: #9643fc22;
+}
+
+.logout-form {
+    margin: 0;
 }
 
 /* ---------------------- MAIN ---------------------- */
@@ -60,10 +96,9 @@ body.dark-theme {
     background-color: #1e1e1e;
     padding: 30px;
     border-radius: 20px;
-    width: 35%; /* было 45% — слишком много */
+    width: 35%;
     min-width: 300px;
 }
-
 
 .form-container h2 {
     color: #fce643;
@@ -87,19 +122,6 @@ body.dark-theme {
     color: #fff;
     font-size: 15px;
     line-height: 1.4;
-}
-
-.form-container form button {
-    width: 100%;
-    padding: 14px;
-    margin-top: 20px;
-    font-weight: bold;
-    background-color: #9643FC;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 15px;
 }
 
 .form-container label {
@@ -132,16 +154,31 @@ body.dark-theme {
     cursor: pointer;
 }
 
-.form-container form input {
-    background-color: #333;
-    color: #fff;
-}
-
 .form-container form button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    font-weight: bold;
     background-color: #9643FC;
     color: white;
-    font-weight: bold;
+    border: none;
+    border-radius: 10px;
     cursor: pointer;
+    font-size: 15px;
+}
+
+.price-filter {
+    display: flex;
+    gap: 10px;
+}
+
+.price-filter input {
+    flex: 1;
+}
+
+.img-preview {
+    flex: 1;
+    max-width: 60%;
 }
 
 .img-preview img {
@@ -151,9 +188,6 @@ body.dark-theme {
     height: auto;
     object-fit: cover;
 }
-
-
-
 
 /* --- Hotel Grid --- */
 .hotel-listing h2 {
@@ -253,4 +287,18 @@ body.dark-theme {
     color: #888;
     z-index: 1;
     position: relative;
+}
+
+/* ---------------------- MEDIA ---------------------- */
+@media (max-width: 768px) {
+    .hotel-search {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-container,
+    .img-preview {
+        width: 100%;
+        max-width: 100%;
+    }
 }

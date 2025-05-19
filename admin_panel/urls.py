@@ -23,17 +23,12 @@ urlpatterns = [
     path('location/city/edit/<int:pk>/', views.city_edit, name='admin_city_edit'),
     path('location/city/delete/<int:pk>/', views.city_delete, name='admin_city_delete'),
 
-    # === HOTEL CRUD ===
+    # === HOTEL + ROOM CRUD ===
     path('location/hotel/', views.hotel_list, name='admin_hotel_list'),
     path('location/hotel/create/', views.hotel_create, name='admin_hotel_create'),
     path('location/hotel/edit/<int:pk>/', views.hotel_edit, name='admin_hotel_edit'),
     path('location/hotel/delete/<int:pk>/', views.hotel_delete, name='admin_hotel_delete'),
-
-    # === ROOM CRUD ===
-    path('location/room/', views.room_list, name='admin_room_list'),
-    path('location/room/create/', views.room_create, name='admin_room_create'),
-    path('location/room/edit/<int:pk>/', views.room_edit, name='admin_room_edit'),
-    path('location/room/delete/<int:pk>/', views.room_delete, name='admin_room_delete'),
+    path('rooms/', views.room_list, name='admin_room_list'),
 
     # === EXCURSION CRUD ===
     path('excursion/', views.excursion_list,   name='admin_excursion_list'),

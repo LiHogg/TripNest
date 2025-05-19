@@ -1,4 +1,4 @@
-{% load static %}
+    {% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -16,34 +16,55 @@
     </div>
   </header>
 
-  <main class="hotel-detail container">
-    <div class="hotel-detail-card">
-      <img src="{{ hotel.image.url }}" alt="{{ hotel.name }}" class="hotel-detail-image">
-      <div class="hotel-info">
-        <h2>{{ hotel.name }}</h2>
-        <p><strong>Город:</strong> {{ hotel.city.name }}</p>
-        <p><strong>Адрес:</strong> {{ hotel.address }}</p>
-        <p><strong>Рейтинг:</strong> {{ hotel.rating }}</p>
-        <p><strong>Описание:</strong><br>{{ hotel.description|linebreaks }}</p>
-        {% if hotel.price %}<p><strong>Цена:</strong> {{ hotel.price }} ₽</p>{% endif %}
-        {% if hotel.for_kids %}<p><strong>Подходит для детей:</strong> Да</p>{% endif %}
+    <main class="hotel-detail container">
+      <div class="hotel-detail-card">
+        <img src="{{ hotel.image.url }}" alt="{{ hotel.name }}" class="hotel-detail-image">
+        <div class="hotel-info">
+          <h2>{{ hotel.name }}</h2>
+          <p><strong>Город:</strong> {{ hotel.city.name }}</p>
+          <p><strong>Адрес:</strong> {{ hotel.address }}</p>
+          <p><strong>Рейтинг:</strong> {{ hotel.rating }}</p>
+          <p><strong>Описание:</strong><br>{{ hotel.description|linebreaks }}</p>
+          {% if hotel.price %}<p><strong>Цена:</strong> {{ hotel.price }} ₽</p>{% endif %}
+          {% if hotel.for_kids %}<p><strong>Подходит для детей:</strong> Да</p>{% endif %}
+        </div>
       </div>
-    </div>
 
-    <section class="room-dropdown">
-      <h2>Выберите номер</h2>
-      <select id="room-select">
-        <option value="">-- Выберите класс номера --</option>
-        {% for room in rooms %}
-          <option value="{% url 'hotel:room_detail' room.pk %}">
-            {{ room.room_class }} — {{ room.price_per_night }} ₽/ночь
-          </option>
-        {% empty %}
-          <option disabled>Номера пока не добавлены</option>
-        {% endfor %}
-      </select>
-    </section>
-  </main>
+      <section class="room-check-form">
+        <h2>Проверить доступность номеров</h2>
+        <form method="get" class="check-form">
+          <label>Дата заезда:
+            <input type="date" name="check_in" value="{{ check_in }}">
+          </label>
+          <label>Дата выезда:
+            <input type="date" name="check_out" value="{{ check_out }}">
+          </label>
+          <button type="submit">Показать доступные номера</button>
+        </form>
+      </section>
+
+      {% if availability %}
+        <section class="room-availability">
+          <h3>Свободные номера с {{ check_in }} по {{ check_out }}</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Класс номера</th>
+                <th>Доступно</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for class, count in availability.items %}
+                <tr>
+                  <td>{{ class }}</td>
+                  <td>{{ count }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </section>
+      {% endif %}
+    </main>
 
   <footer class="footer">
     <div class="container">

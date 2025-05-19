@@ -1,15 +1,50 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from transport.models import FlightTicket
-from .models import DraftBooking, BookingItem, Booking, BookingTicket, HotelBooking, ExcursionBooking
 from django.utils import timezone
 from datetime import timedelta
-from django.shortcuts import redirect
 from django.utils.http import urlencode
 
+from transport.models import Flight, FlightTicket
+from .models import (
+    DraftBooking,
+    BookingItem,
+    Booking,
+    BookingTicket,
+    HotelBooking,
+    ExcursionBooking
+)
 
+# Очистка неактуальных данных: билеты, корзина, статус рейсов
+def cleanup_old_flights_and_cart():
+    now = timezone.now()
+
+    # Удаление неоформленных билетов из корзины за 24 часа до вылета
+    expired_tickets = FlightTicket.objects.filter(
+        is_booked=False,
+        flight__departure_date__lte=now + timedelta(hours=24)
+    )
+    BookingItem.objects.filter(flight_ticket__in=expired_tickets).delete()
+
+    # Обновление статуса рейсов на "in_progress", если до вылета < 30 секунд
+    soon_flights = Flight.objects.filter(
+        status='scheduled',
+        departure_date__lte=now + timedelta(seconds=30)
+    )
+    soon_flights.update(status='in_progress')
+
+    # Завершение рейсов, если они уже прибыли
+    completed_flights = Flight.objects.filter(
+        status='in_progress',
+        arrival_date__lte=now
+    )
+    completed_flights.update(status='completed')
+
+
+# Отображение корзины
 @login_required
 def cart_view(request):
+    cleanup_old_flights_and_cart()
+
     # Получить все билет-ID, которые лежат в чьей-либо корзине
     reserved_in_carts = BookingItem.objects.values_list('flight_ticket_id', flat=True)
 
@@ -23,8 +58,11 @@ def cart_view(request):
     draft, created = DraftBooking.objects.get_or_create(user=request.user)
     items = draft.items.select_related('flight_ticket__flight')
 
-    return render(request, 'booking/cart.html', {'items': items, 'draft': draft})@login_required
+    return render(request, 'booking/cart.html', {'items': items, 'draft': draft})
 
+
+# Добавление билета в корзину
+@login_required
 def add_to_cart(request, ticket_id):
     ticket = get_object_or_404(FlightTicket, id=ticket_id, is_booked=False)
 
@@ -41,33 +79,49 @@ def add_to_cart(request, ticket_id):
 
     return redirect('booking:cart')
 
-# Удалить билет из корзины
+
+# Удаление билета из корзины
 @login_required
 def remove_from_cart(request, item_id):
     item = get_object_or_404(BookingItem, id=item_id, draft__user=request.user)
-    item.delete()
-    return redirect('booking:cart')
+    flight_id = item.flight_ticket.flight.id
 
-# Подтвердить заказ (оформить бронирование)
+    # Очистка временного резерва
+    ticket = item.flight_ticket
+    ticket.reserved_until = None
+    ticket.save()
+
+    item.delete()
+
+    return redirect('transport:flight_detail', pk=flight_id)
+
+
+# Подтверждение заказа (оформление брони)
 @login_required
 def confirm_booking(request):
     draft = get_object_or_404(DraftBooking, user=request.user)
     items = draft.items.select_related('flight_ticket')
+
     if request.method == "POST":
         # Создаем подтвержденное бронирование
         booking = Booking.objects.create(user=request.user)
+
         for item in items:
             if item.flight_ticket and not item.flight_ticket.is_booked:
                 # Помечаем билет как занятый
                 item.flight_ticket.is_booked = True
                 item.flight_ticket.save()
                 BookingTicket.objects.create(booking=booking, flight_ticket=item.flight_ticket)
+
         # Очищаем корзину
         items.delete()
+
         return render(request, 'booking/booking_success.html', {'booking': booking})
+
     return render(request, 'booking/confirm_booking.html', {'items': items, 'draft': draft})
 
-# Список всех бронирований пользователя
+
+# Просмотр всех бронирований пользователя
 @login_required
 def my_bookings(request):
     booking_type = request.GET.get('type')
@@ -86,18 +140,3 @@ def my_bookings(request):
         context['title'] = "Все ваши бронирования"
 
     return render(request, 'booking/my_bookings.html', context)
-
-
-@login_required
-def remove_from_cart(request, item_id):
-    item = get_object_or_404(BookingItem, id=item_id, draft__user=request.user)
-    flight_id = item.flight_ticket.flight.id
-
-    # Очистка временного резерва
-    ticket = item.flight_ticket
-    ticket.reserved_until = None
-    ticket.save()
-
-    item.delete()
-
-    return redirect('transport:flight_detail', pk=flight_id)

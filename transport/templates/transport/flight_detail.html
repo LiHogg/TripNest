@@ -8,10 +8,30 @@
 </head>
 <body>
     <header>
-        <!-- Вставь свой header, если нужен -->
+        <a href="/">
+            <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
+        </a>
+        <nav>
+            <ul>
+                <li><a href="{% url 'user_profile:profile' %}">Главная</a></li>
+                <li><a href="{% url 'hotel:hotel_list' %}">Отели</a></li>
+                <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
+                <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
+                <li><a href="{% url 'trip:coming_soon' %}">Заказ еды</a></li>
+            </ul>
+        </nav>
+       <div class="auth-buttons">
+            <a href="{% url 'booking:cart' %}" class="btn">Корзина</a>
+            <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+        <form action="{% url 'logout' %}" method="post" class="logout-form" style="margin: 0;">
+            {% csrf_token %}
+            <button type="submit" class="btn logout-btn">Выйти</button>
+        </form>
+       </div>
     </header>
-
     <div class="flight-detail-container">
+        <a href="{% url 'transport:flight_list' %}" class="back-link">← К списку рейсов</a>
+
         <div class="flight-header">
             <div class="flight-main-info">
                 <h1>Рейс {{ flight.flight_number }}</h1>
@@ -51,7 +71,6 @@
                 {% endfor %}
             </div>
         </div>
-        <a href="{% url 'transport:flight_list' %}" class="back-link">← К списку рейсов</a>
     </div>
 </body>
 </html>

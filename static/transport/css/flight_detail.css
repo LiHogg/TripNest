@@ -177,6 +177,65 @@ hr {
     }
 }
 
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 26px;
+    padding-left: 0;
+    margin: 0;
+}
+nav ul li a {
+    color: #fce643;
+    text-decoration: none;
+    font-size: 1.02rem;
+    font-weight: 600;
+    transition: color .2s;
+}
+nav ul li a:hover {
+    color: #ffffff;
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 9px 18px;
+    background: #9643fc;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background .2s, color .2s;
+    border: none;
+    cursor: pointer;
+}
+.btn:hover {
+    background: #fce643;
+    color: #161616;
+}
+
+.logout-form button.logout-btn {
+    background: #9643fc;
+    color: #fff;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+}
+.logout-form button.logout-btn:hover {
+    background: #fce643;
+    color: #161616;
+}
+
+
 ::-webkit-input-placeholder { color: #fce643; opacity: 1;}
 ::-moz-placeholder          { color: #fce643; opacity: 1;}
 :-ms-input-placeholder      { color: #fce643; opacity: 1;}

@@ -8,6 +8,8 @@
 </head>
 <body>
     <h1>Список рейсов</h1>
+    <a href="{% url 'admin_panel:dashboard' %}">← Назад к панели администратора</a>
+    <br>
     <a href="{% url 'admin_panel:flight_create' %}" class="btn">Добавить рейс</a>
     <table>
         <thead>
