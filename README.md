@@ -95,8 +95,7 @@ python manage.py runserver
 ## 👨‍💻 Project Team
 
 * Sergey Yakovlev — Project leader, 3D design, architecture
-* Snezhana Myasumova — UI/UX design, documentation
-* Ivan Aksenov — Finance, analytics, market research
+* Snezhana Myasumova — UI/UX design
 
 ---
 
@@ -106,12 +105,6 @@ python manage.py runserver
 * 📲 Fully responsive mobile layout
 * 💳 Online payment system integration
 * 📊 Advanced admin statistics and analytics
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License**.
 
 ---
 
