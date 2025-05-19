@@ -152,9 +152,10 @@ def hotel_edit(request, pk):
         form = HotelForm(request.POST, request.FILES, instance=hotel)
         formset = RoomClassTemplateFormSet(request.POST, request.FILES, instance=hotel)
         if form.is_valid() and formset.is_valid():
-            form.save()
+            hotel = form.save()
+            formset.instance = hotel
             formset.save()
-            return redirect('admin_hotel_list')
+            return redirect('admin_panel:admin_hotel_list')
     else:
         form = HotelForm(instance=hotel)
         formset = RoomClassTemplateFormSet(instance=hotel)

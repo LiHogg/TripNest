@@ -43,8 +43,8 @@ RoomClassTemplateFormSet = inlineformset_factory(
     parent_model=Hotel,
     model=RoomClassTemplate,
     form=RoomClassTemplateForm,
-    extra=5,  # по одному на каждый класс
-    can_delete=False
+    extra=5,
+    can_delete=True
 )
 
 

@@ -20,7 +20,7 @@
       <a href="/">Главная</a>
       <a href="{% url 'hotel:hotel_list' %}">Жильё</a>
       <a href="#">Рестораны</a>
-      <a href="#">Транспорт</a>
+      <a href="transport:transport">Транспорт</a>
       <a href="#">Заказ еды</a>
     </nav>
     <div class="auth-buttons">
@@ -43,6 +43,14 @@
       <p><strong>Цена:</strong> {{ excursion.price_per_person }} ₽/чел</p>
       <p><strong>Описание:</strong> {{ excursion.description }}</p>
       <p><strong>Доступные даты:</strong> {{ excursion.availability_dates }}</p>
+
+      <!-- 🔽 Добавление в корзину -->
+      <form method="post" action="{% url 'booking:add_excursion_to_cart' %}" style="margin-top: 30px;">
+        {% csrf_token %}
+        <input type="hidden" name="excursion_id" value="{{ excursion.id }}">
+        <button type="submit" class="button">Добавить в корзину</button>
+      </form>
+
       <a class="button" href="{% url 'excursion:excursion_list' %}" style="margin-top:30px;">← Назад к списку</a>
     </div>
   </div>

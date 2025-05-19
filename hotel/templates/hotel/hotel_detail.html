@@ -1,4 +1,5 @@
-    {% load static %}
+{% load static %}
+{% load custom_tags %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -16,70 +17,60 @@
     </div>
   </header>
 
-    <main class="hotel-detail container">
-      <div class="hotel-detail-card">
-        <img src="{{ hotel.image.url }}" alt="{{ hotel.name }}" class="hotel-detail-image">
-        <div class="hotel-info">
-          <h2>{{ hotel.name }}</h2>
-          <p><strong>Город:</strong> {{ hotel.city.name }}</p>
-          <p><strong>Адрес:</strong> {{ hotel.address }}</p>
-          <p><strong>Рейтинг:</strong> {{ hotel.rating }}</p>
-          <p><strong>Описание:</strong><br>{{ hotel.description|linebreaks }}</p>
-          {% if hotel.price %}<p><strong>Цена:</strong> {{ hotel.price }} ₽</p>{% endif %}
-          {% if hotel.for_kids %}<p><strong>Подходит для детей:</strong> Да</p>{% endif %}
-        </div>
+  <main class="hotel-detail container">
+    <div class="hotel-detail-card">
+      <img src="{{ hotel.image.url }}" alt="{{ hotel.name }}" class="hotel-detail-image">
+      <div class="hotel-info">
+        <h2>{{ hotel.name }}</h2>
+        <p><strong>Город:</strong> {{ hotel.city.name }}</p>
+        <p><strong>Адрес:</strong> {{ hotel.address }}</p>
+        <p><strong>Рейтинг:</strong> {{ hotel.rating }}</p>
+        <p><strong>Описание:</strong><br>{{ hotel.description|linebreaks }}</p>
+        {% if hotel.price %}<p><strong>Цена:</strong> {{ hotel.price }} ₽</p>{% endif %}
+        {% if hotel.for_kids %}<p><strong>Подходит для детей:</strong> Да</p>{% endif %}
       </div>
+    </div>
 
-      <section class="room-check-form">
-        <h2>Проверить доступность номеров</h2>
-        <form method="get" class="check-form">
-          <label>Дата заезда:
-            <input type="date" name="check_in" value="{{ check_in }}">
-          </label>
-          <label>Дата выезда:
-            <input type="date" name="check_out" value="{{ check_out }}">
-          </label>
-          <button type="submit">Показать доступные номера</button>
-        </form>
+    <section class="room-check-form">
+      <h2>Проверить доступность номеров</h2>
+      <form method="get" class="check-form">
+        <label>Дата заезда:
+          <input type="date" name="check_in" value="{{ check_in }}">
+        </label>
+        <label>Дата выезда:
+          <input type="date" name="check_out" value="{{ check_out }}">
+        </label>
+        <button type="submit">Показать доступные номера</button>
+      </form>
+    </section>
+
+    {% if availability %}
+      <section class="room-availability">
+        <h3>Свободные номера с {{ check_in }} по {{ check_out }}</h3>
+        <div class="room-card-list">
+          {% for template in hotel.room_templates.all %}
+            <div class="room-card">
+              <a href="{% url 'hotel:room_detail' hotel.id template.room_class %}">
+                <img src="{{ template.image.url }}" alt="{{ template.get_room_class_display }}" class="room-image">
+                <div class="room-info">
+                  <h4>{{ template.get_room_class_display }}</h4>
+                  <p>Цена: {{ template.price_per_night }} ₽</p>
+                  <p>{{ template.description|truncatechars:100 }}</p>
+                  <p><strong>Доступно:</strong> {{ availability|get_item:template.room_class|default:0 }}</p>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
       </section>
-
-      {% if availability %}
-        <section class="room-availability">
-          <h3>Свободные номера с {{ check_in }} по {{ check_out }}</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Класс номера</th>
-                <th>Доступно</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for class, count in availability.items %}
-                <tr>
-                  <td>{{ class }}</td>
-                  <td>{{ count }}</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </section>
-      {% endif %}
-    </main>
+    {% endif %}
+  </main>
 
   <footer class="footer">
     <div class="container">
       <p>© TripNest, 2025</p>
     </div>
   </footer>
-
-  <script>
-    document.getElementById('room-select').addEventListener('change', function() {
-      var url = this.value;
-      if (url) {
-        window.location.href = url;
-      }
-    });
-  </script>
 
 </body>
 </html>

@@ -1,7 +1,51 @@
-<h2>{{ title }}</h2>
+<h2>{{ отели }}</h2>
+<a href="{% url 'admin_panel:admin_hotel_list' %}">← Назад к списку отелей</a>
+
 <form method="post" enctype="multipart/form-data">
   {% csrf_token %}
+
+  <!-- Основная форма отеля -->
   {{ form.as_p }}
+
+  <hr>
+  <h3>Классы номеров</h3>
+  {{ formset.management_form }}
+
+{% for form in formset %}
+  <fieldset style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px;">
+
+    <div>
+      {{ form.room_class.label_tag }}<br>
+      {{ form.room_class }}
+    </div>
+
+    <div>
+      {{ form.description.label_tag }}<br>
+      {{ form.description }}
+    </div>
+
+    <div>
+      {{ form.price_per_night.label_tag }}<br>
+      {{ form.price_per_night }}
+    </div>
+
+    <div>
+      {{ form.image.label_tag }}<br>
+      {{ form.image }}
+      {% if form.instance.image %}
+        <br>
+        <img src="{{ form.instance.image.url }}" alt="Текущее изображение" height="100">
+      {% endif %}
+    </div>
+
+    <div>
+      {{ form.DELETE }} {{ form.DELETE.label }}
+    </div>
+
+  </fieldset>
+{% endfor %}
+
+
   <button type="submit">Сохранить</button>
 </form>
-<a href="{% url 'admin_panel:admin_hotel_list' %}">← Назад к списку отелей</a>
+

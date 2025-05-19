@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from datetime import timedelta
 from django.utils.http import urlencode
+from hotel.models import Hotel, Room, RoomInventory
 
 from transport.models import Flight, FlightTicket
 from .models import (
@@ -56,8 +57,11 @@ def cart_view(request):
 
     # Всё остальное как раньше
     draft, created = DraftBooking.objects.get_or_create(user=request.user)
-    items = draft.items.select_related('flight_ticket__flight')
-
+    items = draft.items.select_related(
+        'flight_ticket__flight',
+        'hotel_room__hotel',
+        'excursion__city'
+    )
     return render(request, 'booking/cart.html', {'items': items, 'draft': draft})
 
 
@@ -140,3 +144,50 @@ def my_bookings(request):
         context['title'] = "Все ваши бронирования"
 
     return render(request, 'booking/my_bookings.html', context)
+
+def add_room_to_cart(request):
+    if request.method == 'POST':
+        hotel_id = request.POST.get('hotel_id')
+        room_class = request.POST.get('room_class')
+        check_in = request.POST.get('check_in')
+        check_out = request.POST.get('check_out')
+
+        hotel = get_object_or_404(Hotel, id=hotel_id)
+        today = timezone.now().date()
+
+        # Найдём доступный номер на текущую дату
+        available_rooms = Room.objects.filter(
+            hotel=hotel,
+            room_class=room_class,
+            inventory__date=today,
+            inventory__is_booked=False
+        ).distinct()
+
+        if available_rooms.exists():
+            room = available_rooms.first()
+
+            draft, _ = DraftBooking.objects.get_or_create(user=request.user)
+
+            # Добавим номер в корзину
+            BookingItem.objects.create(
+                draft=draft,
+                hotel_room=room
+            )
+
+        return redirect('booking:cart')
+
+def add_excursion_to_cart(request):
+    if request.method == 'POST':
+        excursion_id = request.POST.get('excursion_id')
+        excursion = get_object_or_404(Excursion, id=excursion_id)
+
+        draft, _ = DraftBooking.objects.get_or_create(user=request.user)
+
+        if not draft.items.filter(excursion=excursion).exists():
+            BookingItem.objects.create(
+                draft=draft,
+                excursion=excursion
+            )
+
+        return redirect('booking:cart')
+

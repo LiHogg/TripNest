@@ -6,5 +6,6 @@ urlpatterns = [
     path('get-cities/', views.get_cities, name='get_cities'),
     path('<int:pk>/', views.hotel_detail, name='hotel_detail'),
     path('room/<int:pk>/', views.room_detail, name='room_detail'),
+    path('hotel/<int:hotel_id>/class/<str:room_class>/', views.room_detail, name='room_detail'),
 
 ]

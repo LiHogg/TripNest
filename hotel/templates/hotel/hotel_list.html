@@ -15,11 +15,11 @@
       <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" height="40">
     </div>
     <nav class="nav">
-      <a href="/">Главная</a>
-      <a href="#">Рестораны</a>
-      <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
-      <a href="#">Транспорт</a>
-      <a href="#">Заказ еды</a>
+        <a href="/">Главная</a>
+        <a href="#">Рестораны</a>
+        <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
+        <a href="{% url 'transport:transport_list' %}">Транспорт</a>
+        <a href="#">Заказ еды</a>
     </nav>
     <div class="auth-buttons">
         <a href="{% url 'booking:cart' %}" class="btn">Корзина</a>

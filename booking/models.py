@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from hotel.models import Room
+from excursion.models import Excursion
 # Черновик корзины (DraftBooking) — не подтвержденные бронирования (корзина пользователя)
 class DraftBooking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='draft_bookings')
@@ -13,6 +14,8 @@ class DraftBooking(models.Model):
 class BookingItem(models.Model):
     draft = models.ForeignKey(DraftBooking, on_delete=models.CASCADE, related_name='items')
     flight_ticket = models.ForeignKey('transport.FlightTicket', null=True, blank=True, on_delete=models.CASCADE)
+    hotel_room = models.ForeignKey(Room, null=True, blank=True, on_delete=models.CASCADE)
+    excursion = models.ForeignKey(Excursion, null=True, blank=True, on_delete=models.CASCADE)  # 👈
     # Тут позже можно добавить hotel_room, car, excursion и т.д.
     added_at = models.DateTimeField(auto_now_add=True)
 

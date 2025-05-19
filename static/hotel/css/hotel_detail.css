@@ -6,16 +6,6 @@ body {
   padding: 0;
 }
 
-a {
-  color: #9643FC;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
 .header, .footer {
   padding: 20px 40px;
   background-color: #1C1C1C;
@@ -26,8 +16,19 @@ a:hover {
   margin: 0 auto;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
   color: #fce643;
+  margin-top: 0;
+}
+
+a {
+  color: #9643FC;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 .hotel-detail {
@@ -42,6 +43,7 @@ h1, h2, h3 {
   background-color: #1e1e1e;
   padding: 30px;
   border-radius: 20px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
 }
 
 .hotel-detail-image {
@@ -61,60 +63,82 @@ h1, h2, h3 {
   margin: 12px 0;
 }
 
-.booking-button {
-  margin-top: 20px;
+.room-check-form {
+  margin: 40px 0 20px;
+}
+
+.check-form label {
   display: inline-block;
+  margin-right: 20px;
+}
+
+.check-form input[type="date"] {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  background-color: #333;
+  color: #fff;
+}
+
+.check-form button {
+  padding: 8px 20px;
   background-color: #9643FC;
   color: white;
-  padding: 12px 24px;
-  border-radius: 10px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.booking-button:hover {
-  background-color: #7c2df5;
-}
-
-.gallery {
-  margin-top: 40px;
-}
-
-.gallery h3 {
-  margin-bottom: 15px;
-  color: #fce643;
-}
-
-.gallery img {
-  width: 160px;
-  height: 100px;
-  object-fit: cover;
-  margin-right: 10px;
+  border: none;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  font-weight: bold;
+  cursor: pointer;
 }
 
-.reviews {
-  margin-top: 40px;
-  background-color: #1f1f1f;
-  padding: 20px;
-  border-radius: 10px;
+.room-card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
 }
 
-.reviews h3 {
+.room-card {
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease;
+}
+
+.room-card:hover {
+  transform: translateY(-5px);
+}
+
+.room-card a {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  height: 100%;
+}
+
+.room-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.room-info {
+  padding: 15px;
+}
+
+.room-info h4 {
+  margin-top: 0;
   margin-bottom: 10px;
+  font-size: 18px;
   color: #fce643;
 }
 
-.review {
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #444;
+.room-info p {
+  margin: 6px 0;
   font-size: 14px;
-  line-height: 1.6;
+  color: #ccc;
 }
 
-.review strong {
-  color: #ffffff;
+.room-info p strong {
+  color: #fce643;
 }

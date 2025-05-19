@@ -1,57 +1,81 @@
-<!DOCTYPE html>
 {% load static %}
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Корзина — TripNest</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{% static 'booking/css/cart.css' %}" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Корзина — TripNest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'booking/css/cart.css' %}">
 </head>
-<body>
+<body class="dark-theme">
 
-<header>
-    <h1>Моя корзина</h1>
-    <nav>
-        <a href="/">На главную</a>
-        <a href="{% url 'booking:my_bookings' %}">Мои бронирования</a>
-        <a href="{% url 'logout' %}">Выйти</a>
-    </nav>
+<header class="header">
+  <div class="container">
+    <h1 class="page-title">Ваша корзина</h1>
+  </div>
 </header>
 
-<main>
-    {% if items %}
-        <section class="cart-items">
-            {% for item in items %}
-                <div class="cart-item">
-                    <div class="info">
-                       <h3>Билет на рейс: {{ item.flight_ticket.flight.flight_number }}</h3>
-                        <p>Маршрут: {{ item.flight_ticket.flight.departure_city.name }} → {{ item.flight_ticket.flight.arrival_city.name }}</p>
-                        <p>Дата вылета: {{ item.flight_ticket.flight.departure_date|date:"d.m.Y H:i" }}</p>
-                        <p>Класс: {{ item.flight_ticket.get_flight_class_display }}</p>
-                        <p>Место: {{ item.flight_ticket.seat_number }}</p>
-                        <p>Цена: {{ item.flight_ticket.price|floatformat:2 }} ₽</p>
+<main class="cart container">
+  {% if items %}
+    <div class="cart-items">
+      {% for item in items %}
 
-                        <form method="post" action="{% url 'booking:remove_from_cart' item.id %}">
-                            {% csrf_token %}
-                            <button type="submit">Удалить</button>
-                        </form>
-                    </div>
-                </div>
-            {% endfor %}
-        </section>
-
-        <section class="confirm">
-            <h2>Подтверждение бронирования</h2>
-            <form method="post" action="{% url 'booking:confirm_booking' %}">
-                {% csrf_token %}
-                <p>Вы уверены, что хотите оформить бронирование этих билетов?</p>
-                <button type="submit">Оформить</button>
+        {# ✅ Отельный номер #}
+        {% if item.hotel_room %}
+          <div class="cart-item hotel-item">
+            <h3>{{ item.hotel_room.hotel.name }} — {{ item.hotel_room.room_class }}</h3>
+            <p>Цена за ночь: {{ item.hotel_room.price_per_night }} ₽</p>
+            <p>{{ item.hotel_room.description|truncatechars:100 }}</p>
+            <form method="post" action="{% url 'booking:remove_from_cart' item.id %}">
+              {% csrf_token %}
+              <button type="submit">Удалить</button>
             </form>
-        </section>
-    {% else %}
-        <p class="empty">Ваша корзина пуста.</p>
-    {% endif %}
+          </div>
+        {% endif %}
+
+        {# ✅ Авиабилет #}
+        {% if item.flight_ticket %}
+          <div class="cart-item flight-item">
+            <h3>Рейс: {{ item.flight_ticket.flight.name }}</h3>
+            <p>Дата вылета: {{ item.flight_ticket.flight.departure_date }}</p>
+            <form method="post" action="{% url 'booking:remove_from_cart' item.id %}">
+              {% csrf_token %}
+              <button type="submit">Удалить</button>
+            </form>
+          </div>
+        {% endif %}
+
+        {# ✅ Экскурсия #}
+        {% if item.excursion %}
+          <div class="cart-item excursion-item">
+            <h3>Экскурсия: {{ item.excursion.name }}</h3>
+            <p>Гид: {{ item.excursion.guide_name }}</p>
+            <p>Город: {{ item.excursion.city.name }}</p>
+            <p>Цена: {{ item.excursion.price_per_person }} ₽/чел</p>
+            <form method="post" action="{% url 'booking:remove_from_cart' item.id %}">
+              {% csrf_token %}
+              <button type="submit">Удалить</button>
+            </form>
+          </div>
+        {% endif %}
+
+      {% endfor %}
+    </div>
+
+    <div class="cart-actions">
+      <a href="#" class="btn btn-primary">Перейти к оформлению</a>
+    </div>
+
+  {% else %}
+    <p>Корзина пуста.</p>
+  {% endif %}
 </main>
+
+<footer class="footer">
+  <div class="container">
+    <p>© TripNest, 2025</p>
+  </div>
+</footer>
 
 </body>
 </html>

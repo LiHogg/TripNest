@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from location.models import Country, City
 from .models import Hotel, Room, RoomInventory
-
+from django.utils import timezone
 # Утилита для перебора диапазона дат
 def daterange(start_date, end_date):
     for n in range(int((end_date - start_date).days)):
@@ -86,8 +86,25 @@ def hotel_detail(request, pk):
     })
 
 # Страница одного номера
-def room_detail(request, pk):
-    room = get_object_or_404(Room, pk=pk)
+def room_detail(request, hotel_id, room_class):
+    hotel = get_object_or_404(Hotel, pk=hotel_id)
+    template = get_object_or_404(hotel.room_templates, room_class=room_class)
+
+    today = timezone.now().date()
+    available_room_ids = RoomInventory.objects.filter(
+        date=today,
+        is_booked=False
+    ).values_list('room_id', flat=True)
+
+    available_rooms = Room.objects.filter(
+        hotel=hotel,
+        room_class=room_class,
+        id__in=available_room_ids
+    )
+
     return render(request, 'hotel/room_detail.html', {
-        'room': room,
+        'hotel': hotel,
+        'template': template,
+        'available_rooms': available_rooms,
     })
+
