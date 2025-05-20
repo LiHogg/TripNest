@@ -31,7 +31,7 @@ urlpatterns = [
     path('rooms/', views.room_list, name='admin_room_list'),
 
     # === EXCURSION CRUD ===
-    path('excursion/', views.excursion_list,   name='admin_excursion_list'),
+    path('excursion/', views.excursion_list,   name='excursion_list'),
     path('excursion/create/', views.excursion_create, name='admin_excursion_create'),
     path('excursion/edit/<int:pk>/',   views.excursion_edit,   name='admin_excursion_edit'),
     path('excursion/delete/<int:pk>/', views.excursion_delete, name='admin_excursion_delete'),

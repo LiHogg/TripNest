@@ -1,11 +1,13 @@
+from collections import defaultdict
+
 from django import forms
 from django.forms import inlineformset_factory
 from location.models import Country, City
 from hotel.models import Hotel, RoomClassTemplate
-from excursion.models import Excursion
+from hotel.forms import RoomClassTemplateForm
+from excursion.models import Excursion, ExcursionAvailability
 from transport.models import FlightTicket, Flight
-from hotel.forms import RoomClassTemplateForm  # подключаем форму для шаблонов номеров
-
+from datetime import time
 # --------- ГОРОДА И СТРАНЫ ---------
 class CountryForm(forms.ModelForm):
     class Meta:
@@ -50,29 +52,46 @@ RoomClassTemplateFormSet = inlineformset_factory(
 
 # --------- ЭКСКУРСИИ ---------
 class ExcursionForm(forms.ModelForm):
+    # Поля для генерации расписания
+    start_date = forms.DateField(
+        label="Начальная дата",
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=False,
+    )
+    first_start_time = forms.TimeField(
+        label="Время начала первой экскурсии",
+        widget=forms.TimeInput(attrs={'type': 'time'}),
+        required=False,
+        initial=time(10, 0),
+    )
+    end_date = forms.DateField(
+        label="Конечная дата",
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=False,
+    )
+
     class Meta:
         model = Excursion
         fields = [
-            'name',
-            'city',
-            'duration_hours',
-            'price_per_person',
-            'description',
-            'image',
-            'availability_dates',
-            'max_participants',
-            'meeting_point',
-            'guide_name',
-            'language',
-            'item_type',
+            'name', 'city', 'duration_hours', 'price_per_person',
+            'description', 'image', 'max_participants',
+            'meeting_point', 'guide_name', 'language', 'item_type',
         ]
         widgets = {
-            'availability_dates': forms.Textarea(attrs={'rows': 2}),
             'description': forms.Textarea(attrs={'rows': 4}),
         }
-        help_texts = {
-            'availability_dates': 'Перечислите даты через запятую или диапазоны',
-        }
+
+ExcursionAvailabilityFormSet = inlineformset_factory(
+    Excursion,
+    ExcursionAvailability,
+    form=forms.modelform_factory(ExcursionAvailability, fields=['available_date', 'start_time', 'available_slots'], widgets={
+        'available_date': forms.DateInput(attrs={'type': 'date'}),
+        'start_time': forms.TimeInput(attrs={'type': 'time'}),
+        'available_slots': forms.NumberInput(attrs={'min': 0}),
+    }),
+    extra=1,
+    can_delete=True
+)
 
 
 # --------- РЕЙСЫ ---------
@@ -86,11 +105,11 @@ class FlightForm(forms.ModelForm):
         ]
         widgets = {
             'departure_date': forms.DateTimeInput(
-                attrs={'type': 'datetime-local', 'placeholder': 'Пример: 2025-06-01 12:30'},
+                attrs={'type': 'datetime-local'},
                 format='%Y-%m-%dT%H:%M'
             ),
             'arrival_date': forms.DateTimeInput(
-                attrs={'type': 'datetime-local', 'placeholder': 'Пример: 2025-06-01 14:30'},
+                attrs={'type': 'datetime-local'},
                 format='%Y-%m-%dT%H:%M'
             ),
         }
@@ -99,9 +118,6 @@ class FlightForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['departure_city'].queryset = City.objects.filter(has_airport=True)
         self.fields['arrival_city'].queryset = City.objects.filter(has_airport=True)
-        self.fields['departure_date'].help_text = "Формат: YYYY-MM-DD HH:MM"
-        self.fields['arrival_date'].help_text = "Формат: YYYY-MM-DD HH:MM"
-
         for field in ['departure_date', 'arrival_date']:
             if self.instance and getattr(self.instance, field):
                 self.initial[field] = getattr(self.instance, field).strftime('%Y-%m-%dT%H:%M')
