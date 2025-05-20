@@ -1,5 +1,8 @@
+from collections import defaultdict
+
 from django.db import models
 from location.models import City
+from datetime import time
 
 
 class Excursion(models.Model):
@@ -63,6 +66,7 @@ class ExcursionAvailability(models.Model):
     )
     available_date = models.DateField('Дата доступности')
     available_slots = models.PositiveIntegerField('Свободных мест')
+    start_time = models.TimeField(default = time(10,0))
 
     created_at = models.DateTimeField('Дата создания', auto_now_add=True)
     updated_at = models.DateTimeField('Дата обновления', auto_now=True)
@@ -70,7 +74,7 @@ class ExcursionAvailability(models.Model):
     class Meta:
         verbose_name = 'Доступность экскурсии'
         verbose_name_plural = 'Доступности экскурсий'
-        unique_together = ('excursion', 'available_date')
+        unique_together = ('excursion', 'available_date', 'start_time')
         ordering = ['available_date']
 
     def __str__(self):

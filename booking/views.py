@@ -4,8 +4,10 @@ from django.utils import timezone
 from datetime import timedelta
 from django.utils.http import urlencode
 from hotel.models import Hotel, Room, RoomInventory
-
+from excursion.models import Excursion
+from django.db.models import Count
 from transport.models import Flight, FlightTicket
+
 from .models import (
     DraftBooking,
     BookingItem,
@@ -58,7 +60,8 @@ def cart_view(request):
     # Всё остальное как раньше
     draft, created = DraftBooking.objects.get_or_create(user=request.user)
     items = draft.items.select_related(
-        'flight_ticket__flight',
+        'flight_ticket__flight__departure_city',
+        'flight_ticket__flight__arrival_city',
         'hotel_room__hotel',
         'excursion__city'
     )
@@ -153,22 +156,30 @@ def add_room_to_cart(request):
         check_out = request.POST.get('check_out')
 
         hotel = get_object_or_404(Hotel, id=hotel_id)
-        today = timezone.now().date()
 
-        # Найдём доступный номер на текущую дату
-        available_rooms = Room.objects.filter(
-            hotel=hotel,
+        # Преобразуем даты
+        try:
+            check_in_date = timezone.datetime.strptime(check_in, '%Y-%m-%d').date()
+            check_out_date = timezone.datetime.strptime(check_out, '%Y-%m-%d').date()
+        except Exception:
+            return redirect('hotel:hotel_detail', pk=hotel_id)
+
+        num_days = (check_out_date - check_in_date).days
+        if num_days <= 0:
+            return redirect('hotel:hotel_detail', pk=hotel_id)
+
+        # Найти все номера нужного класса, у которых есть нужное количество свободных дней
+        rooms = Room.objects.filter(
+            hotel_id=hotel_id,
             room_class=room_class,
-            inventory__date=today,
+            inventory__date__gte=check_in_date,
+            inventory__date__lt=check_out_date,
             inventory__is_booked=False
-        ).distinct()
+        ).annotate(free_days=Count('inventory')).filter(free_days=num_days).distinct()
 
-        if available_rooms.exists():
-            room = available_rooms.first()
-
+        if rooms.exists():
+            room = rooms.first()
             draft, _ = DraftBooking.objects.get_or_create(user=request.user)
-
-            # Добавим номер в корзину
             BookingItem.objects.create(
                 draft=draft,
                 hotel_room=room

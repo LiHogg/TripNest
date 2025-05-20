@@ -42,12 +42,25 @@
       <p><strong>Длительность:</strong> {{ excursion.duration_hours }} ч</p>
       <p><strong>Цена:</strong> {{ excursion.price_per_person }} ₽/чел</p>
       <p><strong>Описание:</strong> {{ excursion.description }}</p>
-      <p><strong>Доступные даты:</strong> {{ excursion.availability_dates }}</p>
 
-      <!-- 🔽 Добавление в корзину -->
       <form method="post" action="{% url 'booking:add_excursion_to_cart' %}" style="margin-top: 30px;">
         {% csrf_token %}
         <input type="hidden" name="excursion_id" value="{{ excursion.id }}">
+
+        <label>Выберите дату и время:
+          <select name="selected_datetime" required>
+            {% for slot in availability %}
+              <option value="{{ slot.available_date }}|{{ slot.start_time }}">
+                {{ slot.available_date }} — {{ slot.start_time|time:"H:i" }} (мест: {{ slot.available_slots }})
+              </option>
+            {% endfor %}
+          </select>
+        </label>
+
+        <label>Количество человек:
+          <input type="number" name="people_count" min="1" max="10" value="1" required>
+        </label>
+
         <button type="submit" class="button">Добавить в корзину</button>
       </form>
 

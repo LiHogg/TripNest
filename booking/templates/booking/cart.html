@@ -9,18 +9,41 @@
 </head>
 <body class="dark-theme">
 
+<!-- Header -->
 <header class="header">
   <div class="container">
-    <h1 class="page-title">Ваша корзина</h1>
+    <div class="logo">
+      <a href="/">
+        <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" height="40">
+      </a>
+    </div>
+    <nav class="nav">
+      <a href="/">Главная</a>
+      <a href="{% url 'hotel:hotel_list' %}">Жильё</a>
+      <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
+      <a href="{% url 'transport:transport_list' %}">Транспорт</a>
+      <a href="#">Заказ еды</a>
+    </nav>
+    <div class="auth-buttons">
+      <a href="{% url 'user_profile:profile' %}">Профиль</a>
+      <a href="/logout/">Выйти</a>
+    </div>
   </div>
 </header>
 
 <main class="cart container">
+  <!-- Back button -->
+  <div class="back-link" style="margin: 20px 0;">
+    <a href="javascript:history.back()">&larr; Назад</a>
+  </div>
+
+  <h1 class="page-title">Ваша корзина</h1>
+
   {% if items %}
     <div class="cart-items">
       {% for item in items %}
 
-        {# ✅ Отельный номер #}
+        {# Номер отеля #}
         {% if item.hotel_room %}
           <div class="cart-item hotel-item">
             <h3>{{ item.hotel_room.hotel.name }} — {{ item.hotel_room.room_class }}</h3>
@@ -33,11 +56,29 @@
           </div>
         {% endif %}
 
-        {# ✅ Авиабилет #}
+        {# Авиабилет #}
         {% if item.flight_ticket %}
           <div class="cart-item flight-item">
-            <h3>Рейс: {{ item.flight_ticket.flight.name }}</h3>
-            <p>Дата вылета: {{ item.flight_ticket.flight.departure_date }}</p>
+            <h3>
+              Рейс: {{ item.flight_ticket.flight.flight_number }}
+              ({{ item.flight_ticket.flight.airline }})
+            </h3>
+            <p>
+              <strong>Дата и время вылета:</strong>
+              {{ item.flight_ticket.flight.departure_date|date:"d F Y" }}
+              в {{ item.flight_ticket.flight.departure_date|time:"H:i" }}
+            </p>
+            <p>
+              <strong>Откуда:</strong>
+              {{ item.flight_ticket.flight.departure_city.name }}
+              → <strong>Куда:</strong>
+              {{ item.flight_ticket.flight.arrival_city.name }}
+            </p>
+            <p>
+              <strong>Класс:</strong>
+              {{ item.flight_ticket.get_flight_class_display }}
+              , место №{{ item.flight_ticket.seat_number }}
+            </p>
             <form method="post" action="{% url 'booking:remove_from_cart' item.id %}">
               {% csrf_token %}
               <button type="submit">Удалить</button>
@@ -45,7 +86,7 @@
           </div>
         {% endif %}
 
-        {# ✅ Экскурсия #}
+        {# Экскурсия #}
         {% if item.excursion %}
           <div class="cart-item excursion-item">
             <h3>Экскурсия: {{ item.excursion.name }}</h3>
@@ -63,7 +104,7 @@
     </div>
 
     <div class="cart-actions">
-      <a href="#" class="btn btn-primary">Перейти к оформлению</a>
+      <a href="{% url 'booking:confirm_booking' %}" class="btn btn-primary">Перейти к оформлению</a>
     </div>
 
   {% else %}
@@ -71,6 +112,7 @@
   {% endif %}
 </main>
 
+<!-- Footer -->
 <footer class="footer">
   <div class="container">
     <p>© TripNest, 2025</p>

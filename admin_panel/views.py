@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import User
+from .forms import CountryForm, CityForm, HotelForm, ExcursionForm, FlightForm
+from hotel.forms import RoomForm
+# Removed invalid import of RoomClassTemplateFormSet
 from user_profile.models import Profile, Passport, DriverLicense, LoginHistory, History
 from location.models import Country, City
 from hotel.models import Hotel, Room
-from .forms import CountryForm, CityForm, HotelForm
-from hotel.forms import RoomForm
-from excursion.models import Excursion
-from excursion.forms import ExcursionForm
+from excursion.models import Excursion, ExcursionAvailability
+from excursion.forms import ExcursionForm, ExcursionAvailabilityFormSet
 from transport.models import Flight
-from admin_panel.forms import FlightForm, RoomClassTemplateFormSet
+from django.contrib.auth.models import User
 
 # === DASHBOARD ===
 def dashboard(request):
@@ -171,37 +171,66 @@ def room_list(request):
     rooms = Room.objects.select_related('hotel').all()
     return render(request, 'admin_panel/room_list.html', {'rooms': rooms})
 
-# === EXCURSION ===
+# === EXCURSION CRUD ===
+
 def excursion_list(request):
     excursions = Excursion.objects.all()
     return render(request, 'admin_panel/excursion_list.html', {'excursions': excursions})
 
+
 def excursion_create(request):
+    """
+    Создание новой экскурсии с формой и FormSet для доступных дат
+    """
     if request.method == 'POST':
         form = ExcursionForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('admin_excursion_list')
+        availability_formset = ExcursionAvailabilityFormSet(request.POST)
+        if form.is_valid() and availability_formset.is_valid():
+            excursion = form.save()
+            availability_formset.instance = excursion
+            availability_formset.save()
+            return redirect('admin_panel:excursion_list')
     else:
         form = ExcursionForm()
-    return render(request, 'admin_panel/excursion_form.html', {'form': form, 'title': 'Добавить экскурсию'})
+        availability_formset = ExcursionAvailabilityFormSet()
+
+    return render(request, 'admin_panel/excursion_form.html', {
+        'form': form,
+        'availability_formset': availability_formset,
+        'title': 'Добавить экскурсию'
+    })
+
 
 def excursion_edit(request, pk):
+    """
+    Редактирование экскурсии и её дат
+    """
     excursion = get_object_or_404(Excursion, pk=pk)
     if request.method == 'POST':
         form = ExcursionForm(request.POST, request.FILES, instance=excursion)
-        if form.is_valid():
+        availability_formset = ExcursionAvailabilityFormSet(request.POST, instance=excursion)
+        if form.is_valid() and availability_formset.is_valid():
             form.save()
-            return redirect('admin_excursion_list')
+            availability_formset.save()
+            return redirect('admin_panel:excursion_list')
     else:
         form = ExcursionForm(instance=excursion)
-    return render(request, 'admin_panel/excursion_form.html', {'form': form, 'title': 'Редактировать экскурсию'})
+        availability_formset = ExcursionAvailabilityFormSet(instance=excursion)
+
+    return render(request, 'admin_panel/excursion_form.html', {
+        'form': form,
+        'availability_formset': availability_formset,
+        'title': 'Редактировать экскурсию'
+    })
+
 
 def excursion_delete(request, pk):
-    excursion = get_object_or_404(Excursion, pk=pk)
-    excursion.delete()
-    return redirect('admin_excursion_list')
-
+    # Confirm deletion of an excursion
+    excursion = get_object_or_404(Excursion, pk=pk)(Excursion, pk=pk)
+    if request.method == 'POST':
+        excursion.delete()
+        return redirect('admin_panel:excursion_list')
+    return render(request, 'admin_panel/excursion_confirm_delete.html', {'excursion': excursion})
 # === FLIGHT ===
 def flight_admin_list(request):
     flights = Flight.objects.all()

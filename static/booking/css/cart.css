@@ -11,26 +11,26 @@ body {
 }
 
 /* Шапка */
-header {
+header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #1C1C1C;
     padding: 20px 40px;
     box-sizing: border-box;
-    flex-wrap: wrap;
 }
 
-header h1 {
-    margin: 0;
-    font-size: 24px;
-    color: #fce643;
+/* Логотип */
+header .logo img {
+    height: 40px;
 }
 
+/* Навигация */
 header nav {
     display: flex;
     gap: 20px;
-    flex-wrap: wrap;
+    white-space: nowrap;
+    overflow-x: auto;
 }
 
 header nav a {
@@ -42,6 +42,43 @@ header nav a {
 }
 
 header nav a:hover {
+    color: #9643FC;
+    text-decoration: underline;
+}
+
+/* Кнопки авторизации */
+header .auth-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+header .auth-buttons a {
+    color: #9643FC; /* Текст фиолетовый */
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 8px 16px;
+    border: 2px solid #9643FC;
+    border-radius: 8px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+header .auth-buttons a:hover {
+    background-color: #9643FC;
+    color: #171717;
+}
+
+/* Кнопка назад */
+.back-link a {
+    color: #fce643;
+    text-decoration: none;
+    font-size: 16px;
+    margin-bottom: 20px;
+    display: inline-block;
+    transition: color 0.2s;
+}
+
+.back-link a:hover {
     color: #9643FC;
     text-decoration: underline;
 }
@@ -101,6 +138,38 @@ main {
     background-color: #d90429;
 }
 
+/* Кнопка Перейти к оформлению */
+.cart-actions {
+    margin-top: 40px;
+    text-align: center;
+}
+.cart-actions a {
+    display: inline-block;
+    background-color: #9643FC;
+    color: #fce643;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.2s, color 0.2s;
+} {
+    display: inline-block;
+    background-color: #9643FC;
+    color: #fce643;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.cart-actions a:hover {
+    background-color: #7e2ed9;
+    color: #171717;
+}
+
 /* Подтверждение */
 .confirm {
     margin-top: 40px;
@@ -150,7 +219,7 @@ main {
 
 /* Адаптивность */
 @media (max-width: 768px) {
-    header {
+    header .container {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
