@@ -68,10 +68,17 @@ class FlightTicketAdmin(admin.ModelAdmin):
 @admin.register(TrainTicket)
 class TrainTicketAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'train_number', 'departure_station', 'arrival_station', 'departure_date'
+        'id',
+        'train',           # ForeignKey на Train (выведет __str__ поезда)
+        'train_class',
+        'seat_number',
+        'price',
+        'is_booked',
+        'reserved_until',
     )
-    search_fields = ('train_number', 'departure_station', 'arrival_station')
-    list_filter = ('train_number',)
+    search_fields = ('train__train_number',)
+    list_filter = ('train_class', 'is_booked', 'train')
+
 
 @admin.register(CarReservation)
 class CarReservationAdmin(admin.ModelAdmin):
