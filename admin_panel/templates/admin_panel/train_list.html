@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Поезда — Админка TripNest</title>
+    <link rel="stylesheet" href="{% static 'admin_panel/css/style.css' %}">
+</head>
+<body>
+    <h1>Список поездов</h1>
+    <a href="{% url 'admin_panel:dashboard' %}">← Назад к панели администратора</a>
+    <br>
+    <a href="{% url 'admin_panel:train_create' %}" class="btn">Добавить поезд</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>№ поезда</th>
+                <th>Оператор</th>
+                <th>Откуда</th>
+                <th>Куда</th>
+                <th>Отправление</th>
+                <th>Прибытие</th>
+                <th>Плацкарт</th>
+                <th>Купе</th>
+                <th>СВ</th>
+                <th>Бизнес</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for train in trains %}
+            <tr>
+                <td>{{ train.id }}</td>
+                <td>{{ train.train_number }}</td>
+                <td>{{ train.operator }}</td>
+                <td>{{ train.departure_city }}</td>
+                <td>{{ train.arrival_city }}</td>
+                <td>{{ train.departure_date|date:"d.m.Y H:i" }}</td>
+                <td>{{ train.arrival_date|date:"d.m.Y H:i" }}</td>
+                <td>{{ train.seats_platzkart }}</td>
+                <td>{{ train.seats_kupe }}</td>
+                <td>{{ train.seats_sv }}</td>
+                <td>{{ train.seats_business }}</td>
+                <td>
+                    <a href="{% url 'admin_panel:train_edit' train.id %}">✏️</a>
+                    <a href="{% url 'admin_panel:train_delete' train.id %}">🗑️</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

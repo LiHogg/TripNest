@@ -71,7 +71,7 @@ def edit_profile_view(request):
                 license_obj.user = request.user
                 license_obj.save()
 
-            return redirect('profile')
+            return redirect('user_profile:profile')
 
     return render(request, 'user_profile/edit_profile.html', {
         'form': profile_form,
@@ -94,24 +94,27 @@ def register(request):
 
             role, _ = Role.objects.get_or_create(name='user')
 
-            Profile.object.create(
+            profile, created = Profile.objects.get_or_create(
                 user=user,
-                phone_number=form.cleaned_data['phone_number'],
-                addres=form.cleaned_data['addres'],
-                role=role
+                defaults={
+                    'phone_number': form.cleaned_data['phone_number'],
+                    'address': form.cleaned_data['address'],
+                    'role': role
+                }
             )
 
-            issue_date = form.cleaned_data('passport_issue_date')
+            issue_date = form.cleaned_data['passport_issue_date']
             expiry_date = issue_date.replace(year=issue_date.year + 10)
-            Passport.object.create(
+
+            Passport.objects.create(
                 user=user,
                 number=form.cleaned_data['passport_number'],
                 issue_date=issue_date,
                 expiry_date=expiry_date,
                 nationality=form.cleaned_data['nationality']
             )
-
-            return redirect(reverse('home'))
+            login(request, user)
+            return redirect(reverse('trip:home_user'))
     else:
         form = UserRegistrationForm()
 

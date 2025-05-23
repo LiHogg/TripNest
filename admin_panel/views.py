@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import (
     CountryForm, CityForm, HotelForm,
     ExcursionForm, ExcursionAvailabilityFormSet,
-    RoomClassTemplateFormSet, FlightForm
+    RoomClassTemplateFormSet, FlightForm, TrainForm
 )
 from hotel.forms import RoomForm
 from user_profile.models import Profile, Passport, DriverLicense, LoginHistory, History
@@ -10,9 +10,9 @@ from location.models import Country, City
 from hotel.models import Hotel, Room
 from excursion.models import Excursion
 from excursion.utils import generate_excursion_schedule
-from transport.models import Flight
+from transport.models import Flight, Train
 from django.contrib.auth.models import User
-
+from transport.views import create_tickets_for_train
 # === DASHBOARD ===
 def dashboard(request):
     return render(request, 'admin_panel/dashboard.html')
@@ -121,6 +121,7 @@ def city_delete(request, pk):
     city.delete()
     return redirect('admin_panel:city_list')
 
+
 # === HOTEL CRUD ===
 def hotel_list(request):
     hotels = Hotel.objects.all()
@@ -134,7 +135,7 @@ def hotel_create(request):
             hotel = form.save()
             formset.instance = hotel
             formset.save()
-            return redirect('admin_panel:hotel_list')
+            return redirect('admin_panel:admin_hotel_list')
     else:
         form = HotelForm()
         formset = RoomClassTemplateFormSet()
@@ -148,7 +149,7 @@ def hotel_edit(request, pk):
         if form.is_valid() and formset.is_valid():
             form.save()
             formset.save()
-            return redirect('admin_panel:hotel_list')
+            return redirect('admin_panel:admin_hotel_list')
     else:
         form = HotelForm(instance=hotel)
         formset = RoomClassTemplateFormSet(instance=hotel)
@@ -157,7 +158,7 @@ def hotel_edit(request, pk):
 def hotel_delete(request, pk):
     hotel = get_object_or_404(Hotel, pk=pk)
     hotel.delete()
-    return redirect('admin_panel:hotel_list')
+    return redirect('admin_panel:admin_hotel_list')
 
 # === ROOM LIST ===
 def room_list(request):
@@ -263,3 +264,38 @@ flight_admin_list   = flight_list
 flight_admin_create = flight_create
 flight_admin_update = flight_edit
 flight_admin_delete = flight_delete
+
+# === TRAIN CRUD ===
+
+def train_list(request):
+    trains = Train.objects.all().select_related('departure_city', 'arrival_city')
+    return render(request, 'admin_panel/train_list.html', {'trains': trains})
+
+
+def train_edit(request, pk):
+    train = get_object_or_404(Train, pk=pk)
+    if request.method == 'POST':
+        form = TrainForm(request.POST, instance=train)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_panel:train_list')
+    else:
+        form = TrainForm(instance=train)
+    return render(request, 'admin_panel/train_form.html', {'form': form, 'title': 'Редактировать поезд'})
+
+
+def train_delete(request, pk):
+    train = get_object_or_404(Train, pk=pk)
+    train.delete()
+    return redirect('admin_panel:train_list')
+
+def train_create(request):
+    if request.method == 'POST':
+        form = TrainForm(request.POST)
+        if form.is_valid():
+            train = form.save()
+            create_tickets_for_train(train)  # ← генерируем билеты
+            return redirect('admin_panel:train_list')
+    else:
+        form = TrainForm()
+    return render(request, 'admin_panel/train_form.html', {'form': form, 'title': 'Добавить поезд'})

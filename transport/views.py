@@ -94,8 +94,42 @@ class TrainListView(ListView):
 
     def get_queryset(self):
         qs = super().get_queryset().order_by('departure_date')
-        # (по желанию) здесь можно добавить фильтры аналогично flight_list
+
+        departure_country_id = self.request.GET.get('departure_country')
+        departure_city_id = self.request.GET.get('departure_city')
+        arrival_country_id = self.request.GET.get('arrival_country')
+        arrival_city_id = self.request.GET.get('arrival_city')
+        operator = self.request.GET.get('operator')
+        departure_date = self.request.GET.get('departure_date')
+
+        if departure_country_id:
+            qs = qs.filter(departure_city__country_id=departure_country_id)
+        if departure_city_id:
+            qs = qs.filter(departure_city_id=departure_city_id)
+        if arrival_country_id:
+            qs = qs.filter(arrival_city__country_id=arrival_country_id)
+        if arrival_city_id:
+            qs = qs.filter(arrival_city_id=arrival_city_id)
+        if operator:
+            qs = qs.filter(operator=operator)
+        if departure_date:
+            qs = qs.filter(departure_date__date=departure_date)
+
         return qs
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['countries'] = Country.objects.all()
+        ctx['operators'] = Train.objects.values_list('operator', flat=True).distinct().order_by('operator')
+
+        departure_country_id = self.request.GET.get('departure_country')
+        arrival_country_id = self.request.GET.get('arrival_country')
+
+        ctx['departure_cities'] = City.objects.filter(country_id=departure_country_id) if departure_country_id else City.objects.none()
+        ctx['arrival_cities'] = City.objects.filter(country_id=arrival_country_id) if arrival_country_id else City.objects.none()
+
+        return ctx
+
 
 
 class TrainDetailView(DetailView):
@@ -163,3 +197,21 @@ def create_tickets_for_flight(flight, prices=None):
                 flight_class=cls,
                 price=prices.get(cls, 0)
             )
+def create_tickets_for_train(train):
+    ticket_count = {
+        'platzkart': train.seats_platzkart,
+        'kupe': train.seats_kupe,
+        'sv': train.seats_sv,
+        'business': train.seats_business,
+    }
+
+    created = 0
+    for cls, count in ticket_count.items():
+        for i in range(1, count + 1):
+            TrainTicket.objects.create(
+                train=train,
+                train_class=cls,
+                seat_number=i
+            )
+            created += 1
+    return created

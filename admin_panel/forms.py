@@ -6,7 +6,7 @@ from location.models import Country, City
 from hotel.models import Hotel, RoomClassTemplate
 from hotel.forms import RoomClassTemplateForm
 from excursion.models import Excursion, ExcursionAvailability
-from transport.models import FlightTicket, Flight
+from transport.models import FlightTicket, Flight, Train
 from datetime import time
 # --------- ГОРОДА И СТРАНЫ ---------
 class CountryForm(forms.ModelForm):
@@ -128,3 +128,32 @@ class FlightTicketForm(forms.ModelForm):
     class Meta:
         model = FlightTicket
         fields = '__all__'
+
+# --------- ПОЕЗДА ---------
+class TrainForm(forms.ModelForm):
+    class Meta:
+        model = Train
+        fields = [
+            'train_number', 'operator', 'departure_city', 'arrival_city',
+            'departure_date', 'arrival_date',
+            'seats_platzkart', 'seats_kupe', 'seats_sv', 'seats_business',
+            'status'
+        ]
+        widgets = {
+            'departure_date': forms.DateTimeInput(
+                attrs={'type': 'datetime-local'},
+                format='%Y-%m-%dT%H:%M'
+            ),
+            'arrival_date': forms.DateTimeInput(
+                attrs={'type': 'datetime-local'},
+                format='%Y-%m-%dT%H:%M'
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['departure_city'].queryset = City.objects.filter(has_train_station=True)
+        self.fields['arrival_city'].queryset = City.objects.filter(has_train_station=True)
+        for field in ['departure_date', 'arrival_date']:
+            if self.instance and getattr(self.instance, field):
+                self.initial[field] = getattr(self.instance, field).strftime('%Y-%m-%dT%H:%M')

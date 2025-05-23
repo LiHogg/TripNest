@@ -19,9 +19,9 @@
     <nav class="nav">
         <a href="/">Главная</a>
         <a href="/hotels/">Жильё</a>
-        <a href="#">Рестораны</a>
+        <a href="{% url 'trip:coming_soon' %}">Рестораны</a>
         <a href="{% url 'transport:transport_list' %}">Транспорт</a>
-        <a href="#">Заказ еды</a>
+        <a href="{% url 'trip:coming_soon' %}">Заказ еды</a>
     </nav>
     <div class="auth-buttons">
       <a href="{% url 'user_profile:profile' %}">Профиль</a>

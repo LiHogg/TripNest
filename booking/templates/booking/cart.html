@@ -22,7 +22,7 @@
       <a href="{% url 'hotel:hotel_list' %}">Жильё</a>
       <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
       <a href="{% url 'transport:transport_list' %}">Транспорт</a>
-      <a href="#">Заказ еды</a>
+      <a href="{% url 'excursion:excursion_list' %}">Заказ еды</a>
     </nav>
     <div class="auth-buttons">
       <a href="{% url 'user_profile:profile' %}">Профиль</a>

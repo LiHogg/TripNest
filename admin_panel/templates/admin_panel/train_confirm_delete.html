@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Удалить поезд</title>
+    <link rel="stylesheet" href="{% static 'admin_panel/css/style.css' %}">
+</head>
+<body>
+    <h1>Удалить поезд</h1>
+    <p>Вы уверены, что хотите удалить поезд "{{ train.train_number }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn">Удалить</button>
+        <a href="{% url 'admin_panel:train_list' %}">Отмена</a>
+    </form>
+</body>
+</html>

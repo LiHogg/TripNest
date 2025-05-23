@@ -13,18 +13,18 @@
   <div class="container">
     <div class="logo">
       <a href="/">
-        <img src="{% static 'user_profile/img/logo.png' %}" alt="TripNest Logo">
+        <img src="{% static '/img/logo.png' %}" alt="TripNest Logo">
       </a>
     </div>
     <nav class="nav">
       <a href="/">Главная</a>
       <a href="/hotels/">Жильё</a>
-      <a href="#">Рестораны</a>
-      <a href="#">Транспорт</a>
-      <a href="#">Заказ еды</a>
+      <a href="{% url 'trip:coming_soon' %}">Рестораны</a>
+      <a href="{% url 'transport:transport_list' %}">Транспорт</a>
+      <a href="{% url 'trip:coming_soon' %}">Заказ еды</a>
     </nav>
     <div class="auth-buttons">
-      <a href="{% url 'profile' %}">Профиль</a>
+      <a href="{% url 'user_profile:profile' %}">Профиль</a>
       <a href="/logout/">Выйти</a>
     </div>
   </div>

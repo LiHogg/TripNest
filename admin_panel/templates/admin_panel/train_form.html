@@ -1,0 +1,17 @@
+{% load static %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static 'admin_panel/css/style.css' %}">
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Сохранить</button>
+        <a href="{% url 'admin_panel:train_list' %}">Назад</a>
+    </form>
+</body>
+</html>

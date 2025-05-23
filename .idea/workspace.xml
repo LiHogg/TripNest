@@ -4,13 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48dc6d84-0096-48af-a9d3-a6abdcbc6f52" name="Changes" comment="minor day-to-day improvements">
+    <list default="true" id="48dc6d84-0096-48af-a9d3-a6abdcbc6f52" name="Changes" comment="chore: Work summary for 21.05.2025 for TripNest&#10;&#10;• Shopping Cart  &#10;  – Completed adding flight tickets to the cart  &#10;  – Implemented adding hotel room bookings  &#10;  – Added excursions to the cart  &#10;&#10;• Admin Panel  &#10;  – Fixed display and order management issues  &#10;  – Improved field validation and access control handling  &#10;&#10;• Trains  &#10;  – Started implementing train ticket purchases  &#10;  – Designed and fleshed out the basic structure of train modules  &#10;&#10;Closes: 94/100% for coursework">
+      <change afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/train_confirm_delete.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/train_form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/train_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/transport/css/train_detail.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/transport/css/train_list.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transport/templates/transport/train_detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transport/templates/transport/train_list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/transport/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/transport/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/transport/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/transport/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/transport/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/transport/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/transport/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/transport/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_panel/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/hotel_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/hotel_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_panel/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_panel/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking/templates/booking/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/booking/templates/booking/cart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calendar_app/templates/calendar_app/calendar.html" beforeDir="false" afterPath="$PROJECT_DIR$/calendar_app/templates/calendar_app/calendar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/excursion/templates/excursion/excursion_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/excursion/templates/excursion/excursion_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/excursion/templates/excursion/excursion_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/excursion/templates/excursion/excursion_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hotel/templates/hotel/hotel_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/hotel/templates/hotel/hotel_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/trip/coming_soon.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/trip/coming_soon.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/transport/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/transport/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_profile/templates/user_profile/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/user_profile/templates/user_profile/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_profile/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_profile/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,9 +37,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
-        <option value="HTML File" />
-        <option value="CSS File" />
         <option value="Python Script" />
+        <option value="CSS File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -146,7 +162,12 @@
       <workItem from="1747630676727" duration="809000" />
       <workItem from="1747633683014" duration="37385000" />
       <workItem from="1747696220107" duration="3000" />
-      <workItem from="1747743739808" duration="21806000" />
+      <workItem from="1747743739808" duration="21870000" />
+      <workItem from="1747811409872" duration="4812000" />
+      <workItem from="1747820176011" duration="1507000" />
+      <workItem from="1747844615783" duration="136000" />
+      <workItem from="1747926728250" duration="2394000" />
+      <workItem from="1747959902300" duration="9358000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit of TripNest project&#10;&#10;- Set up Django project structure with virtual environment&#10;- Created base apps: trip (home), user (auth/profile), transport, hotel_booking, excursion_booking, etc.&#10;- Configured MySQL database and settings.py&#10;- Implemented custom user model with extended Profile (passport, driver license, phone, etc.)&#10;- Added user authentication (registration, login, logout)&#10;- Created templates for home (guest and logged in), profile, login, registration&#10;- Added static and media file handling&#10;- Set up custom admin panel with user/role management&#10;- Implemented responsive design and basic CSS theme&#10;- Connected email service for password reset&#10;- Prepared models and CRUD interfaces for hotel rooms and excursions&#10;&#10;TripNest — multi-functional travel assistant with booking, transport, and profile management">
       <option name="closed" value="true" />
@@ -260,7 +281,23 @@
       <option name="project" value="LOCAL" />
       <updated>1747775015966</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="chore: Work summary for 21.05.2025 for TripNest&#10;&#10;• Shopping Cart  &#10;  – Completed adding flight tickets to the cart  &#10;  – Implemented adding hotel room bookings  &#10;  – Added excursions to the cart  &#10;&#10;• Admin Panel  &#10;  – Fixed display and order management issues  &#10;  – Improved field validation and access control handling  &#10;&#10;• Trains  &#10;  – Started implementing train ticket purchases  &#10;  – Designed and fleshed out the basic structure of train modules  &#10;&#10;Closes: 94/100% for coursework">
+      <option name="closed" value="true" />
+      <created>1747777561155</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1747777561155</updated>
+    </task>
+    <task id="LOCAL-00016" summary="chore: Work summary for 21.05.2025 for TripNest&#10;&#10;• Shopping Cart  &#10;  – Completed adding flight tickets to the cart  &#10;  – Implemented adding hotel room bookings  &#10;  – Added excursions to the cart  &#10;&#10;• Admin Panel  &#10;  – Fixed display and order management issues  &#10;  – Improved field validation and access control handling  &#10;&#10;• Trains  &#10;  – Started implementing train ticket purchases  &#10;  – Designed and fleshed out the basic structure of train modules  &#10;&#10;Closes: 94/100% for coursework">
+      <option name="closed" value="true" />
+      <created>1747777568952</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1747777568952</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -273,6 +310,7 @@
     <MESSAGE value="- Implemented adding hotel rooms to the cart (DraftBooking)&#10;- Extended BookingItem model to support hotel_room field&#10;- Created add_room_to_cart view with RoomInventory availability check&#10;- Updated room_class_detail.html: added booking form with check-in/check-out&#10;- Updated cart.html to display hotel rooms&#10;- Enhanced cart_view with select_related for hotel_room and excursion&#10;- Extended BookingItem model to support excursions&#10;- Implemented add_excursion_to_cart view and form on excursion_detail.html&#10;- Fully updated cart.html to support display of hotel rooms, excursions, and flight tickets&#10;- Performed shell-based debugging to verify DraftBooking item saving" />
     <MESSAGE value="I redid the excursions, finished everything with the basket, I'm starting with the train tickets" />
     <MESSAGE value="minor day-to-day improvements" />
-    <option name="LAST_COMMIT_MESSAGE" value="minor day-to-day improvements" />
+    <MESSAGE value="chore: Work summary for 21.05.2025 for TripNest&#10;&#10;• Shopping Cart  &#10;  – Completed adding flight tickets to the cart  &#10;  – Implemented adding hotel room bookings  &#10;  – Added excursions to the cart  &#10;&#10;• Admin Panel  &#10;  – Fixed display and order management issues  &#10;  – Improved field validation and access control handling  &#10;&#10;• Trains  &#10;  – Started implementing train ticket purchases  &#10;  – Designed and fleshed out the basic structure of train modules  &#10;&#10;Closes: 94/100% for coursework" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: Work summary for 21.05.2025 for TripNest&#10;&#10;• Shopping Cart  &#10;  – Completed adding flight tickets to the cart  &#10;  – Implemented adding hotel room bookings  &#10;  – Added excursions to the cart  &#10;&#10;• Admin Panel  &#10;  – Fixed display and order management issues  &#10;  – Improved field validation and access control handling  &#10;&#10;• Trains  &#10;  – Started implementing train ticket purchases  &#10;  – Designed and fleshed out the basic structure of train modules  &#10;&#10;Closes: 94/100% for coursework" />
   </component>
 </project>

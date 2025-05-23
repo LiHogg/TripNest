@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Детали поезда {{ train.train_number }}</title>
+    <link rel="stylesheet" href="{% static 'transport/css/train_detail.css' %}">
+</head>
+<body>
+    <header>
+        <a href="/">
+            <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
+        </a>
+        <nav>
+            <ul>
+                <li><a href="{% url 'user_profile:profile' %}">Главная</a></li>
+                <li><a href="{% url 'hotel:hotel_list' %}">Отели</a></li>
+                <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
+                <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
+                <li><a href="{% url 'trip:coming_soon' %}">Заказ еды</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="{% url 'booking:cart' %}" class="btn">Корзина</a>
+            <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+            <form action="{% url 'logout' %}" method="post" class="logout-form" style="margin: 0;">
+                {% csrf_token %}
+                <button type="submit" class="btn logout-btn">Выйти</button>
+            </form>
+        </div>
+    </header>
+
+    <div class="train-detail-container">
+        <a href="{% url 'transport:train_list' %}" class="back-link">← К списку поездов</a>
+
+        <div class="train-header">
+            <div class="train-main-info">
+                <h1>Поезд {{ train.train_number }}</h1>
+                <div class="train-meta">
+                    <span><b>Компания:</b> {{ train.operator }}</span>
+                    <span><b>Дата отправления:</b> {{ train.departure_date|date:"d.m.Y H:i" }}</span>
+                    <span><b>Откуда:</b> {{ train.departure_city }}, {{ train.departure_city.country }}</span>
+                    <span><b>Куда:</b> {{ train.arrival_city }}, {{ train.arrival_city.country }}</span>
+                    <span><b>Время прибытия:</b> {{ train.arrival_date|date:"d.m.Y H:i" }}</span>
+                    <span><b>Длительность:</b> {{ train.duration }}</span>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <div class="tickets-section">
+            <h2>Доступные билеты</h2>
+            <div class="ticket-list">
+                {% for ticket in tickets %}
+                    <div class="ticket-card">
+                        <div class="class">Класс: {{ ticket.get_train_class_display }}</div>
+                        <div class="seat">Место: {{ ticket.seat_number }}</div>
+                        <div class="price">Цена: {{ ticket.price }} ₽</div>
+                        <div class="status">
+                            {% if ticket.is_booked %}
+                                <span class="booked">Занято</span>
+                            {% else %}
+                                <span class="free">Свободно</span>
+                                <form method="post" action="{% url 'booking:add_to_cart' ticket.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit">В корзину</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>Билеты не найдены.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

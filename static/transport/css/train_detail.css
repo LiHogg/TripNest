@@ -1,0 +1,241 @@
+body {
+    background: #161616;
+    color: #fff;
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px 14px 34px;
+    background: #131313;
+}
+
+.logo-img {
+    height: 32px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.train-detail-container {
+    max-width: 1050px;
+    margin: 48px auto 44px auto;
+    background: #1e1e1e;
+    border-radius: 30px;
+    box-shadow: 0 4px 48px 0 #6829b52b;
+    padding: 44px 52px 40px 52px;
+}
+
+.train-header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.train-main-info h1 {
+    color: #fce643;
+    font-size: 2.4rem;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.train-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 54px;
+    margin-bottom: 12px;
+}
+
+.train-meta span {
+    color: #fff;
+    font-size: 1.08rem;
+    line-height: 1.6;
+}
+
+hr {
+    border: none;
+    height: 2px;
+    background: #9643fc;
+    margin: 34px 0 36px 0;
+    border-radius: 1.5px;
+    opacity: 0.3;
+}
+
+.tickets-section h2 {
+    color: #9643fc;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.ticket-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+    gap: 30px 28px;
+}
+
+.ticket-card {
+    background: #232325;
+    border-radius: 18px;
+    padding: 28px 24px 22px 24px;
+    color: #fff;
+    box-shadow: 0 4px 18px 0 #6829b516;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow .18s, border-color .18s;
+    border: 2px solid transparent;
+    position: relative;
+}
+
+.ticket-card:hover {
+    border-color: #9643FC;
+    box-shadow: 0 0 38px 0 #6829b560;
+}
+
+.ticket-card .class {
+    color: #fce643;
+    font-weight: 700;
+    margin-bottom: 7px;
+    font-size: 1.17rem;
+}
+.ticket-card .seat {
+    color: #fff;
+    margin-bottom: 6px;
+    font-size: 1.06rem;
+}
+.ticket-card .price {
+    color: #9643fc;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+.ticket-card .status {
+    margin-top: 10px;
+    font-size: 1.01rem;
+}
+
+.status .booked {
+    color: #e15555;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.status .free {
+    color: #38e97a;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-right: 9px;
+}
+
+.ticket-card button {
+    background: #9643fc;
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    font-size: 1.08rem;
+    font-weight: 700;
+    padding: 10px 24px;
+    margin-top: 7px;
+    cursor: pointer;
+    transition: background .19s, color .19s;
+}
+.ticket-card button:hover {
+    background: #fce643;
+    color: #161616;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 35px;
+    font-size: 1.18rem;
+    color: #fce643;
+    text-decoration: none;
+    border: 2px solid #9643fc;
+    border-radius: 13px;
+    padding: 9px 22px;
+    background: transparent;
+    transition: background .18s, color .18s, border .18s;
+    font-weight: 600;
+}
+.back-link:hover {
+    background: #fce643;
+    color: #161616;
+    border: 2px solid #fce643;
+}
+
+/* Адаптив */
+@media (max-width: 900px) {
+    .train-detail-container {
+        padding: 20px 12px 24px 12px;
+    }
+    .ticket-list {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 26px;
+    padding-left: 0;
+    margin: 0;
+}
+nav ul li a {
+    color: #fce643;
+    text-decoration: none;
+    font-size: 1.02rem;
+    font-weight: 600;
+    transition: color .2s;
+}
+nav ul li a:hover {
+    color: #ffffff;
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 9px 18px;
+    background: #9643fc;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background .2s, color .2s;
+    border: none;
+    cursor: pointer;
+}
+.btn:hover {
+    background: #fce643;
+    color: #161616;
+}
+
+.logout-form button.logout-btn {
+    background: #9643fc;
+    color: #fff;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+}
+.logout-form button.logout-btn:hover {
+    background: #fce643;
+    color: #161616;
+}
+
+::-webkit-input-placeholder { color: #fce643; opacity: 1;}
+::-moz-placeholder          { color: #fce643; opacity: 1;}
+:-ms-input-placeholder      { color: #fce643; opacity: 1;}
+::placeholder              { color: #fce643; opacity: 1;}

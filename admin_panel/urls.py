@@ -36,9 +36,17 @@ urlpatterns = [
     path('excursion/edit/<int:pk>/',   views.excursion_edit,   name='admin_excursion_edit'),
     path('excursion/delete/<int:pk>/', views.excursion_delete, name='admin_excursion_delete'),
 
+    # === FLIGHT CRUD ===
     path('flights/', views.flight_admin_list, name='flight_list'),
     path('flights/create/', views.flight_admin_create, name='flight_create'),
     path('flights/<int:pk>/edit/', views.flight_admin_update, name='flight_update'),
     path('flights/<int:pk>/delete/', views.flight_admin_delete, name='flight_delete'),
+
+    # === TRAIN CRUD ===
+
+    path('trains/', views.train_list, name='train_list'),
+    path('trains/create/', views.train_create, name='train_create'),
+    path('trains/<int:pk>/edit/', views.train_edit, name='train_edit'),
+    path('trains/<int:pk>/delete/', views.train_delete, name='train_delete'),
 
 ]

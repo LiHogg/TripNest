@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>ЖД билеты — TripNest</title>
+    <link rel="stylesheet" href="{% static 'transport/css/train_list.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+</head>
+<body>
+<header>
+    <a href="/">
+        <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
+    </a>
+    <nav>
+        <ul>
+            <li><a href="{% url 'user_profile:profile' %}">Главная</a></li>
+            <li><a href="{% url 'hotel:hotel_list' %}">Отели</a></li>
+            <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
+            <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
+            <li><a href="{% url 'trip:coming_soon' %}">Заказ еды</a></li>
+        </ul>
+    </nav>
+    <div class="auth-buttons">
+        <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+        <form action="{% url 'logout' %}" method="post" class="logout-form">
+            {% csrf_token %}
+            <button type="submit" class="btn logout-btn">Выйти</button>
+        </form>
+    </div>
+</header>
+
+<main>
+    <div class="filter-image-wrapper">
+        <div class="train-search">
+            <h1>Поиск ЖД билетов</h1>
+            <form method="get" class="train-filter-form" id="train-filter-form">
+                <div class="filter-row">
+                    <div>
+                        <label>Страна отправления</label>
+                        <select name="departure_country" id="departure-country" data-selected="{{ request.GET.departure_country }}">
+                            <option value="">Все</option>
+                            {% for country in countries %}
+                                <option value="{{ country.id }}" {% if country.id|stringformat:"s" == request.GET.departure_country %}selected{% endif %}>{{ country.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Город отправления</label>
+                        <select name="departure_city" id="departure-city" data-selected="{{ request.GET.departure_city }}">
+                            <option value="">Все</option>
+                            {% for city in departure_cities %}
+                                <option value="{{ city.id }}" {% if city.id|stringformat:"s" == request.GET.departure_city %}selected{% endif %}>{{ city.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Страна назначения</label>
+                        <select name="arrival_country" id="arrival-country" data-selected="{{ request.GET.arrival_country }}">
+                            <option value="">Все</option>
+                            {% for country in countries %}
+                                <option value="{{ country.id }}" {% if country.id|stringformat:"s" == request.GET.arrival_country %}selected{% endif %}>{{ country.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Город назначения</label>
+                        <select name="arrival_city" id="arrival-city" data-selected="{{ request.GET.arrival_city }}">
+                            <option value="">Все</option>
+                            {% for city in arrival_cities %}
+                                <option value="{{ city.id }}" {% if city.id|stringformat:"s" == request.GET.arrival_city %}selected{% endif %}>{{ city.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Компания</label>
+                        <select name="operator">
+                            <option value="">Все</option>
+                            {% for op in operators %}
+                                <option value="{{ op }}" {% if request.GET.operator == op %}selected{% endif %}>{{ op }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Дата отправления</label>
+                        <input type="date" name="departure_date" value="{{ request.GET.departure_date }}">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn">Найти</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="train-img-block">
+            <img src="{% static 'img/train.png' %}" alt="Поезд TripNest">
+        </div>
+    </div>
+
+    <div class="train-list">
+        {% if trains %}
+            {% for train in trains %}
+                <div class="ticket-card" onclick="window.location.href='{% url 'transport:train_detail' train.pk %}';">
+                    <div class="ticket-header">
+                        <span class="train-number">{{ train.train_number }}</span>
+                        <span class="operator">{{ train.operator }}</span>
+                    </div>
+                    <div class="ticket-info">
+                        <div><span class="label">Откуда:</span> {{ train.departure_city.name }}, {{ train.departure_city.country.name }}</div>
+                        <div><span class="label">Куда:</span> {{ train.arrival_city.name }}, {{ train.arrival_city.country.name }}</div>
+                        <div><span class="label">Отправление:</span> {{ train.departure_date|date:'d.m.Y H:i' }}</div>
+                        <div><span class="label">Прибытие:</span> {{ train.arrival_date|date:'d.m.Y H:i' }}</div>
+                        <div><span class="label">Длительность:</span> {{ train.duration }}</div>
+                        <div><span class="label">Статус:</span> {{ train.get_status_display }}</div>
+                    </div>
+                    <button class="add-to-cart">Подробнее</button>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="color:#fce643;font-size:1.18rem;text-align:center;">Нет доступных поездов по выбранным параметрам.</p>
+        {% endif %}
+    </div>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
+        <p>TripNest &copy; 2025. Все права защищены.</p>
+    </div>
+</footer>
+<script src="{% static 'transport/js/city_filter.js' %}"></script>
+
+</body>
+</html>

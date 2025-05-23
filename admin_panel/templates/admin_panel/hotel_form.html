@@ -1,51 +1,84 @@
-<h2>{{ отели }}</h2>
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static 'admin_panel/css/style.css' %}">
+</head>
+<body>
+
+<h2>{{ title }}</h2>
 <a href="{% url 'admin_panel:admin_hotel_list' %}">← Назад к списку отелей</a>
 
 <form method="post" enctype="multipart/form-data">
   {% csrf_token %}
 
   <!-- Основная форма отеля -->
-  {{ form.as_p }}
+  <fieldset style="border:1px solid #ccc; padding:20px; margin-bottom:30px;">
+    <legend><strong>Основная информация об отеле</strong></legend>
+    {{ form.non_field_errors }}
+    {% for hidden in form.hidden_fields %}
+      {{ hidden }}
+    {% endfor %}
+
+    <p>{{ form.name.label_tag }}<br>{{ form.name }}</p>
+    <p>{{ form.description.label_tag }}<br>{{ form.description }}</p>
+    <p>{{ form.city.label_tag }}<br>{{ form.city }}</p>
+    <p>{{ form.address.label_tag }}<br>{{ form.address }}</p>
+    <p>{{ form.rating.label_tag }}<br>{{ form.rating }}</p>
+    <p>{{ form.price.label_tag }}<br>{{ form.price }}</p>
+    <p>{{ form.for_kids.label_tag }}<br>{{ form.for_kids }}</p>
+
+    <p>
+      {{ form.image.label_tag }}<br>
+      {% if form.instance.image %}
+        <em>Текущее изображение:</em><br>
+        <img src="{{ form.instance.image.url }}" height="120"><br>
+      {% endif %}
+      Изменить: {{ form.image }}
+    </p>
+
+    <hr>
+    <h4>Номера по классам</h4>
+    <p>{{ form.standard_rooms.label_tag }}<br>{{ form.standard_rooms }}</p>
+    <p>{{ form.superior_rooms.label_tag }}<br>{{ form.superior_rooms }}</p>
+    <p>{{ form.deluxe_rooms.label_tag }}<br>{{ form.deluxe_rooms }}</p>
+    <p>{{ form.suite_rooms.label_tag }}<br>{{ form.suite_rooms }}</p>
+    <p>{{ form.presidential_rooms.label_tag }}<br>{{ form.presidential_rooms }}</p>
+  </fieldset>
 
   <hr>
   <h3>Классы номеров</h3>
   {{ formset.management_form }}
+  {{ formset.non_form_errors }}
 
-{% for form in formset %}
-  <fieldset style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px;">
+  {% for f in formset %}
+    <fieldset style="border:1px solid #ccc; padding:15px; margin-bottom:15px;">
+      {# обязательно рендерим скрытые поля, в том числе ID и DELETE #}
+      {% for hidden in f.hidden_fields %}
+        {{ hidden }}
+      {% endfor %}
 
-    <div>
-      {{ form.room_class.label_tag }}<br>
-      {{ form.room_class }}
-    </div>
+      <p>{{ f.room_class.label_tag }}<br>{{ f.room_class }}</p>
+      <p>{{ f.description.label_tag }}<br>{{ f.description }}</p>
+      <p>{{ f.price_per_night.label_tag }}<br>{{ f.price_per_night }}</p>
 
-    <div>
-      {{ form.description.label_tag }}<br>
-      {{ form.description }}
-    </div>
+      <p>
+        {{ f.image.label_tag }}<br>
+        {% if f.instance.image %}
+          <em>Текущее изображение:</em><br>
+          <img src="{{ f.instance.image.url }}" height="100"><br>
+        {% endif %}
+        Изменить: {{ f.image }}
+      </p>
 
-    <div>
-      {{ form.price_per_night.label_tag }}<br>
-      {{ form.price_per_night }}
-    </div>
-
-    <div>
-      {{ form.image.label_tag }}<br>
-      {{ form.image }}
-      {% if form.instance.image %}
-        <br>
-        <img src="{{ form.instance.image.url }}" alt="Текущее изображение" height="100">
-      {% endif %}
-    </div>
-
-    <div>
-      {{ form.DELETE }} {{ form.DELETE.label }}
-    </div>
-
-  </fieldset>
-{% endfor %}
-
+      <p>{{ f.DELETE }} {{ f.DELETE.label }}</p>
+    </fieldset>
+  {% endfor %}
 
   <button type="submit">Сохранить</button>
 </form>
 
+</body>
+</html>
