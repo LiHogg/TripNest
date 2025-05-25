@@ -1,153 +1,284 @@
-/* Базовые стили */
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #171717;
-    color: #e0e0e0;
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    background-color: #161616;
+    color: #fce643;
     margin: 0;
     padding: 0;
 }
 
 /* ===== HEADER ===== */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.header {
     background-color: #1C1C1C;
-    padding: 10px 40px;
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    box-sizing: border-box;
 }
-
-/* Логотип слева */
-.navbar-logo img {
-    height: 60px;
-}
-
-/* Центрированное меню */
-.navbar-menu {
+.container {
     display: flex;
-    gap: 30px;
-    justify-content: center;
-    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 40px;
+    min-height: 68px;
+    position: relative;
+}
+.logo-img {
+    height: 32px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.desktop-nav {
+    display: flex !important;
+    gap: 28px;
+    margin-left: 40px;
+}
+.desktop-nav a {
+    color: #fce643;
+    font-weight: 600;
+    font-size: 1.16rem;
+    text-decoration: none;
+    transition: color .18s;
+    border-radius: 8px;
+    padding: 7px 16px;
+}
+.desktop-nav a:hover { color: #9643fc; background: #191919; }
+.desktop-auth { display: flex !important; gap: 16px; }
+.desktop-auth .btn {
+    border: 2px solid #9643fc;
+    background: transparent;
+    color: #fce643;
+    border-radius: 12px;
+    padding: 7px 22px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-left: 6px;
+    cursor: pointer;
+    transition: background .18s, color .18s, border .18s;
+    text-decoration: none;
+}
+.desktop-auth .btn:hover {
+    background: #fce643;
+    color: #161616;
+    border: 2px solid #fce643;
 }
 
-.navbar-menu a {
+/* ======== Кнопка бургер-меню ======== */
+.burger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 14px;
+    right: 32px;
+    width: 52px;
+    height: 52px;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    z-index: 120;
+    padding: 0;
+    transition: background 0.18s;
+}
+.burger-btn span {
+    display: block;
+    height: 7px;
+    width: 38px;
+    margin: 5px 0;
+    background: #fce643;
+    border-radius: 3px;
+    transition: 0.3s;
+}
+@media (max-width: 1024px) {
+    .burger-btn { display: flex !important; }
+    .desktop-nav, .desktop-auth { display: none !important; }
+}
+
+/* ======== Бургер-меню ======== */
+.burger-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 75vw;
+    max-width: 320px;
+    height: 100vh;
+    background: #232325;
+    padding: 36px 20px 20px 20px;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.16);
+    z-index: 110;
+    flex-direction: column;
+    transition: transform 0.3s;
+    transform: translateX(100%);
+}
+.burger-menu.open { display: flex !important; transform: translateX(0);}
+.menu-overlay {
+    display: none;
+    position: fixed;
+    z-index: 101;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(23, 23, 23, 0.7);
+}
+.menu-overlay.open { display: block !important; }
+.nav-list { padding: 0; margin: 0; list-style: none; display: flex; flex-direction: column; gap: 16px;}
+.burger-menu .nav-list li a {
     color: #fce643;
     text-decoration: none;
-    font-weight: bold;
-    font-size: 16px;
-    transition: color 0.3s ease;
-}
-
-.navbar-menu a:hover {
-    color: #ffffff;
-}
-
-/* Кнопка "Выйти" справа */
-.navbar-exit {
-    display: flex;
-    align-items: center;
-}
-
-.logout-btn {
-    color: #9643FC;
-    font-weight: bold;
-    text-decoration: none;
-    border: 1px solid #9643FC;
-    padding: 8px 16px;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 10px 0 10px 8px;
     border-radius: 8px;
-    transition: background-color 0.3s ease;
+    display: block;
+    transition: color 0.2s, background 0.2s;
 }
-
-.logout-btn:hover {
-    background-color: #9643FC;
-    color: white;
+.burger-menu .nav-list li a:hover { color: #9643FC; background: #232323;}
+.burger-menu .auth-buttons {
+    display: flex; flex-direction: column; gap: 10px; margin-top: 22px;
 }
-
-/* ===== PROFILE ===== */
-.profile-info {
-    width: 80%;
-    margin: 20px auto;
-    background-color: #2C2C2C;
+.burger-menu .auth-buttons .btn {
+    width: 100%;
+    margin: 0;
+    background: transparent;
+    color: #9643FC;
+    border: 2px solid #9643FC;
     border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 12px 0;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: left;
+    transition: background 0.15s, color 0.15s;
+    box-sizing: border-box;
+    display: block;
 }
+.burger-menu .auth-buttons .btn:hover { background: #9643FC; color: #fce643; }
 
+/* ===== PROFILE MAIN ===== */
+main {
+    padding-top: 110px;
+}
+.profile-info {
+    width: 90%;
+    max-width: 650px;
+    margin: 28px auto 28px auto;
+    background: #232325;
+    border-radius: 22px;
+    padding: 32px 36px 26px 36px;
+    box-shadow: 0 4px 24px 0 #6829b530;
+}
 .profile-header {
     display: flex;
     align-items: center;
+    gap: 25px;
+    margin-bottom: 12px;
 }
-
-.profile-header img {
-    width: 100px;
-    height: 100px;
+.avatar-img {
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
-    margin-right: 20px;
+    border: 3px solid #9643FC;
+    box-shadow: 0 2px 24px #9643fc26;
+    object-fit: cover;
 }
-
 .profile-details p {
-    margin: 5px 0;
-    font-size: 1.2em;
+    margin: 5px 0 5px 0;
+    font-size: 1.17em;
+    color: #fce643;
+    font-weight: 500;
+    letter-spacing: 0.03em;
 }
 
+/* ==== Кнопки действий ==== */
 .profile-actions {
-    margin-top: 20px;
+    margin-top: 18px;
     display: flex;
-    gap: 15px;
+    gap: 16px;
 }
-
-.profile-actions button {
-    background-color: #9643FC;
+.profile-actions .btn {
+    background: #9643fc;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    color: white;
+    padding: 12px 30px;
+    border-radius: 13px;
+    color: #fce643;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 1.05em;
+    font-weight: 700;
+    transition: background .18s, color .18s;
+    border: 2px solid #9643FC;
 }
-
-.profile-actions button:hover {
-    background-color: #7b34d1;
+.profile-actions .btn:hover {
+    background: #fce643;
+    color: #161616;
+    border: 2px solid #fce643;
 }
 
 /* ===== HISTORY ===== */
 .history-section {
-    width: 80%;
-    margin: 20px auto;
+    width: 90%;
+    max-width: 700px;
+    margin: 28px auto 0 auto;
 }
-
 .history-section h2 {
     margin-bottom: 15px;
+    color: #9643FC;
+    font-size: 2rem;
+    font-weight: 700;
 }
-
 .history-buttons {
     display: flex;
+    flex-wrap: wrap;
     gap: 15px;
 }
-
+.history-buttons .btn,
 .history-buttons button {
     flex: 1;
-    background-color: #6829b5;
+    background: #6829b5;
     border: none;
     padding: 15px;
-    border-radius: 8px;
-    color: white;
+    border-radius: 10px;
+    color: #fce643;
     cursor: pointer;
     font-size: 1em;
+    font-weight: 700;
+    border: 2px solid #6829b5;
+    transition: background .16s, color .16s;
 }
-
+.history-buttons .btn:hover,
 .history-buttons button:hover {
-    background-color: #5a249a;
+    background: #fce643;
+    color: #6829b5;
+    border: 2px solid #fce643;
 }
 
 /* ===== FOOTER ===== */
 footer {
+    margin-top: 50px;
     background-color: #1C1C1C;
-    color: #fce643;
+    padding: 36px 0 19px 0;
     text-align: center;
-    padding: 20px;
-    margin-top: 40px;
+    color: #fce643;
 }
-
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+.footer-content .logo-img {
+    height: 36px;
+    margin-bottom: 6px;
+    width: auto;
+}
+footer p {
+    color: #fce643;
+    font-size: 16px;
+}
 .social-icons a {
     margin: 0 10px;
     color: #fce643;
@@ -161,32 +292,60 @@ footer {
     right: 20px;
     z-index: 1000;
 }
-
 .toast-message {
-    background-color: #9643FC;
+    background: #9643FC;
     color: #fce643;
     border-radius: 8px;
     padding: 15px 20px;
     margin-bottom: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     opacity: 0.95;
     font-size: 16px;
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transition: opacity 0.3s, transform 0.3s;
 }
+.toast-message.success { background: #4CAF50; }
+.toast-message.error   { background: #f44336; }
+.toast-message.info    { background: #2196F3; }
+.toast-message.hide    { opacity: 0; transform: translateY(-20px); }
 
-.toast-message.success {
-    background-color: #4CAF50;
+/* ======= АДАПТИВ ======= */
+@media (max-width: 1024px) {
+    .container { padding: 0 12px; min-height: 60px;}
+    .logo-img { height: 28px; }
+    .desktop-nav { gap: 18px; margin-left: 12px; }
+    .desktop-nav a { font-size: 16px; padding: 6px 9px; }
+    .desktop-auth .btn { font-size: 14px; padding: 7px 13px; }
+    .burger-btn { right: 14px !important; top: 7px !important;}
+    .burger-btn span { height: 7px; width: 32px; margin: 5px 0; }
+    .burger-menu { width: 75vw; max-width: 320px; padding: 36px 20px 20px 20px; }
+    .profile-info, .history-section { padding: 14px 5vw; }
+    .profile-info, .history-section { max-width: 95vw;}
 }
-
-.toast-message.error {
-    background-color: #f44336;
+@media (max-width: 600px) {
+    .container { padding: 0 3vw; min-height: 44px;}
+    .logo-img { height: 18px; }
+    .burger-btn { right: 6vw !important; top: 6px !important;}
+    .burger-btn span { height: 6px; width: 26px; margin: 4px 0;}
+    .burger-menu { width: 99vw; max-width: 340px; padding: 29px 13px 13px 13px; }
+    main { padding-top: 59px; }
+    .profile-info, .history-section {
+        width: 98vw;
+        max-width: 99vw;
+        padding: 7px 2vw 7px 2vw;
+        margin: 11px auto 0 auto;
+        border-radius: 10px;
+    }
+    .profile-header { flex-direction: column; align-items: flex-start; gap: 13px;}
+    .avatar-img { width: 64px; height: 64px; }
+    .profile-details p { font-size: 1em; }
+    .profile-actions { flex-direction: column; gap: 10px;}
+    .profile-actions .btn { font-size: 0.96em; padding: 11px 2vw; }
+    .history-buttons { flex-direction: column; gap: 10px;}
+    .history-section h2 { font-size: 1.15rem; margin-bottom: 7px;}
+    .footer-content .logo-img { height: 18px; }
+    footer p { font-size: 11px;}
 }
-
-.toast-message.info {
-    background-color: #2196F3;
-}
-
-.toast-message.hide {
-    opacity: 0;
-    transform: translateY(-20px);
-}
+::-webkit-input-placeholder { color: #fce643; opacity: 1;}
+::-moz-placeholder          { color: #fce643; opacity: 1;}
+:-ms-input-placeholder      { color: #fce643; opacity: 1;}
+::placeholder              { color: #fce643; opacity: 1;}

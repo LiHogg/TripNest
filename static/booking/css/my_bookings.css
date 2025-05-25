@@ -1,0 +1,218 @@
+body {
+    background: #171717;
+    color: #fce643;
+    margin: 0;
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+}
+
+/* HEADER */
+header {
+    background: #1C1C1C;
+    color: #fce643;
+    padding: 30px 0 18px 0;
+    text-align: center;
+    box-shadow: 0 3px 17px #0003;
+}
+header h1 {
+    margin: 0;
+    font-size: 2.1em;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+/* ФИЛЬТР-КНОПКИ */
+.filter-buttons {
+    display: flex;
+    gap: 22px;
+    justify-content: center;
+    margin: 38px 0 26px 0;
+    flex-wrap: wrap;
+}
+.filter-btn {
+    background: #9643FC;
+    color: #fce643;
+    padding: 13px 31px;
+    border-radius: 13px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05em;
+    font-family: inherit;
+    border: none;
+    outline: none;
+    box-shadow: 0 2px 13px rgba(150,67,252,0.11);
+    transition: background 0.22s, color 0.22s;
+    margin-bottom: 10px;
+    cursor: pointer;
+    display: inline-block;
+}
+.filter-btn:hover,
+.filter-btn:focus {
+    background: #fce643;
+    color: #232325;
+}
+
+/* КАЛЕНДАРЬ */
+.calendar-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 37px;
+}
+.calendar-container {
+    background: #232323;
+    border-radius: 19px;
+    padding: 23px;
+    box-shadow: 0 2px 16px rgba(150,67,252,0.11);
+    min-width: 315px;
+    max-width: 390px;
+}
+.has-booking .datepicker-cell-content {
+    background: #fce643 !important;
+    color: #232323 !important;
+    border-radius: 50% !important;
+    font-weight: bold;
+    box-shadow: 0 0 0 2px #9643FC44;
+    border: none;
+}
+.datepicker-cell-content {
+    font-weight: 500;
+}
+
+/* POPUP */
+.booking-popup {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1C1C1C;
+    color: #fce643;
+    padding: 36px 32px 27px 32px;
+    border-radius: 18px;
+    box-shadow: 0 6px 42px #000c;
+    min-width: 320px;
+    max-width: 92vw;
+    min-height: 150px;
+    text-align: left;
+    animation: fadeIn .22s;
+}
+.booking-popup h3 {
+    margin-top: 0;
+    color: #fce643;
+    font-size: 1.19em;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+.booking-popup p {
+    color: #fce643;
+    margin: 6px 0 7px 0;
+    line-height: 1.3;
+    font-size: 1.07em;
+}
+.booking-popup .close-btn {
+    background: #9643FC;
+    color: #fce643;
+    border: none;
+    border-radius: 10px;
+    padding: 9px 24px;
+    font-size: 1.07em;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 19px;
+    float: right;
+    transition: background 0.2s, color 0.2s;
+}
+.booking-popup .close-btn:hover,
+.booking-popup .close-btn:focus {
+    background: #fce643;
+    color: #232325;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -57%);}
+    to { opacity: 1; transform: translate(-50%, -50%);}
+}
+
+/* Мелкие служебные */
+.booking-list { display: none; }
+
+/* ========= Планшеты ========== */
+@media (max-width: 1000px) and (min-width: 601px) {
+    header h1 {
+        font-size: 1.22em;
+        padding: 15px 0 13px 0;
+    }
+    .filter-buttons {
+        gap: 18px;
+        margin: 18px 0 13px 0;
+    }
+    .filter-btn {
+        padding: 10px 7vw;
+        font-size: 1.03em;
+        border-radius: 10px;
+    }
+    .calendar-section {
+        margin-bottom: 15px;
+    }
+    .calendar-container {
+        padding: 10px 4vw;
+        min-width: 225px;
+        max-width: 98vw;
+        border-radius: 13px;
+    }
+    .booking-popup {
+        min-width: 180px;
+        max-width: 90vw;
+        padding: 20px 8vw 14px 8vw;
+        border-radius: 13px;
+    }
+    .booking-popup h3 { font-size: 1em; }
+    .booking-popup p { font-size: 0.98em; }
+}
+
+/* ========= Телефоны ========== */
+@media (max-width: 600px) {
+    body {
+        font-size: 0.97em;
+    }
+    header {
+        padding: 12px 0 6px 0;
+    }
+    header h1 {
+        font-size: 1em;
+        padding: 0;
+        margin-bottom: 0;
+    }
+    .filter-buttons {
+        flex-direction: column;
+        gap: 9px;
+        margin: 10px 0 9px 0;
+        align-items: stretch;
+    }
+    .filter-btn {
+        width: 98vw;
+        box-sizing: border-box;
+        padding: 11px 0;
+        font-size: 0.97em;
+        border-radius: 8px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    .calendar-section {
+        margin-bottom: 11px;
+    }
+    .calendar-container {
+        padding: 5px 1vw;
+        min-width: 58vw;
+        max-width: 99vw;
+        border-radius: 8px;
+    }
+    .booking-popup {
+        min-width: 125px;
+        max-width: 99vw;
+        padding: 10px 4vw 7px 4vw;
+        border-radius: 7px;
+    }
+    .booking-popup h3 { font-size: 0.97em; }
+    .booking-popup p { font-size: 0.96em; }
+}

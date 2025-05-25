@@ -6,11 +6,10 @@ app_name = 'user_profile'
 
 urlpatterns = [
     path('register/', register, name='register'),
-    path('login/', user_login, name='custom_login'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='trip:home_guest'), name='logout'),
     path('profile/', profile_view, name='profile'),
     path('profile/details/', profile_details_view, name='profile_details'),
-    path('profile/edit/', edit_profile_view, name='edit_profile'),
-    path('password_reset/', auth_views.PasswordResetView.as_view(template_name='user_profile/password_reset.html'),
+    path('profile/edit/', edit_profile_view, name='edit_profile'),    path('password_reset/', auth_views.PasswordResetView.as_view(template_name='user_profile/password_reset.html'),
          name='password_reset'),
     path('password_reset/done/',
          auth_views.PasswordResetDoneView.as_view(template_name='user_profile/password_reset_done.html'),

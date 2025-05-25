@@ -4,29 +4,54 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48dc6d84-0096-48af-a9d3-a6abdcbc6f52" name="Changes" comment="chore: Work summary for 21.05.2025 for TripNest&#10;&#10;• Shopping Cart  &#10;  – Completed adding flight tickets to the cart  &#10;  – Implemented adding hotel room bookings  &#10;  – Added excursions to the cart  &#10;&#10;• Admin Panel  &#10;  – Fixed display and order management issues  &#10;  – Improved field validation and access control handling  &#10;&#10;• Trains  &#10;  – Started implementing train ticket purchases  &#10;  – Designed and fleshed out the basic structure of train modules  &#10;&#10;Closes: 94/100% for coursework">
-      <change afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/train_confirm_delete.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/train_form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/train_list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/transport/css/train_detail.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/transport/css/train_list.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transport/templates/transport/train_detail.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transport/templates/transport/train_list.html" afterDir="false" />
+    <list default="true" id="48dc6d84-0096-48af-a9d3-a6abdcbc6f52" name="Changes" comment="chore: Work summary for 22.05.2025 for TripNest&#10;🔥 Admin panel overhaul &amp; ticket generation madness! 🔥  &#10;- Fixed hotel editing in admin panel – photo updates now work like a charm 📸  &#10;- Fully implemented train system structure with auto-ticket generation on schedule 🚆💥  &#10;&#10;🛠 Up next:  &#10;1. Finalize booking process flow 📅  &#10;2. Display available spots for excursions 🌍  &#10;3. Show free room counts per class in hotels 🏨  &#10;4. UI polish &amp; responsive tuning for mobile and tablet devices 📱📲  &#10;&#10;Closes: 97/100% for coursework">
+      <change afterPath="$PROJECT_DIR$/booking/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/booking/css/confirm_booking.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/booking/css/my_bookings.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/excursion/css/excursion_detail.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/img/excursion_preview.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/trip/icons/excursion.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/trip/icons/food.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/trip/icons/happy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/trip/icons/hotel.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/trip/icons/restaurant.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/trip/icons/transport.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/templates/admin_panel/hotel_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/templates/admin_panel/hotel_form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_panel/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin_panel/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TripNest/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/TripNest/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/booking/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking/templates/booking/booking_success.html" beforeDir="false" afterPath="$PROJECT_DIR$/booking/templates/booking/booking_success.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/booking/templates/booking/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/booking/templates/booking/cart.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calendar_app/templates/calendar_app/calendar.html" beforeDir="false" afterPath="$PROJECT_DIR$/calendar_app/templates/calendar_app/calendar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking/templates/booking/confirm_booking.html" beforeDir="false" afterPath="$PROJECT_DIR$/booking/templates/booking/confirm_booking.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking/templates/booking/my_bookings.html" beforeDir="false" afterPath="$PROJECT_DIR$/booking/templates/booking/my_bookings.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/booking/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/booking/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/excursion/templates/excursion/excursion_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/excursion/templates/excursion/excursion_detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/excursion/templates/excursion/excursion_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/excursion/templates/excursion/excursion_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/excursion/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/excursion/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hotel/templates/hotel/hotel_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/hotel/templates/hotel/hotel_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/trip/coming_soon.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/trip/coming_soon.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/transport/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/transport/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_profile/templates/user_profile/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/user_profile/templates/user_profile/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_profile/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_profile/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/booking/css/cart.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/booking/css/cart.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/excursion/css/excursion_list.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/excursion/css/excursion_list.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/hotel/css/hotel.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/hotel/css/hotel.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/transport/css/flight_detail.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/transport/css/flight_detail.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/transport/css/flightticket.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/transport/css/flightticket.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/transport/css/train_detail.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/transport/css/train_detail.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/transport/css/train_list.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/transport/css/train_list.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/transport/css/transport.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/transport/css/transport.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/trip/css/home.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/trip/css/home.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/trip/css/home_guest.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/trip/css/home_guest.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/user_profile/css/edit_profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/user_profile/css/edit_profile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/user_profile/css/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/user_profile/css/profile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/trip/home_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/trip/home_user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transport/templates/transport/flight_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/transport/templates/transport/flight_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transport/templates/transport/flightticket_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/transport/templates/transport/flightticket_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transport/templates/transport/train_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/transport/templates/transport/train_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transport/templates/transport/train_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/transport/templates/transport/train_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transport/templates/transport/transport_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/transport/templates/transport/transport_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trip/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/trip/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trip/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/trip/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_profile/templates/user_profile/edit_profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/user_profile/templates/user_profile/edit_profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_profile/templates/user_profile/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/user_profile/templates/user_profile/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_profile/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_profile/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,9 +62,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
+        <option value="HTML File" />
         <option value="Python Script" />
         <option value="CSS File" />
-        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -99,11 +124,11 @@
       <recent name="C:\Users\сергей\Desktop\CourseWork\TripNest\templates" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\сергей\Desktop\CourseWork\TripNest\transport" />
+      <recent name="C:\Users\сергей\Desktop\CourseWork\TripNest\static\trip\icons" />
       <recent name="C:\Users\сергей\Desktop\CourseWork\TripNest\static\img" />
+      <recent name="C:\Users\сергей\Desktop\CourseWork\TripNest\transport" />
       <recent name="C:\Users\сергей\Desktop\CourseWork\TripNest\static\excursion\img" />
       <recent name="C:\Users\сергей\Desktop\CourseWork\TripNest\media\avatars" />
-      <recent name="C:\Users\сергей\Desktop\CourseWork\TripNest\static\calendar_app" />
     </key>
   </component>
   <component name="RunManager">
@@ -167,7 +192,10 @@
       <workItem from="1747820176011" duration="1507000" />
       <workItem from="1747844615783" duration="136000" />
       <workItem from="1747926728250" duration="2394000" />
-      <workItem from="1747959902300" duration="9358000" />
+      <workItem from="1747959902300" duration="9758000" />
+      <workItem from="1747976018123" duration="605000" />
+      <workItem from="1748079503308" duration="13772000" />
+      <workItem from="1748155058119" duration="42863000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit of TripNest project&#10;&#10;- Set up Django project structure with virtual environment&#10;- Created base apps: trip (home), user (auth/profile), transport, hotel_booking, excursion_booking, etc.&#10;- Configured MySQL database and settings.py&#10;- Implemented custom user model with extended Profile (passport, driver license, phone, etc.)&#10;- Added user authentication (registration, login, logout)&#10;- Created templates for home (guest and logged in), profile, login, registration&#10;- Added static and media file handling&#10;- Set up custom admin panel with user/role management&#10;- Implemented responsive design and basic CSS theme&#10;- Connected email service for password reset&#10;- Prepared models and CRUD interfaces for hotel rooms and excursions&#10;&#10;TripNest — multi-functional travel assistant with booking, transport, and profile management">
       <option name="closed" value="true" />
@@ -297,7 +325,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747777568952</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="chore: Work summary for 22.05.2025 for TripNest&#10;🔥 Admin panel overhaul &amp; ticket generation madness! 🔥  &#10;- Fixed hotel editing in admin panel – photo updates now work like a charm 📸  &#10;- Fully implemented train system structure with auto-ticket generation on schedule 🚆💥  &#10;&#10;🛠 Up next:  &#10;1. Finalize booking process flow 📅  &#10;2. Display available spots for excursions 🌍  &#10;3. Show free room counts per class in hotels 🏨  &#10;4. UI polish &amp; responsive tuning for mobile and tablet devices 📱📲  &#10;&#10;Closes: 97/100% for coursework">
+      <option name="closed" value="true" />
+      <created>1747969760987</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1747969760987</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -311,6 +347,7 @@
     <MESSAGE value="I redid the excursions, finished everything with the basket, I'm starting with the train tickets" />
     <MESSAGE value="minor day-to-day improvements" />
     <MESSAGE value="chore: Work summary for 21.05.2025 for TripNest&#10;&#10;• Shopping Cart  &#10;  – Completed adding flight tickets to the cart  &#10;  – Implemented adding hotel room bookings  &#10;  – Added excursions to the cart  &#10;&#10;• Admin Panel  &#10;  – Fixed display and order management issues  &#10;  – Improved field validation and access control handling  &#10;&#10;• Trains  &#10;  – Started implementing train ticket purchases  &#10;  – Designed and fleshed out the basic structure of train modules  &#10;&#10;Closes: 94/100% for coursework" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: Work summary for 21.05.2025 for TripNest&#10;&#10;• Shopping Cart  &#10;  – Completed adding flight tickets to the cart  &#10;  – Implemented adding hotel room bookings  &#10;  – Added excursions to the cart  &#10;&#10;• Admin Panel  &#10;  – Fixed display and order management issues  &#10;  – Improved field validation and access control handling  &#10;&#10;• Trains  &#10;  – Started implementing train ticket purchases  &#10;  – Designed and fleshed out the basic structure of train modules  &#10;&#10;Closes: 94/100% for coursework" />
+    <MESSAGE value="chore: Work summary for 22.05.2025 for TripNest&#10; Admin panel overhaul &amp; ticket generation madness!   &#10;- Fixed hotel editing in admin panel – photo updates now work like a charm   &#10;- Fully implemented train system structure with auto-ticket generation on schedule   &#10;&#10; Up next:  &#10;1. Finalize booking process flow   &#10;2. Display available spots for excursions   &#10;3. Show free room counts per class in hotels   &#10;4. UI polish &amp; responsive tuning for mobile and tablet devices   &#10;&#10;Closes: 97/100% for coursework" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: Work summary for 22.05.2025 for TripNest&#10; Admin panel overhaul &amp; ticket generation madness!   &#10;- Fixed hotel editing in admin panel – photo updates now work like a charm   &#10;- Fully implemented train system structure with auto-ticket generation on schedule   &#10;&#10; Up next:  &#10;1. Finalize booking process flow   &#10;2. Display available spots for excursions   &#10;3. Show free room counts per class in hotels   &#10;4. UI polish &amp; responsive tuning for mobile and tablet devices   &#10;&#10;Closes: 97/100% for coursework" />
   </component>
 </project>

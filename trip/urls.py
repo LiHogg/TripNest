@@ -13,4 +13,5 @@ urlpatterns = [
     # 3) Страница “скоро будет”
     path('coming-soon/', views.coming_soon, name='coming_soon'),
     # …и другие урлы, если есть
+    path('home_guest/', views.home_guest, name='home_guest'),
 ]

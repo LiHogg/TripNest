@@ -1,81 +1,121 @@
-<!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Транспорт — TripNest</title>
     <link rel="stylesheet" href="{% static 'transport/css/transport.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
-    <!-- HEADER -->
-    <header>
+<body class="dark-theme">
+<header class="header">
+    <div class="container">
         <div class="logo">
-            <a href="/">
-                <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
-            </a>
+            <a href="/"><img src="{% static 'img/logo.png' %}" alt="TripNest Logo"></a>
         </div>
-        <nav>
-            <ul>
-                <li><a href="/">Главная</a></li>
-                <li><a href="{% url 'hotel:hotel_list' %}">Жильё</a></li>
-                <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
-                <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
-                <li><a href="{% url 'trip:coming_soon' %}">Заказ еды</a></li>
-            </ul>
+        <!-- Десктопное меню -->
+        <nav class="nav desktop-nav">
+            <a href="/">Главная</a>
+            <a href="{% url 'hotel:hotel_list' %}">Жильё</a>
+            <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
+            <a href="{% url 'transport:transport_list' %}">Транспорт</a>
         </nav>
-        <div class="auth-buttons">
+        <div class="auth-buttons desktop-auth">
             <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
-            <form action="{% url 'logout' %}" method="post" class="logout-form" style="margin: 0;">
+            <form id="logout-form-desktop" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
                 {% csrf_token %}
-                <button type="submit" class="btn logout-btn">Выйти</button>
             </form>
+            <a href="#" class="btn" onclick="document.getElementById('logout-form-desktop').submit(); return false;">Выйти</a>
         </div>
-    </header>
+        <!-- Кнопка-бургер справа -->
+        <button class="burger-btn" id="burgerBtn" aria-label="Меню">
+            <span></span><span></span><span></span>
+        </button>
+        <!-- Бургер-меню -->
+        <div class="burger-menu" id="burgerMenu">
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="{% url 'hotel:hotel_list' %}">Жильё</a></li>
+                    <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
+                    <li><a href="{% url 'transport:transport_list' %}">Транспорт</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+                    <form id="logout-form" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+                        {% csrf_token %}
+                    </form>
+                    <a href="#" class="btn" onclick="document.getElementById('logout-form').submit(); return false;">Выйти</a>
+                </div>
+            </nav>
+        </div>
+        <div class="menu-overlay" id="menuOverlay"></div>
+    </div>
+</header>
 
-    <main>
-        <section class="transport-main">
-            <h1>Выберите категорию транспорта</h1>
-            <div class="transport-cards">
-                <!-- Авиа -->
-                <div class="transport-card">
-                    <img src="{% static 'img/plane.png' %}" alt="Авиабилеты" style="width: 100px;">
-                    <h2>Авиабилеты</h2>
-                    <p>Покупка и бронирование авиабилетов</p>
-                    <a href="{% url 'transport:flight_list' %}" class="btn">Перейти</a>
-                </div>
-                <!-- ЖД -->
-                <div class="transport-card">
-                    <img src="{% static 'img/train.png' %}" alt="ЖД билеты" style="width: 100px;">
-                    <h2>ЖД билеты</h2>
-                    <p>Бронирование и покупка билетов на поезд</p>
-                    <a href="{% url 'transport:train_list' %}" class="btn">Перейти</a>
-                </div>
-                <!-- Автомобили -->
-                <div class="transport-card">
-                    <img src="{% static 'img/car.png' %}" alt="Авто" style="width: 100px;">
-                    <h2>Автомобили</h2>
-                    <p>Аренда автомобилей для путешествий</p>
-                    <a href="{% url 'transport:car_list' %}" class="btn">Перейти</a>
-                </div>
-                <!-- Мотоциклы -->
-                <div class="transport-card">
-                    <img src="{% static 'img/moto.png' %}" alt="Мотоциклы" style="width: 100px;">
-                    <h2>Мотоциклы</h2>
-                    <p>Аренда мотоциклов для поездок</p>
-                    <a href="{% url 'transport:moto_list' %}" class="btn">Перейти</a>
-                </div>
+<main>
+    <section class="transport-main">
+        <h1>Выберите категорию транспорта</h1>
+        <div class="transport-cards">
+            <!-- Авиа -->
+            <div class="transport-card">
+                <img src="{% static 'img/plane.png' %}" alt="Авиабилеты" style="width: 100px;">
+                <h2>Авиабилеты</h2>
+                <p>Покупка и бронирование авиабилетов</p>
+                <a href="{% url 'transport:flight_list' %}" class="btn">Перейти</a>
             </div>
-        </section>
-    </main>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-content">
-            <a href="/" class="logo">
-                <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img" style="height:40px;">
-            </a>
-            <p>© TripNest, 2025. Все права защищены.</p>
+            <!-- ЖД -->
+            <div class="transport-card">
+                <img src="{% static 'img/train.png' %}" alt="ЖД билеты" style="width: 100px;">
+                <h2>ЖД билеты</h2>
+                <p>Бронирование и покупка билетов на поезд</p>
+                <a href="{% url 'transport:train_list' %}" class="btn">Перейти</a>
+            </div>
+            <!-- Автомобили -->
+            <div class="transport-card">
+                <img src="{% static 'img/car.png' %}" alt="Авто" style="width: 100px;">
+                <h2>Автомобили</h2>
+                <p>Аренда автомобилей для путешествий</p>
+                <a href="{% url 'transport:car_list' %}" class="btn">Перейти</a>
+            </div>
+            <!-- Мотоциклы -->
+            <div class="transport-card">
+                <img src="{% static 'img/moto.png' %}" alt="Мотоциклы" style="width: 100px;">
+                <h2>Мотоциклы</h2>
+                <p>Аренда мотоциклов для поездок</p>
+                <a href="{% url 'transport:moto_list' %}" class="btn">Перейти</a>
+            </div>
         </div>
-    </footer>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <a href="/" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img" style="height:40px;">
+        </a>
+        <p>© TripNest, 2025. Все права защищены.</p>
+    </div>
+</footer>
+
+<!-- Burger JS -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const burgerBtn = document.getElementById("burgerBtn");
+  const burgerMenu = document.getElementById("burgerMenu");
+  const menuOverlay = document.getElementById("menuOverlay");
+
+  burgerBtn.addEventListener("click", function() {
+    burgerMenu.classList.toggle("open");
+    menuOverlay.classList.toggle("open");
+    document.body.classList.toggle("menu-open");
+  });
+  menuOverlay.addEventListener("click", function() {
+    burgerMenu.classList.remove("open");
+    menuOverlay.classList.remove("open");
+    document.body.classList.remove("menu-open");
+  });
+});
+</script>
 </body>
 </html>

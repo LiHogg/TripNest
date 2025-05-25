@@ -5,30 +5,60 @@
     <meta charset="UTF-8">
     <title>Детали рейса {{ flight.flight_number }}</title>
     <link rel="stylesheet" href="{% static 'transport/css/flight_detail.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <header>
-        <a href="/">
+<header class="header">
+    <div class="container">
+        <a href="/" class="logo">
             <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
         </a>
-        <nav>
-            <ul>
-                <li><a href="{% url 'user_profile:profile' %}">Главная</a></li>
-                <li><a href="{% url 'hotel:hotel_list' %}">Отели</a></li>
-                <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
-                <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
-                <li><a href="{% url 'trip:coming_soon' %}">Заказ еды</a></li>
-            </ul>
+        <!-- Десктопное меню -->
+        <nav class="desktop-nav">
+            <a href="/">Главная</a>
+            <a href="{% url 'hotel:hotel_list' %}">Отели</a>
+            <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
+            <a href="{% url 'transport:train_list' %}">ЖД билеты</a>
+            <a href="{% url 'transport:flight_list' %}">Авиабилеты</a>
         </nav>
-       <div class="auth-buttons">
+        <div class="auth-buttons desktop-auth">
             <a href="{% url 'booking:cart' %}" class="btn">Корзина</a>
             <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
-        <form action="{% url 'logout' %}" method="post" class="logout-form" style="margin: 0;">
-            {% csrf_token %}
-            <button type="submit" class="btn logout-btn">Выйти</button>
-        </form>
-       </div>
-    </header>
+            <form id="logout-form-desktop" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+                {% csrf_token %}
+            </form>
+            <a href="#" class="btn" onclick="document.getElementById('logout-form-desktop').submit(); return false;">Выйти</a>
+        </div>
+        <!-- Кнопка-бургер справа -->
+        <button class="burger-btn" id="burgerBtn" aria-label="Меню">
+            <span></span><span></span><span></span>
+        </button>
+        <!-- Бургер-меню -->
+        <div class="burger-menu" id="burgerMenu">
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="{% url 'hotel:hotel_list' %}">Отели</a></li>
+                    <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
+                    <li><a href="{% url 'transport:train_list' %}">ЖД билеты</a></li>
+                    <li><a href="{% url 'transport:flight_list' %}">Авиабилеты</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="{% url 'booking:cart' %}" class="btn">Корзина</a>
+                    <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+                    <form id="logout-form" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+                        {% csrf_token %}
+                    </form>
+                    <a href="#" class="btn" onclick="document.getElementById('logout-form').submit(); return false;">Выйти</a>
+                </div>
+            </nav>
+        </div>
+        <div class="menu-overlay" id="menuOverlay"></div>
+    </div>
+</header>
+
+<main>
     <div class="flight-detail-container">
         <a href="{% url 'transport:flight_list' %}" class="back-link">← К списку рейсов</a>
 
@@ -72,5 +102,30 @@
             </div>
         </div>
     </div>
+</main>
+<footer>
+    <div class="footer-content">
+        <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
+        <p>TripNest &copy; 2025. Все права защищены.</p>
+    </div>
+</footer>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const burgerBtn = document.getElementById("burgerBtn");
+  const burgerMenu = document.getElementById("burgerMenu");
+  const menuOverlay = document.getElementById("menuOverlay");
+
+  burgerBtn.addEventListener("click", function() {
+    burgerMenu.classList.toggle("open");
+    menuOverlay.classList.toggle("open");
+    document.body.classList.toggle("menu-open");
+  });
+  menuOverlay.addEventListener("click", function() {
+    burgerMenu.classList.remove("open");
+    menuOverlay.classList.remove("open");
+    document.body.classList.remove("menu-open");
+  });
+});
+</script>
 </body>
 </html>

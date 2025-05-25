@@ -1,0 +1,184 @@
+/* confirm_booking.css */
+:root {
+  --body-bg: #111;
+  --text-color: #fce643;
+  --brand-primary: #fce643;
+  --brand-secondary: #9643FC;
+  --bg-secondary: #1e1e1e;
+}
+
+body.dark-theme {
+  background-color: var(--body-bg);
+  color: var(--text-color);
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------------------- HEADER ---------------------- */
+.header {
+  background-color: var(--bg-secondary);
+  border-bottom: 2px solid #222;
+}
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  flex-wrap: wrap;
+}
+.logo img {
+  height: 40px;
+}
+.nav {
+  display: flex;
+  gap: 20px;
+}
+.nav a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  transition: color 0.2s;
+}
+.nav a:hover {
+  color: var(--brand-secondary);
+}
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+}
+.auth-buttons a,
+.auth-buttons button {
+  color: var(--brand-secondary);
+  border: 1px solid var(--brand-secondary);
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  background: transparent;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+.auth-buttons a:hover,
+.auth-buttons button:hover {
+  background-color: var(--brand-secondary);
+  color: var(--body-bg);
+}
+
+/* ---------------------- CONFIRM CONTAINER ---------------------- */
+/* Override .container for confirm page to use block layout */
+.confirm.container {
+  display: block;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 80px 40px 40px;
+}
+
+/* ---------------------- CONFIRM SECTION ---------------------- */
+.confirm h1 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: var(--brand-primary);
+}
+
+/* ---------------------- BOOKING SUMMARY TABLE ---------------------- */
+.booking-summary {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+.booking-summary th,
+.booking-summary td {
+  border: 1px solid #333;
+  padding: 12px;
+  text-align: left;
+  color: var(--text-color);
+}
+.booking-summary th {
+  background-color: var(--bg-secondary);
+  font-weight: 600;
+}
+.booking-summary tr:nth-child(even) {
+  background-color: #282828;
+}
+.booking-summary tr:hover {
+  background-color: #333;
+}
+
+/* ---------------------- FORM GROUP ---------------------- */
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 14px;
+}
+.form-group input,
+.form-group select {
+  padding: 12px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background-color: var(--bg-secondary);
+  color: var(--text-color);
+  font-size: 16px;
+  width: 100%;
+}
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--brand-secondary);
+}
+
+/* ---------------------- BUTTON ---------------------- */
+.btn-primary {
+  background-color: var(--brand-secondary);
+  color: var(--body-bg);
+  padding: 14px 28px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.btn-primary:hover {
+  background-color: #7e2ed9;
+}
+
+/* ---------------------- FOOTER ---------------------- */
+.footer {
+  background-color: var(--bg-secondary);
+  padding: 20px 0;
+}
+.footer .container {
+  text-align: center;
+}
+.footer p {
+  margin: 0;
+  color: #888;
+  font-size: 14px;
+}
+
+/* ---------------------- RESPONSIVE ---------------------- */
+@media (max-width: 768px) {
+  .confirm.container {
+    padding: 60px 20px 20px;
+  }
+  .booking-summary {
+    margin-bottom: 24px;
+  }
+  .confirm h1 {
+    margin-bottom: 24px;
+  }
+  .form-group {
+    margin-bottom: 16px;
+  }
+  .btn-primary {
+    width: 100%;
+    margin-top: 24px;
+  }
+}

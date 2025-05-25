@@ -1,10 +1,111 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>Оформление бронирования — TripNest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'booking/css/confirm_booking.css' %}">
 </head>
-<body>
+<body class="dark-theme">
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <a href="/">
+          <img src="{% static 'img/logo.png' %}" alt="TripNest Logo">
+        </a>
+      </div>
+      <nav class="nav">
+        <a href="/">Главная</a>
+        <a href="{% url 'hotel:hotel_list' %}">Жильё</a>
+        <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
+        <a href="{% url 'transport:transport_list' %}">Транспорт</a>
+      </nav>
+      <div class="auth-buttons">
+        <a href="{% url 'user_profile:profile' %}">Профиль</a>
+        <a href="/logout/">Выйти</a>
+      </div>
+    </div>
+  </header>
 
+  <main class="confirm container">
+    <h1>Оформление бронирования</h1>
+    <form method="post" action="">
+      {% csrf_token %}
+
+      <table class="booking-summary">
+        <thead>
+          <tr>
+            <th>Тип</th>
+            <th>Детали</th>
+            <th>Цена</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+            <tr>
+              <td>
+                {% if item.flight_ticket %}Авиабилет
+                {% elif item.train_ticket %}Ж/д билет
+                {% elif item.hotel_room %}Номер
+                {% elif item.excursion %}Экскурсия
+                {% endif %}
+              </td>
+              <td>
+                {% if item.flight_ticket %}
+                  {{ item.flight_ticket.flight.flight_number }}: {{ item.flight_ticket.flight.departure_city.name }} → {{ item.flight_ticket.flight.arrival_city.name }}
+                {% elif item.train_ticket %}
+                  Поезд {{ item.train_ticket.train.train_number }} на {{ item.train_ticket.train.departure_date|date:"d.m.Y H:i" }}
+                {% elif item.hotel_room %}
+                  {{ item.hotel_room.hotel.name }} — {{ item.hotel_room.room_class }}
+                {% elif item.excursion %}
+                  {{ item.excursion.name }} в {{ item.excursion.city.name }}
+                {% endif %}
+              </td>
+              <td>
+                {% if item.flight_ticket %}{{ item.flight_ticket.price }} ₽
+                {% elif item.train_ticket %}{{ item.train_ticket.price }} ₽
+                {% elif item.hotel_room %}{{ item.hotel_room.price_per_night }} ₽
+                {% elif item.excursion %}{{ item.excursion.price_per_person }} ₽
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="2"><strong>Итого</strong></td>
+            <td><strong>{{ total }} ₽</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="form-group">
+        <label for="{{ form.contact_phone.id_for_label }}">{{ form.contact_phone.label }}</label>
+        {{ form.contact_phone }}
+        {{ form.contact_phone.errors }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.contact_email.id_for_label }}">{{ form.contact_email.label }}</label>
+        {{ form.contact_email }}
+        {{ form.contact_email.errors }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.payment_method.id_for_label }}">{{ form.payment_method.label }}</label>
+        {{ form.payment_method }}
+        {{ form.payment_method.errors }}
+      </div>
+
+      <button type="submit" class="btn-primary">Подтвердить и оплатить</button>
+    </form>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© TripNest, 2025</p>
+    </div>
+  </footer>
 </body>
 </html>

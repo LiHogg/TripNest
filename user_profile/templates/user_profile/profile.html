@@ -1,42 +1,57 @@
-<!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Профиль — TripNest</title>
     <link rel="stylesheet" href="{% static 'user_profile/css/profile.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <header>
-        <div class="navbar">
-        <!-- ЛОГОТИП СЛЕВА -->
-            <div class="navbar-logo">
-                <a href="/" class="logo">
-                    <img src="{% static 'img/logo.png' %}" alt="TripNest Logo">
-                </a>
-            </div>
-
-        <!-- МЕНЮ ПО ЦЕНТРУ -->
-            <nav class="navbar-menu">
-                <a href="/">Главная</a>
-                <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
-                <a href="{% url 'transport:transport_list' %}">Транспорт</a>
-                <a href="{% url 'hotel:hotel_list' %}">Отели</a>
-            </nav>
-
-        <!-- ВЫХОД СПРАВА -->
-            <div class="navbar-exit">
-                <form action="{% url 'logout' %}" method="post" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="logout-btn" style="background: none; border: none; cursor: pointer; color: inherit;">
-                        Выйти
-                    </button>
-                </form>
-            </div>
-
+<!-- ===== HEADER ===== -->
+<header class="header">
+    <div class="container">
+        <a href="/" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
+        </a>
+        <nav class="nav desktop-nav">
+            <a href="/">Главная</a>
+            <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
+            <a href="{% url 'transport:transport_list' %}">Транспорт</a>
+            <a href="{% url 'hotel:hotel_list' %}">Отели</a>
+        </nav>
+        <div class="auth-buttons desktop-auth">
+            <form id="logout-form-desktop" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+                {% csrf_token %}
+            </form>
+            <a href="#" class="btn" onclick="document.getElementById('logout-form-desktop').submit(); return false;">Выйти</a>
         </div>
-    </header>
-
+        <!-- Бургер-кнопка -->
+        <button class="burger-btn" id="burgerBtn" aria-label="Открыть меню">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+    <!-- Бургер-меню -->
+    <div class="burger-menu" id="burgerMenu">
+        <nav>
+            <ul class="nav-list">
+                <li><a href="/">Главная</a></li>
+                <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
+                <li><a href="{% url 'transport:transport_list' %}">Транспорт</a></li>
+                <li><a href="{% url 'hotel:hotel_list' %}">Отели</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <form id="logout-form-mobile" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+                    {% csrf_token %}
+                </form>
+                <a href="#" class="btn" onclick="document.getElementById('logout-form-mobile').submit(); return false;">Выйти</a>
+            </div>
+        </nav>
+    </div>
+    <div class="menu-overlay" id="menuOverlay"></div>
+</header>
 
 {% if messages %}
     <div class="toast-container">
@@ -45,63 +60,75 @@
         {% endfor %}
     </div>
 {% endif %}
-    <main>
-        <section class="profile-info">
-<div class="profile-header">
-    {% if profile.avatar %}
-        <img src="{{ profile.avatar.url }}" alt="Avatar" style="width: 150px; height: 150px; border-radius: 50%;">
-    {% else %}
-        <img src="{% static 'user_profile/img/avatar.png' %}" alt="Avatar" style="width: 150px; height: 150px; border-radius: 50%;">
-    {% endif %}
-    <div class="profile-details">
-        <p>Ваше имя: {{ profile.full_name }}</p>
-        <p>Ваш email: {{ profile.user.email }}</p>
-        <p>Ваш телефон: {{ profile.phone_number }}</p>
-    </div>
-</div>
-            <div class="profile-actions">
-                <button onclick="window.location.href='/user/profile/edit/'">Редактировать</button>
-                <button class="btn" onclick="window.location.href='{% url 'user_profile:profile_details' %}'">Посмотреть всю информацию</button>
-                <button class="btn" onclick="window.location.href='/calendar/'">Календарь планов</button>
-            </div>
-        </section>
 
-        <section class="history-section">
-            <h2>История заказов</h2>
-            <div class="history-buttons">
-                <button>Жильё</button>
-                <button>Рестораны</button>
-                <button>Экскурсии</button>
-                <button>Транспорт</button>
-                <button>Заявки</button>
+<main>
+    <section class="profile-info">
+        <div class="profile-header">
+            {% if profile.avatar %}
+                <img src="{{ profile.avatar.url }}" alt="Avatar" class="avatar-img">
+            {% else %}
+                <img src="{% static 'user_profile/img/avatar.png' %}" alt="Avatar" class="avatar-img">
+            {% endif %}
+            <div class="profile-details">
+                <p>Ваше имя: {{ profile.full_name }}</p>
+                <p>Ваш email: {{ profile.user.email }}</p>
+                <p>Ваш телефон: {{ profile.phone_number }}</p>
             </div>
-        </section>
-    </main>
+        </div>
+        <div class="profile-actions">
+            <button onclick="window.location.href='{% url 'user_profile:edit_profile' %}'" class="btn">Редактировать</button>
+            <button onclick="window.location.href='{% url 'user_profile:profile_details' %}'" class="btn">Вся информация</button>
+            <button onclick="window.location.href='/calendar/'" class="btn">Календарь планов</button>
+        </div>
+    </section>
+    <section class="history-section">
+        <h2>История заказов</h2>
+        <div class="history-buttons">
+            <button class="btn">Жильё</button>
+            <button class="btn">Рестораны</button>
+            <button class="btn">Экскурсии</button>
+            <button class="btn">Транспорт</button>
+            <button class="btn">Заявки</button>
+        </div>
+    </section>
+</main>
 
-    <footer>
+<footer>
+    <div class="footer-content">
+        <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
         <p>© TripNest, 2025. Все права защищены</p>
         <div class="social-icons">
             <a href="#">VK</a>
             <a href="#">Telegram</a>
             <a href="#">WhatsApp</a>
         </div>
-    </footer>
-</body>
-<script>
-    // Находим все сообщения
-    const toasts = document.querySelectorAll('.toast-message');
+    </div>
+</footer>
 
-    // Настраиваем таймер на каждое сообщение
+<script>
+    // Бургер-меню
+    const burgerBtn = document.getElementById('burgerBtn');
+    const burgerMenu = document.getElementById('burgerMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+    burgerBtn.onclick = function () {
+        burgerMenu.classList.toggle('open');
+        menuOverlay.classList.toggle('open');
+    };
+    menuOverlay.onclick = function () {
+        burgerMenu.classList.remove('open');
+        menuOverlay.classList.remove('open');
+    };
+
+    // Toast-сообщения
+    const toasts = document.querySelectorAll('.toast-message');
     toasts.forEach((toast, index) => {
         setTimeout(() => {
             toast.classList.add('hide');
-        }, 3000 + (index * 500)); // каждое сообщение исчезает через 3 сек
+        }, 3000 + (index * 500));
     });
-
-    // Удаляем элемент из DOM после анимации
     setTimeout(() => {
         toasts.forEach(toast => toast.remove());
     }, 3500 + (toasts.length * 500));
 </script>
-
+</body>
 </html>

@@ -12,6 +12,6 @@ urlpatterns = [
     path('cart/add-hotel/', views.add_room_to_cart, name='add_room_to_cart'),
     path('cart/add-excursion/', views.add_excursion_to_cart, name='add_excursion_to_cart'),
 
-
+    path('success/<int:booking_id>/', views.booking_success, name='booking_success'),
 
 ]

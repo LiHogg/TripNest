@@ -5,28 +5,54 @@
   <meta charset="UTF-8">
   <title>Экскурсии — TripNest</title>
   <link rel="stylesheet" href="{% static 'excursion/css/excursion_list.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body class="dark-theme">
 
-<!-- Header -->
 <header class="header">
   <div class="container">
     <div class="logo">
-      <a href="/">
-        <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" height="40">
-      </a>
+      <a href="/"><img src="{% static 'img/logo.png' %}" alt="TripNest"></a>
     </div>
-    <nav class="nav">
-        <a href="/">Главная</a>
-        <a href="/hotels/">Жильё</a>
-        <a href="{% url 'trip:coming_soon' %}">Рестораны</a>
-        <a href="{% url 'transport:transport_list' %}">Транспорт</a>
-        <a href="{% url 'trip:coming_soon' %}">Заказ еды</a>
+    <!-- Десктопное меню -->
+    <nav class="nav desktop-nav">
+      <a href="/">Главная</a>
+      <a href="{% url 'hotel:hotel_list' %}">Жильё</a>
+      <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
+      <a href="{% url 'transport:transport_list' %}">Транспорт</a>
     </nav>
-    <div class="auth-buttons">
-      <a href="{% url 'user_profile:profile' %}">Профиль</a>
-      <a href="/logout/">Выйти</a>
+    <div class="auth-buttons desktop-auth">
+      <a href="{% url 'booking:cart' %}" class="cart-link">Корзина</a>
+      <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+      <form id="logout-form-desktop" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+        {% csrf_token %}
+      </form>
+      <a href="#" class="btn" onclick="document.getElementById('logout-form-desktop').submit(); return false;">Выйти</a>
     </div>
+    <!-- Кнопка-бургер справа -->
+    <button class="burger-btn" id="burgerBtn" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+    <!-- Бургер-меню -->
+    <div class="burger-menu" id="burgerMenu">
+      <nav>
+        <ul class="nav-list">
+          <li><a href="/">Главная</a></li>
+          <li><a href="{% url 'hotel:hotel_list' %}">Жильё</a></li>
+          <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
+          <li><a href="{% url 'transport:transport_list' %}">Транспорт</a></li>
+        </ul>
+        <div class="auth-buttons">
+          <a href="{% url 'booking:cart' %}" class="cart-link">Корзина</a>
+          <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+          <form id="logout-form" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+            {% csrf_token %}
+          </form>
+          <a href="#" class="btn" onclick="document.getElementById('logout-form').submit(); return false;">Выйти</a>
+        </div>
+      </nav>
+    </div>
+    <div class="menu-overlay" id="menuOverlay"></div>
   </div>
 </header>
 
@@ -34,9 +60,42 @@
 
   <h1>Экскурсии</h1>
 
-  <ul>
-    {% for excursion in excursions %}
-      <li>
+  <!-- Фильтры и картинка -->
+  <div class="excursion-search">
+    <div class="form-container">
+      <h2>Фильтр экскурсий</h2>
+      <form method="get" action="">
+        <label for="city">Город</label>
+        <select name="city" id="city">
+          <option value="">Любой</option>
+          {% for city in cities %}
+            <option value="{{ city }}" {% if request.GET.city == city %}selected{% endif %}>{{ city }}</option>
+          {% endfor %}
+        </select>
+        <label for="duration">Длительность (часов)</label>
+        <select name="duration" id="duration">
+          <option value="">Любая</option>
+          <option value="1" {% if request.GET.duration == '1' %}selected{% endif %}>до 1 часа</option>
+          <option value="2" {% if request.GET.duration == '2' %}selected{% endif %}>1-2 часа</option>
+          <option value="3" {% if request.GET.duration == '3' %}selected{% endif %}>3-4 часа</option>
+          <option value="5" {% if request.GET.duration == '5' %}selected{% endif %}>5+ часов</option>
+        </select>
+        <label for="price_min">Цена, ₽ (от)</label>
+        <input type="number" name="price_min" id="price_min" placeholder="от" value="{{ request.GET.price_min }}">
+        <label for="price_max">Цена, ₽ (до)</label>
+        <input type="number" name="price_max" id="price_max" placeholder="до" value="{{ request.GET.price_max }}">
+        <button type="submit">Показать</button>
+      </form>
+    </div>
+    <div class="img-preview">
+      <img src="{% static '/img/excursion_preview.png' %}" alt="Пример экскурсии">
+    </div>
+  </div>
+
+  <div class="excursion-listing">
+    <div class="excursion-grid">
+      {% for excursion in excursions %}
+      <div class="excursion-card">
         {% if excursion.image %}
           <img src="{{ excursion.image.url }}" alt="{{ excursion.name }}">
         {% endif %}
@@ -47,15 +106,15 @@
           <p><strong>Цена:</strong> {{ excursion.price_per_person }} ₽/чел</p>
           <a class="button" href="{% url 'excursion:excursion_detail' excursion.id %}">Подробнее</a>
         </div>
-      </li>
-    {% empty %}
-      <li>Экскурсий не найдено.</li>
-    {% endfor %}
-  </ul>
+      </div>
+      {% empty %}
+      <div class="excursion-card"><div class="info">Экскурсий не найдено.</div></div>
+      {% endfor %}
+    </div>
+  </div>
 
 </main>
 
-<!-- Footer -->
 <footer class="footer">
   <div class="container">
     <div class="footer-logo">
@@ -72,10 +131,27 @@
       <a href="#">Telegram</a>
     </div>
   </div>
-
-
   <p class="copyright">© TripNest, 2025. Все права защищены</p>
 </footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const burgerBtn = document.getElementById("burgerBtn");
+  const burgerMenu = document.getElementById("burgerMenu");
+  const menuOverlay = document.getElementById("menuOverlay");
+
+  burgerBtn.addEventListener("click", function() {
+    burgerMenu.classList.toggle("open");
+    menuOverlay.classList.toggle("open");
+    document.body.classList.toggle("menu-open");
+  });
+  menuOverlay.addEventListener("click", function() {
+    burgerMenu.classList.remove("open");
+    menuOverlay.classList.remove("open");
+    document.body.classList.remove("menu-open");
+  });
+});
+</script>
 
 </body>
 </html>

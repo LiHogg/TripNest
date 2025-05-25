@@ -53,7 +53,7 @@ header .auth-buttons {
 }
 
 header .auth-buttons a {
-    color: #9643FC; /* Текст фиолетовый */
+    color: #9643FC;
     text-decoration: none;
     font-weight: 500;
     font-size: 16px;
@@ -138,22 +138,18 @@ main {
     background-color: #d90429;
 }
 
+/* Поездной билет */
+.train-item {
+    border-left: 4px solid #bd10e0;
+}
+
 /* Кнопка Перейти к оформлению */
 .cart-actions {
     margin-top: 40px;
     text-align: center;
 }
+
 .cart-actions a {
-    display: inline-block;
-    background-color: #9643FC;
-    color: #fce643;
-    text-decoration: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-family: 'Poppins', sans-serif;
-    transition: background-color 0.2s, color 0.2s;
-} {
     display: inline-block;
     background-color: #9643FC;
     color: #fce643;

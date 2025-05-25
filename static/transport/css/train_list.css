@@ -1,45 +1,72 @@
 body {
     background: #161616;
-    color: #fff;
+    color: #fce643;
     font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
-header {
+/* ====== Все элементы — жёлтые ====== */
+body, body * {
+    color: #fce643 !important;
+}
+
+/* Отдельные элементы (статусы и кнопки) */
+.status.free,
+.ticket-card .free {
+    color: #3dff8b !important;
+}
+.status.booked,
+.ticket-card .booked {
+    color: #fa6464 !important;
+}
+.ticket-card button,
+.add-to-cart {
+    color: #fff !important;
+}
+
+/* ======== HEADER ======== */
+.header {
+    background-color: #131313;
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    box-sizing: border-box;
+}
+.container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 50px 14px 36px;
-    background: #131313;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 40px;
+    min-height: 68px;
+    position: relative;
 }
-
-header nav ul {
-    display: flex;
+.logo-img {
+    height: 32px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.desktop-nav {
+    display: flex !important;
     gap: 28px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    margin-left: 40px;
 }
-
-header nav a {
+.desktop-nav a {
     color: #fce643;
     font-weight: 600;
     font-size: 1.16rem;
     text-decoration: none;
     transition: color .18s;
+    border-radius: 8px;
+    padding: 7px 16px;
 }
-
-header nav a:hover {
-    color: #9643fc;
-}
-
-.auth-buttons {
-    display: flex;
-    gap: 16px;
-}
-
-.auth-buttons .btn {
+.desktop-nav a:hover { color: #9643fc; background: #191919; }
+.desktop-auth { display: flex !important; gap: 16px; }
+.desktop-auth .btn {
     border: 2px solid #9643fc;
     background: transparent;
     color: #fce643;
@@ -50,77 +77,158 @@ header nav a:hover {
     margin-left: 6px;
     cursor: pointer;
     transition: background .18s, color .18s, border .18s;
+    text-decoration: none;
 }
-
-.auth-buttons .btn:hover {
+.desktop-auth .btn:hover {
     background: #fce643;
     color: #161616;
     border: 2px solid #fce643;
 }
 
-.logout-form {
-    display: inline;
+/* ======== Кнопка бургер-меню ======== */
+.burger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 14px;
+    right: 32px;
+    width: 52px;
+    height: 52px;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    z-index: 120;
+    padding: 0;
+    transition: background 0.18s;
+}
+.burger-btn span {
+    display: block;
+    height: 7px;
+    width: 38px;
+    margin: 5px 0;
+    background: #fce643;
+    border-radius: 3px;
+    transition: 0.3s;
+}
+@media (max-width: 1024px) {
+    .burger-btn { display: flex !important; }
+    .desktop-nav, .desktop-auth { display: none !important; }
 }
 
-.logo-img {
-    height: 32px;
-    margin-right: 10px;
-    vertical-align: middle;
+/* ======== Бургер-меню ======== */
+.burger-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 75vw;
+    max-width: 320px;
+    height: 100vh;
+    background: #1C1C1C;
+    padding: 36px 20px 20px 20px;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.16);
+    z-index: 110;
+    flex-direction: column;
+    transition: transform 0.3s;
+    transform: translateX(100%);
 }
+.burger-menu.open { display: flex !important; transform: translateX(0);}
+.menu-overlay {
+    display: none;
+    position: fixed;
+    z-index: 101;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(23, 23, 23, 0.7);
+}
+.menu-overlay.open { display: block !important; }
+.nav-list { padding: 0; margin: 0; list-style: none; display: flex; flex-direction: column; gap: 16px;}
+.burger-menu .nav-list li a {
+    color: #fce643;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 10px 0 10px 8px;
+    border-radius: 8px;
+    display: block;
+    transition: color 0.2s, background 0.2s;
+}
+.burger-menu .nav-list li a:hover { color: #9643FC; background: #232323;}
+.burger-menu .auth-buttons {
+    display: flex; flex-direction: column; gap: 10px; margin-top: 22px;
+}
+.burger-menu .auth-buttons .btn {
+    width: 100%;
+    margin: 0;
+    background: transparent;
+    color: #9643FC;
+    border: 2px solid #9643FC;
+    border-radius: 12px;
+    padding: 12px 0;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: left;
+    transition: background 0.15s, color 0.15s;
+    box-sizing: border-box;
+    display: block;
+}
+.burger-menu .auth-buttons .btn:hover { background: #9643FC; color: #fce643; }
 
-/* Фильтр и баннер */
+/* ======== Фильтр и баннер ======== */
 .filter-image-wrapper {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: stretch;
     max-width: 1700px;
     margin: 56px auto 28px auto;
     padding: 0 46px;
+    min-height: 380px;
+    gap: 32px;
 }
-
 .train-search {
     background: #1e1e1e;
     border-radius: 28px;
     box-shadow: 0 4px 48px 0 #6829b52b;
     padding: 44px 50px 40px 50px;
-    width: 46%;
-    min-width: 340px;
-    max-width: 700px;
+    width: 50%;
+    min-width: 320px;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
-
 .train-search h1 {
     color: #fce643;
     font-size: 2.6rem;
     font-weight: 700;
     margin-bottom: 36px;
 }
-
 .train-filter-form {
     display: flex;
     flex-wrap: wrap;
     gap: 24px 30px;
 }
-
 .train-filter-form .filter-row {
     display: flex;
     flex-wrap: wrap;
     gap: 32px;
     width: 100%;
 }
-
 .train-filter-form > .filter-row > div {
     display: flex;
     flex-direction: column;
     min-width: 180px;
 }
-
 .train-filter-form label {
-    color: #9643FC;
+    color: #9643FC !important;
     font-weight: 600;
     font-size: 1.07rem;
     margin-bottom: 8px;
 }
-
 .train-filter-form select,
 .train-filter-form input[type="date"] {
     border-radius: 10px;
@@ -133,15 +241,13 @@ header nav a:hover {
     margin-bottom: 2px;
     transition: border .2s;
 }
-
 .train-filter-form select:focus,
 .train-filter-form input:focus {
     border: 2px solid #fce643;
 }
-
 .train-filter-form button {
     background: #9643fc;
-    color: #fff;
+    color: #fff !important;
     border: none;
     border-radius: 11px;
     font-size: 1.19rem;
@@ -151,34 +257,33 @@ header nav a:hover {
     cursor: pointer;
     transition: background .2s, color .2s;
 }
-
 .train-filter-form button:hover {
     background: #fce643;
-    color: #161616;
+    color: #161616 !important;
 }
 
 .train-img-block {
-    width: 46%;
-    min-width: 340px;
-    max-width: 800px;
+    width: 50%;
+    min-width: 320px;
+    max-width: none;
     display: flex;
-    align-items: flex-start;
-    justify-content: flex-end;
-    padding-top: 8px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
 }
-
 .train-img-block img {
     width: 96%;
     max-width: 820px;
     height: auto;
+    min-height: 220px;
     border-radius: 38px;
     box-shadow: 0 4px 40px 0 #9643fc4a;
     object-fit: cover;
-    margin-left: auto;
-    margin-right: 0;
+    display: block;
+    margin: 0 auto;
 }
 
-/* Список поездов */
+/* ======== Список поездов ======== */
 .train-list {
     max-width: 1700px;
     margin: 44px auto 0 auto;
@@ -187,12 +292,11 @@ header nav a:hover {
     grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     gap: 36px;
 }
-
 .ticket-card {
     background: #232325;
     border-radius: 20px;
     padding: 32px 28px 26px 28px;
-    color: #fff;
+    color: #fce643 !important;
     box-shadow: 0 4px 18px 0 #6829b516;
     display: flex;
     flex-direction: column;
@@ -201,41 +305,35 @@ header nav a:hover {
     position: relative;
     cursor: pointer;
 }
-
 .ticket-card:hover {
     border-color: #9643FC;
     box-shadow: 0 0 38px 0 #6829b560;
 }
-
 .ticket-header {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     margin-bottom: 16px;
 }
-
 .train-number {
-    color: #fce643;
+    color: #fce643 !important;
     font-size: 1.35rem;
     font-weight: 700;
 }
-
 .operator {
-    color: #fce643;
+    color: #fce643 !important;
     font-weight: 600;
     font-size: 1.07rem;
     margin-left: 20px;
 }
-
 .ticket-info .label {
-    color: #9643FC;
+    color: #9643FC !important;
     font-weight: 600;
     margin-right: 6px;
 }
-
 .add-to-cart {
     background: #9643fc;
-    color: #fff;
+    color: #fff !important;
     border: none;
     border-radius: 9px;
     font-size: 1.12rem;
@@ -245,47 +343,181 @@ header nav a:hover {
     cursor: pointer;
     transition: background .2s, color .2s;
 }
-
 .add-to-cart:hover {
     background: #fce643;
-    color: #161616;
+    color: #161616 !important;
 }
 
-/* Адаптив */
-@media (max-width: 1200px) {
+/* ======== FOOTER ======== */
+footer {
+    margin-top: 40px;
+    background-color: #1C1C1C;
+    padding: 40px 0 22px 0;
+    text-align: center;
+    color: #fce643;
+}
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+.footer-content .logo-img {
+    height: 36px;
+    margin-bottom: 5px;
+    width: auto;
+}
+footer p {
+    color: #fce643;
+    font-size: 16px;
+}
+
+/* ======== Адаптив ======== */
+/* =================== ПК =================== */
+@media (min-width: 1025px) {
     .filter-image-wrapper {
-        flex-direction: column;
-        gap: 40px;
-        padding: 0 10px;
+        flex-direction: row;
+        gap: 32px;
+        padding: 0 46px;
+        min-height: 380px;
     }
-    .train-search,
-    .train-img-block {
-        width: 100%;
+    .train-search, .train-img-block {
+        width: 50%;
+        min-width: 320px;
         max-width: none;
     }
     .train-img-block img {
-        width: 100%;
-        border-radius: 24px;
+        width: 96%;
+        max-width: 820px;
+        min-height: 220px;
+        border-radius: 38px;
     }
     .train-list {
-        padding: 0 10px;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 36px;
+        padding: 0 40px;
+    }
+    .ticket-card { padding: 32px 28px 26px 28px; }
+}
+
+/* =================== МОБИЛЬНАЯ АДАПТИВКА (до 600px) =================== */
+@media (max-width: 600px) {
+    body {
+        font-size: 15px;
+    }
+    .container {
+        padding: 0 3vw;
+        min-height: 42px;
+    }
+    .header {
+        min-height: 46px;
+    }
+    .logo-img {
+        height: 17px;
+    }
+    .burger-btn {
+        right: 3vw !important;
+        top: 6px !important;
+        width: 42px;
+        height: 42px;
+    }
+    .burger-btn span {
+        height: 5px;
+        width: 24px;
+        margin: 4px 0;
+    }
+    .burger-menu {
+        width: 99vw;
+        max-width: 330px;
+        padding: 25px 8px 13px 8px;
+    }
+    .filter-image-wrapper {
+        flex-direction: column;
+        gap: 13px;
+        padding: 0 2vw;
+        min-height: unset;
+    }
+    .train-img-block {
+        order: -1;
+        width: 100%;
+        max-width: none;
+        min-width: unset;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        margin-bottom: 8px;
+    }
+    .train-img-block img {
+        width: 100%;
+        max-width: 360px;
+        min-height: unset;
+        border-radius: 13px;
+        margin: 0 auto 4px auto;
+    }
+    .train-search {
+        order: 2;
+        width: 100%;
+        min-width: unset;
+        max-width: none;
+        padding: 11px 0 10px 0;
+        border-radius: 18px;
+        box-shadow: 0 2px 18px 0 #6829b515;
+    }
+    .train-search h1 {
+        font-size: 1.7rem;
+        margin-bottom: 21px;
+    }
+    .train-filter-form {
+        gap: 14px 5px;
+    }
+    .train-filter-form label {
+        font-size: 0.96rem;
+        margin-bottom: 4px;
+    }
+    .train-filter-form select,
+    .train-filter-form input[type="date"] {
+        border-radius: 7px;
+        font-size: 1em;
+        padding: 9px 10px;
+    }
+    .train-filter-form button {
+        font-size: 1.08rem;
+        border-radius: 8px;
+        padding: 11px 7px;
+        margin-top: 12px;
+    }
+    .train-list {
+        padding: 0 1vw;
+        gap: 7px;
+        grid-template-columns: 1fr;
+        margin-top: 16px;
+    }
+    .ticket-card {
+        padding: 8px 4px 7px 4px;
+        font-size: 0.93em;
+        border-radius: 11px;
+    }
+    .ticket-header {
+        flex-direction: column;
+        gap: 2px;
+    }
+    .train-number, .operator {
+        font-size: 1.08em;
+    }
+    .add-to-cart {
+        font-size: 1em;
+        border-radius: 6px;
+        padding: 10px 8px;
+        margin-top: 7px;
+    }
+    .footer-content .logo-img {
+        height: 15px;
+    }
+    footer p {
+        font-size: 10px;
     }
 }
 
-@media (max-width: 900px) {
-    .train-search,
-    .train-img-block {
-        width: 100%;
-        min-width: unset;
-    }
-    .train-img-block img {
-        border-radius: 16px;
-    }
-    .train-list {
-        grid-template-columns: 1fr;
-        gap: 22px;
-    }
-}
 
 ::-webkit-input-placeholder { color: #fce643; opacity: 1;}
 ::-moz-placeholder          { color: #fce643; opacity: 1;}

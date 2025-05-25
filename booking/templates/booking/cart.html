@@ -86,6 +86,26 @@
           </div>
         {% endif %}
 
+        {# Поездной билет #}
+        {% if item.train_ticket %}
+          <div class="cart-item train-item">
+            <h3>Поезд: {{ item.train_ticket.train.train_number }}</h3>
+            <p>
+              <strong>Дата и время отправления:</strong>
+              {{ item.train_ticket.train.departure_date|date:"d F Y" }} в {{ item.train_ticket.train.departure_date|time:"H:i" }}
+            </p>
+            <p>
+              <strong>Класс:</strong>
+              {{ item.train_ticket.get_train_class_display }}
+              , место №{{ item.train_ticket.seat_number }}
+            </p>
+            <form method="post" action="{% url 'booking:remove_from_cart' item.id %}">
+              {% csrf_token %}
+              <button type="submit">Удалить</button>
+            </form>
+          </div>
+        {% endif %}
+
         {# Экскурсия #}
         {% if item.excursion %}
           <div class="cart-item excursion-item">

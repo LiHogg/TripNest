@@ -1,32 +1,58 @@
-<!DOCTYPE html>
 {% load static %}
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>ЖД билеты — TripNest</title>
     <link rel="stylesheet" href="{% static 'transport/css/train_list.css' %}">
     <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
-<header>
-    <a href="/">
-        <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
-    </a>
-    <nav>
-        <ul>
-            <li><a href="{% url 'user_profile:profile' %}">Главная</a></li>
-            <li><a href="{% url 'hotel:hotel_list' %}">Отели</a></li>
-            <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
-            <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
-            <li><a href="{% url 'trip:coming_soon' %}">Заказ еды</a></li>
-        </ul>
-    </nav>
-    <div class="auth-buttons">
-        <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
-        <form action="{% url 'logout' %}" method="post" class="logout-form">
-            {% csrf_token %}
-            <button type="submit" class="btn logout-btn">Выйти</button>
-        </form>
+<body class="dark-theme">
+<header class="header">
+    <div class="container">
+        <div class="logo">
+            <a href="/"><img src="{% static 'img/logo.png' %}" alt="TripNest Logo"></a>
+        </div>
+        <!-- Десктопное меню -->
+        <nav class="nav desktop-nav">
+            <a href="/">Главная</a>
+            <a href="{% url 'hotel:hotel_list' %}">Отели</a>
+            <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
+            <a href="{% url 'transport:flight_list' %}">Авиабилеты</a>
+            <a href="{% url 'transport:train_list' %}">ЖД билеты</a>
+        </nav>
+        <div class="auth-buttons desktop-auth">
+            <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+            <form id="logout-form-desktop" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+                {% csrf_token %}
+            </form>
+            <a href="#" class="btn" onclick="document.getElementById('logout-form-desktop').submit(); return false;">Выйти</a>
+        </div>
+        <!-- Кнопка-бургер справа -->
+        <button class="burger-btn" id="burgerBtn" aria-label="Меню">
+            <span></span><span></span><span></span>
+        </button>
+        <!-- Бургер-меню -->
+        <div class="burger-menu" id="burgerMenu">
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="{% url 'hotel:hotel_list' %}">Отели</a></li>
+                    <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
+                    <li><a href="{% url 'transport:flight_list' %}">Авиабилеты</a></li>
+                    <li><a href="{% url 'transport:train_list' %}">ЖД билеты</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+                    <form id="logout-form" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+                        {% csrf_token %}
+                    </form>
+                    <a href="#" class="btn" onclick="document.getElementById('logout-form').submit(); return false;">Выйти</a>
+                </div>
+            </nav>
+        </div>
+        <div class="menu-overlay" id="menuOverlay"></div>
     </div>
 </header>
 
@@ -38,7 +64,7 @@
                 <div class="filter-row">
                     <div>
                         <label>Страна отправления</label>
-                        <select name="departure_country" id="departure-country" data-selected="{{ request.GET.departure_country }}">
+                        <select name="departure_country">
                             <option value="">Все</option>
                             {% for country in countries %}
                                 <option value="{{ country.id }}" {% if country.id|stringformat:"s" == request.GET.departure_country %}selected{% endif %}>{{ country.name }}</option>
@@ -47,16 +73,18 @@
                     </div>
                     <div>
                         <label>Город отправления</label>
-                        <select name="departure_city" id="departure-city" data-selected="{{ request.GET.departure_city }}">
+                        <select name="departure_city">
                             <option value="">Все</option>
-                            {% for city in departure_cities %}
-                                <option value="{{ city.id }}" {% if city.id|stringformat:"s" == request.GET.departure_city %}selected{% endif %}>{{ city.name }}</option>
-                            {% endfor %}
+                            {% if departure_cities %}
+                                {% for city in departure_cities %}
+                                    <option value="{{ city.id }}" {% if city.id|stringformat:"s" == request.GET.departure_city %}selected{% endif %}>{{ city.name }}</option>
+                                {% endfor %}
+                            {% endif %}
                         </select>
                     </div>
                     <div>
                         <label>Страна назначения</label>
-                        <select name="arrival_country" id="arrival-country" data-selected="{{ request.GET.arrival_country }}">
+                        <select name="arrival_country">
                             <option value="">Все</option>
                             {% for country in countries %}
                                 <option value="{{ country.id }}" {% if country.id|stringformat:"s" == request.GET.arrival_country %}selected{% endif %}>{{ country.name }}</option>
@@ -65,20 +93,13 @@
                     </div>
                     <div>
                         <label>Город назначения</label>
-                        <select name="arrival_city" id="arrival-city" data-selected="{{ request.GET.arrival_city }}">
+                        <select name="arrival_city">
                             <option value="">Все</option>
-                            {% for city in arrival_cities %}
-                                <option value="{{ city.id }}" {% if city.id|stringformat:"s" == request.GET.arrival_city %}selected{% endif %}>{{ city.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div>
-                        <label>Компания</label>
-                        <select name="operator">
-                            <option value="">Все</option>
-                            {% for op in operators %}
-                                <option value="{{ op }}" {% if request.GET.operator == op %}selected{% endif %}>{{ op }}</option>
-                            {% endfor %}
+                            {% if arrival_cities %}
+                                {% for city in arrival_cities %}
+                                    <option value="{{ city.id }}" {% if city.id|stringformat:"s" == request.GET.arrival_city %}selected{% endif %}>{{ city.name }}</option>
+                                {% endfor %}
+                            {% endif %}
                         </select>
                     </div>
                     <div>
@@ -86,7 +107,25 @@
                         <input type="date" name="departure_date" value="{{ request.GET.departure_date }}">
                     </div>
                     <div>
-                        <button type="submit" class="btn">Найти</button>
+                        <label>Класс</label>
+                        <select name="train_class">
+                            <option value="">Любой</option>
+                            {% for tc in train_classes %}
+                                <option value="{{ tc.0 }}" {% if request.GET.train_class == tc.0 %}selected{% endif %}>{{ tc.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Статус</label>
+                        <select name="status">
+                            <option value="">Любой</option>
+                            {% for status in statuses %}
+                                <option value="{{ status.0 }}" {% if request.GET.status == status.0 %}selected{% endif %}>{{ status.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn">Найти поезда</button>
                     </div>
                 </div>
             </form>
@@ -128,6 +167,26 @@
     </div>
 </footer>
 <script src="{% static 'transport/js/city_filter.js' %}"></script>
+
+<!-- Burger JS -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const burgerBtn = document.getElementById("burgerBtn");
+  const burgerMenu = document.getElementById("burgerMenu");
+  const menuOverlay = document.getElementById("menuOverlay");
+
+  burgerBtn.addEventListener("click", function() {
+    burgerMenu.classList.toggle("open");
+    menuOverlay.classList.toggle("open");
+    document.body.classList.toggle("menu-open");
+  });
+  menuOverlay.addEventListener("click", function() {
+    burgerMenu.classList.remove("open");
+    menuOverlay.classList.remove("open");
+    document.body.classList.remove("menu-open");
+  });
+});
+</script>
 
 </body>
 </html>

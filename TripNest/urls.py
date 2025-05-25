@@ -14,11 +14,10 @@ urlpatterns = [
         'user/',
         include(('user_profile.urls', 'user_profile'), namespace='user_profile')
     ),
-    # 2) Кастомный логин/логаут/регистрация
+    # 2) Кастомный логин/регистрация
     path('user/login/',  auth_views.LoginView.as_view(
         template_name='user_profile/login.html'
     ), name='login'),
-    path('user/logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
     path('user/register/', include(('user_profile.urls','user_profile'), namespace='user_profile')),
     path('accounts/login/', lambda req: redirect('login', permanent=False)),
 

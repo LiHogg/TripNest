@@ -6,130 +6,177 @@
     <title>Авиабилеты — TripNest</title>
     <link rel="stylesheet" href="{% static 'transport/css/flightticket.css' %}">
     <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <header>
-        <a href="/">
+<header class="header">
+    <div class="container">
+        <a href="/" class="logo">
             <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
         </a>
-        <nav>
-            <ul>
-                <li><a href="{% url 'user_profile:profile' %}">Главная</a></li>
-                <li><a href="{% url 'hotel:hotel_list' %}">Отели</a></li>
-                <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
-                <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
-                <li><a href="{% url 'trip:coming_soon' %}">Заказ еды</a></li>
-            </ul>
+        <!-- Десктопное меню -->
+        <nav class="desktop-nav">
+            <a href="/">Главная</a>
+            <a href="{% url 'hotel:hotel_list' %}">Отели</a>
+            <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
+            <a href="{% url 'transport:train_list' %}">ЖД билеты</a>
+            <a href="{% url 'transport:flight_list' %}">Авиабилеты</a>
         </nav>
-        <div class="auth-buttons">
+        <div class="auth-buttons desktop-auth">
+            <a href="{% url 'booking:cart' %}" class="btn">Корзина</a>
             <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
-            <form action="{% url 'logout' %}" method="post" class="logout-form">
+            <form id="logout-form-desktop" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
                 {% csrf_token %}
-                <button type="submit" class="btn logout-btn">Выйти</button>
+            </form>
+            <a href="#" class="btn" onclick="document.getElementById('logout-form-desktop').submit(); return false;">Выйти</a>
+        </div>
+        <!-- Кнопка-бургер справа -->
+        <button class="burger-btn" id="burgerBtn" aria-label="Меню">
+            <span></span><span></span><span></span>
+        </button>
+        <!-- Бургер-меню -->
+        <div class="burger-menu" id="burgerMenu">
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="{% url 'hotel:hotel_list' %}">Отели</a></li>
+                    <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
+                    <li><a href="{% url 'transport:train_list' %}">ЖД билеты</a></li>
+                    <li><a href="{% url 'transport:flight_list' %}">Авиабилеты</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="{% url 'booking:cart' %}" class="btn">Корзина</a>
+                    <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+                    <form id="logout-form" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+                        {% csrf_token %}
+                    </form>
+                    <a href="#" class="btn" onclick="document.getElementById('logout-form').submit(); return false;">Выйти</a>
+                </div>
+            </nav>
+        </div>
+        <div class="menu-overlay" id="menuOverlay"></div>
+    </div>
+</header>
+
+<main>
+    <!-- Flex-блок фильтра и баннера -->
+    <div class="filter-image-wrapper">
+        <div class="flight-search">
+            <h1>Поиск авиабилетов</h1>
+            <form method="get" class="flight-filter-form" id="flight-filter-form">
+                <div class="filter-row">
+                    <div>
+                        <label>Страна отправления</label>
+                        <select name="departure_country" id="departure-country">
+                            <option value="">Все</option>
+                            {% for country in countries %}
+                                <option value="{{ country.id }}" {% if country.id|stringformat:"s" == request.GET.departure_country %}selected{% endif %}>{{ country.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Город отправления</label>
+                        <select name="departure_city" id="departure-city">
+                            <option value="">Все</option>
+                            {% if departure_cities %}
+                                {% for city in departure_cities %}
+                                    <option value="{{ city.id }}" {% if city.id|stringformat:"s" == request.GET.departure_city %}selected{% endif %}>{{ city.name }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Страна назначения</label>
+                        <select name="arrival_country" id="arrival-country">
+                            <option value="">Все</option>
+                            {% for country in countries %}
+                                <option value="{{ country.id }}" {% if country.id|stringformat:"s" == request.GET.arrival_country %}selected{% endif %}>{{ country.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Город назначения</label>
+                        <select name="arrival_city" id="arrival-city">
+                            <option value="">Все</option>
+                            {% if arrival_cities %}
+                                {% for city in arrival_cities %}
+                                    <option value="{{ city.id }}" {% if city.id|stringformat:"s" == request.GET.arrival_city %}selected{% endif %}>{{ city.name }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Дата отправления</label>
+                        <input type="date" name="departure_date" value="{{ request.GET.departure_date }}">
+                    </div>
+                    <div>
+                        <label>Класс</label>
+                        <select name="flight_class">
+                            <option value="">Любой</option>
+                            {% for fc in flight_classes %}
+                                <option value="{{ fc.0 }}" {% if request.GET.flight_class == fc.0 %}selected{% endif %}>{{ fc.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn">Найти билеты</button>
+                    </div>
+                </div>
             </form>
         </div>
-    </header>
+        <div class="flight-img-block">
+            <img src="{% static 'img/plane.png' %}" alt="Промо Авиабилеты" />
+        </div>
+    </div>
 
-    <main>
-        <!-- Flex-блок фильтра и баннера -->
-        <div class="filter-image-wrapper">
-            <div class="flight-search">
-                <h1>Поиск авиабилетов</h1>
-                <form method="get" class="flight-filter-form" id="flight-filter-form">
-                    <div class="filter-row">
-                        <div>
-                            <label>Страна отправления</label>
-                            <select name="departure_country" id="departure-country">
-                                <option value="">Все</option>
-                                {% for country in countries %}
-                                    <option value="{{ country.id }}" {% if country.id|stringformat:"s" == request.GET.departure_country %}selected{% endif %}>{{ country.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div>
-                            <label>Город отправления</label>
-                            <select name="departure_city" id="departure-city">
-                                <option value="">Все</option>
-                                {% if departure_cities %}
-                                    {% for city in departure_cities %}
-                                        <option value="{{ city.id }}" {% if city.id|stringformat:"s" == request.GET.departure_city %}selected{% endif %}>{{ city.name }}</option>
-                                    {% endfor %}
-                                {% endif %}
-                            </select>
-                        </div>
-                        <div>
-                            <label>Страна назначения</label>
-                            <select name="arrival_country" id="arrival-country">
-                                <option value="">Все</option>
-                                {% for country in countries %}
-                                    <option value="{{ country.id }}" {% if country.id|stringformat:"s" == request.GET.arrival_country %}selected{% endif %}>{{ country.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div>
-                            <label>Город назначения</label>
-                            <select name="arrival_city" id="arrival-city">
-                                <option value="">Все</option>
-                                {% if arrival_cities %}
-                                    {% for city in arrival_cities %}
-                                        <option value="{{ city.id }}" {% if city.id|stringformat:"s" == request.GET.arrival_city %}selected{% endif %}>{{ city.name }}</option>
-                                    {% endfor %}
-                                {% endif %}
-                            </select>
-                        </div>
-                        <div>
-                            <label>Дата отправления</label>
-                            <input type="date" name="departure_date" value="{{ request.GET.departure_date }}">
-                        </div>
-                        <div>
-                            <label>Класс</label>
-                            <select name="flight_class">
-                                <option value="">Любой</option>
-                                {% for fc in flight_classes %}
-                                    <option value="{{ fc.0 }}" {% if request.GET.flight_class == fc.0 %}selected{% endif %}>{{ fc.1 }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div>
-                            <button type="submit" class="btn">Найти билеты</button>
-                        </div>
+    <div class="flight-list">
+        {% if flights %}
+            {% for flight in flights %}
+                <div class="ticket-card" onclick="window.location.href='{% url 'transport:flight_detail' flight.pk %}';">
+                    <div class="ticket-header">
+                        <span class="flight-number">{{ flight.flight_number }}</span>
+                        <span class="airline">{{ flight.airline }}</span>
                     </div>
-                </form>
-            </div>
-            <div class="flight-img-block">
-                <img src="{% static 'img/plane.png' %}" alt="Промо Авиабилеты" />
-            </div>
-        </div>
+                    <div class="ticket-info">
+                        <div><span class="label">Откуда:</span> {{ flight.departure_city.name }}, {{ flight.departure_city.country.name }}</div>
+                        <div><span class="label">Куда:</span> {{ flight.arrival_city.name }}, {{ flight.arrival_city.country.name }}</div>
+                        <div><span class="label">Вылет:</span> {{ flight.departure_date|date:'d.m.Y H:i' }}</div>
+                        <div><span class="label">Класс:</span> {{ flight.get_flight_class_display }}</div>
+                        <div><span class="label">Свободных мест:</span> {{ flight.available_seats }}</div>
+                    </div>
+                    <button class="add-to-cart">Добавить в корзину</button>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="color:#fce643;font-size:1.18rem;text-align:center;">Нет доступных авиабилетов по выбранным параметрам.</p>
+        {% endif %}
+    </div>
+</main>
+<footer>
+    <div class="footer-content">
+        <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
+        <p>TripNest &copy; 2025. Все права защищены.</p>
+    </div>
+</footer>
 
-        <div class="flight-list">
-            {% if flights %}
-                {% for flight in flights %}
-                    <div class="ticket-card" onclick="window.location.href='{% url 'transport:flight_detail' flight.pk %}';">
-                        <div class="ticket-header">
-                            <span class="flight-number">{{ flight.flight_number }}</span>
-                            <span class="airline">{{ flight.airline }}</span>
-                        </div>
-                        <div class="ticket-info">
-                            <div><span class="label">Откуда:</span> {{ flight.departure_city.name }}, {{ flight.departure_city.country.name }}</div>
-                            <div><span class="label">Куда:</span> {{ flight.arrival_city.name }}, {{ flight.arrival_city.country.name }}</div>
-                            <div><span class="label">Вылет:</span> {{ flight.departure_date|date:'d.m.Y H:i' }}</div>
-                            <div><span class="label">Класс:</span> {{ flight.get_flight_class_display }}</div>
-                            <div><span class="label">Свободных мест:</span> {{ flight.available_seats }}</div>
-                        </div>
-                        <button class="add-to-cart">Добавить в корзину</button>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p style="color:#fce643;font-size:1.18rem;text-align:center;">Нет доступных авиабилетов по выбранным параметрам.</p>
-            {% endif %}
-        </div>
-    </main>
-    <footer>
-        <div class="footer-content">
-            <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
-            <p>TripNest &copy; 2025. Все права защищены.</p>
-        </div>
-    </footer>
-    <script src="{% static 'transport/js/city_filter.js' %}"></script>
+<script src="{% static 'transport/js/city_filter.js' %}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const burgerBtn = document.getElementById("burgerBtn");
+  const burgerMenu = document.getElementById("burgerMenu");
+  const menuOverlay = document.getElementById("menuOverlay");
+
+  burgerBtn.addEventListener("click", function() {
+    burgerMenu.classList.toggle("open");
+    menuOverlay.classList.toggle("open");
+    document.body.classList.toggle("menu-open");
+  });
+  menuOverlay.addEventListener("click", function() {
+    burgerMenu.classList.remove("open");
+    menuOverlay.classList.remove("open");
+    document.body.classList.remove("menu-open");
+  });
+});
+</script>
 </body>
 </html>

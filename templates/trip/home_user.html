@@ -1,39 +1,64 @@
-<!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>TripNest — Моя Страница</title>
+    <title>TripNest — Моя страница</title>
     <link rel="stylesheet" href="{% static 'trip/css/home.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
 <!-- Шапка -->
 <header>
-    <div class="logo">
-        <a href="/">
-            <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" class="logo-img">
-        </a>
-    </div>
-
-    <nav>
-        <ul>
-            <li><a href="{% url 'hotel:hotel_list' %}">Отели</a></li>
-            <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
-            <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
-            <li><a href="{% url 'transport:transport_list' %}">Транспорт</a></li>
-            <li><a href="{% url 'trip:coming_soon' %}">Заказ еды</a></li>
-        </ul>
-    </nav>
-
-    <div class="auth-buttons">
-    <a href="{% url 'booking:cart' %}" class="btn">Корзина</a>
+  <div class="logo">
+    <a href="/"><img src="{% static 'img/logo.png' %}" alt="TripNest"></a>
+  </div>
+  <!-- Десктопное меню -->
+  <nav class="nav desktop-nav">
+    <ul class="nav-list">
+      <li><a href="/">Главная</a></li>
+      <li><a href="{% url 'hotel:hotel_list' %}">Жильё</a></li>
+      <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
+      <li><a href="{% url 'transport:transport_list' %}">Транспорт</a></li>
+      <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
+      <li><a href="{% url 'trip:coming_soon' %}">Еда</a></li>
+    </ul>
+  </nav>
+  <div class="auth-buttons desktop-auth">
+    <a href="{% url 'booking:cart' %}" class="cart-link">Корзина</a>
     <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
-    <form action="{% url 'logout' %}" method="post" class="logout-form" style="margin: 0;">
-        {% csrf_token %}
-        <button type="submit" class="btn logout-btn">Выйти</button>
+    <form id="logout-form-desktop" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+      {% csrf_token %}
     </form>
-</div>
+    <a href="#" class="btn" onclick="document.getElementById('logout-form-desktop').submit(); return false;">Выйти</a>
+  </div>
+  <!-- Кнопка-бургер -->
+  <button class="burger-btn" id="burgerBtn" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
+  <!-- Выпадающее меню -->
+  <div class="burger-menu" id="burgerMenu">
+    <nav>
+      <ul class="nav-list">
+        <li><a href="/">Главная</a></li>
+        <li><a href="{% url 'hotel:hotel_list' %}">Жильё</a></li>
+        <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
+        <li><a href="{% url 'transport:transport_list' %}">Транспорт</a></li>
+        <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
+        <li><a href="{% url 'trip:coming_soon' %}">Еда</a></li>
+      </ul>
+      <div class="auth-buttons">
+        <a href="{% url 'booking:cart' %}" class="cart-link">Корзина</a>
+        <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+        <form id="logout-form" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+          {% csrf_token %}
+        </form>
+        <a href="#" class="btn" onclick="document.getElementById('logout-form').submit(); return false;">Выйти</a>
+      </div>
+    </nav>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
 </header>
 
 <!-- Главный блок -->
@@ -48,16 +73,18 @@
 <section id="services">
     <h2>Наши сервисы</h2>
     <div class="services-container">
-        <div class="service-item">
-            <img src="{% static 'trip/icons/restaurant.png' %}" alt="Рестораны">
-            <h3>Рестораны</h3>
-            <p>Бронирование лучших ресторанов в вашем городе.</p>
-        </div>
-        <div class="service-item">
-            <img src="{% static 'trip/icons/food.png' %}" alt="Заказ еды">
-            <h3>Заказ еды</h3>
-            <p>Быстрая доставка вкусной еды прямо к вам домой.</p>
-        </div>
+          <div class="service-item">
+              <img src="{% static 'trip/icons/restaurant.png' %}" alt="Рестораны">
+              <h3>Рестораны</h3>
+              <p>Бронирование лучших ресторанов в вашем городе.</p>
+          </div>
+        
+          <div class="service-item">
+              <img src="{% static 'trip/icons/food.png' %}" alt="Заказ еды">
+              <h3>Заказ еды</h3>
+              <p>Быстрая доставка вкусной еды прямо к вам домой.</p>
+          </div>
+        
         <div class="service-item">
             <img src="{% static 'trip/icons/excursion.png' %}" alt="Экскурсии">
             <h3>Экскурсии</h3>
@@ -89,6 +116,28 @@
     </div>
 </footer>
 
+<!-- JS для бургер-меню -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const burgerBtn = document.getElementById("burgerBtn");
+  const burgerMenu = document.getElementById("burgerMenu");
+  const menuOverlay = document.getElementById("menuOverlay");
+
+  // Открытие/закрытие меню
+  burgerBtn.addEventListener("click", function() {
+    burgerMenu.classList.toggle("open");
+    menuOverlay.classList.toggle("open");
+    document.body.classList.toggle("menu-open");
+  });
+
+  // Клик вне меню — закрыть
+  menuOverlay.addEventListener("click", function() {
+    burgerMenu.classList.remove("open");
+    menuOverlay.classList.remove("open");
+    document.body.classList.remove("menu-open");
+  });
+});
+</script>
+
 </body>
 </html>
-""

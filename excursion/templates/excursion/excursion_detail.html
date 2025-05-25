@@ -4,35 +4,34 @@
 <head>
   <meta charset="UTF-8">
   <title>{{ excursion.name }} — TripNest</title>
-  <link rel="stylesheet" href="{% static 'excursion/css/excursion_list.css' %}">
+  <link rel="stylesheet" href="{% static 'excursion/css/excursion_detail.css' %}">
 </head>
 <body class="dark-theme">
 
-<!-- Header -->
-<header class="header">
-  <div class="container">
-    <div class="logo">
-      <a href="/">
-        <img src="{% static '/img/logo.png' %}" alt="TripNest Logo">
-      </a>
-    </div>
-    <nav class="nav">
-      <a href="/">Главная</a>
-      <a href="{% url 'hotel:hotel_list' %}">Жильё</a>
-      <a href="{% url 'trip:coming_soon' %}">Рестораны</a>
-      <a href="{% url 'transport:transport_list' %}">Транспорт</a>
-      <a href="{% url 'trip:coming_soon' %}">Заказ еды</a>
-    </nav>
-    <div class="auth-buttons">
-      <a href="{% url 'user_profile:profile' %}">Профиль</a>
-      <a href="/logout/">Выйти</a>
-    </div>
-  </div>
-</header>
+<!-- Кнопка "назад" -->
+<div style="max-width: 800px; margin: 28px auto 0 auto; padding-left: 6px;">
+  <a href="{% url 'excursion:excursion_list' %}" style="
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    color:#9643FC;
+    font-weight:600;
+    text-decoration:none;
+    font-size:1.06em;
+    padding:7px 0 17px 0;
+  ">
+    <span style="
+      font-size:1.5em;
+      line-height:1;
+      font-weight:700;
+      vertical-align:middle;
+      color:#9643FC;
+    ">←</span> все экскурсии
+  </a>
+</div>
 
-<!-- Main Detail -->
 <main class="excursion-main">
-  <div class="detail-container" style="max-width: 800px; margin: 40px auto;">
+  <div class="detail-container" style="max-width: 800px; margin: 0 auto 40px auto;">
     {% if excursion.image %}
       <img src="{{ excursion.image.url }}" alt="{{ excursion.name }}" style="width:100%; height:auto; border-radius:12px;">
     {% endif %}
@@ -63,13 +62,10 @@
 
         <button type="submit" class="button">Добавить в корзину</button>
       </form>
-
-      <a class="button" href="{% url 'excursion:excursion_list' %}" style="margin-top:30px;">← Назад к списку</a>
     </div>
   </div>
 </main>
 
-<!-- Footer -->
 <footer class="footer">
   <div class="container">
     <div class="footer-logo">

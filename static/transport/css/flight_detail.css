@@ -6,235 +6,404 @@ body {
     padding: 0;
 }
 
-header {
+/* ======== HEADER ======== */
+.header {
+    background-color: #131313;
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    box-sizing: border-box;
+}
+.container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 18px 48px 14px 34px;
-    background: #131313;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 40px;
+    min-height: 68px;
+    position: relative;
 }
-
 .logo-img {
     height: 32px;
     margin-right: 10px;
     vertical-align: middle;
 }
-
-.flight-detail-container {
-    max-width: 1050px;
-    margin: 48px auto 44px auto;
-    background: #1e1e1e;
-    border-radius: 30px;
-    box-shadow: 0 4px 48px 0 #6829b52b;
-    padding: 44px 52px 40px 52px;
+.desktop-nav {
+    display: flex !important;
+    gap: 28px;
+    margin-left: 40px;
 }
-
-.flight-header {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.flight-main-info h1 {
+.desktop-nav a {
     color: #fce643;
-    font-size: 2.4rem;
-    margin-bottom: 8px;
-    font-weight: 700;
+    font-weight: 600;
+    font-size: 1.16rem;
+    text-decoration: none;
+    transition: color .18s;
+    border-radius: 8px;
+    padding: 7px 16px;
 }
-
-.flight-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px 54px;
-    margin-bottom: 12px;
-}
-
-.flight-meta span {
-    color: #fff;
-    font-size: 1.08rem;
-    line-height: 1.6;
-}
-
-hr {
-    border: none;
-    height: 2px;
-    background: #9643fc;
-    margin: 34px 0 36px 0;
-    border-radius: 1.5px;
-    opacity: 0.3;
-}
-
-.tickets-section h2 {
-    color: #9643fc;
-    font-size: 2rem;
-    margin-bottom: 20px;
-    font-weight: 700;
-}
-
-.ticket-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
-    gap: 30px 28px;
-}
-
-.ticket-card {
-    background: #232325;
-    border-radius: 18px;
-    padding: 28px 24px 22px 24px;
-    color: #fff;
-    box-shadow: 0 4px 18px 0 #6829b516;
-    display: flex;
-    flex-direction: column;
-    transition: box-shadow .18s, border-color .18s;
-    border: 2px solid transparent;
-    position: relative;
-}
-
-.ticket-card:hover {
-    border-color: #9643FC;
-    box-shadow: 0 0 38px 0 #6829b560;
-}
-
-.ticket-card .class {
+.desktop-nav a:hover { color: #9643fc; background: #191919; }
+.desktop-auth { display: flex !important; gap: 16px; }
+.desktop-auth .btn {
+    border: 2px solid #9643fc;
+    background: transparent;
     color: #fce643;
-    font-weight: 700;
-    margin-bottom: 7px;
-    font-size: 1.17rem;
-}
-.ticket-card .seat {
-    color: #fff;
-    margin-bottom: 6px;
-    font-size: 1.06rem;
-}
-.ticket-card .price {
-    color: #9643fc;
+    border-radius: 12px;
+    padding: 7px 22px;
     font-weight: 600;
     font-size: 1.1rem;
-    margin-bottom: 10px;
-}
-.ticket-card .status {
-    margin-top: 10px;
-    font-size: 1.01rem;
-}
-
-.status .booked {
-    color: #e15555;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-}
-
-.status .free {
-    color: #38e97a;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    margin-right: 9px;
-}
-
-.ticket-card button {
-    background: #9643fc;
-    color: #fff;
-    border: none;
-    border-radius: 9px;
-    font-size: 1.08rem;
-    font-weight: 700;
-    padding: 10px 24px;
-    margin-top: 7px;
+    margin-left: 6px;
     cursor: pointer;
-    transition: background .19s, color .19s;
-}
-.ticket-card button:hover {
-    background: #fce643;
-    color: #161616;
-}
-
-.back-link {
-    display: inline-block;
-    margin-top: 35px;
-    font-size: 1.18rem;
-    color: #fce643;
-    text-decoration: none;
-    border: 2px solid #9643fc;
-    border-radius: 13px;
-    padding: 9px 22px;
-    background: transparent;
     transition: background .18s, color .18s, border .18s;
-    font-weight: 600;
+    text-decoration: none;
 }
-.back-link:hover {
+.desktop-auth .btn:hover {
     background: #fce643;
     color: #161616;
     border: 2px solid #fce643;
 }
 
-/* Адаптив */
-@media (max-width: 900px) {
-    .flight-detail-container {
-        padding: 20px 12px 24px 12px;
-    }
-    .ticket-list {
-        grid-template-columns: 1fr;
-        gap: 18px;
-    }
+/* ======== Кнопка бургер-меню ======== */
+.burger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 14px;
+    right: 32px;
+    width: 52px;
+    height: 52px;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    z-index: 120;
+    padding: 0;
+    transition: background 0.18s;
+}
+.burger-btn span {
+    display: block;
+    height: 7px;
+    width: 38px;
+    margin: 5px 0;
+    background: #fce643;
+    border-radius: 3px;
+    transition: 0.3s;
+}
+@media (max-width: 1024px) {
+    .burger-btn { display: flex !important; }
+    .desktop-nav, .desktop-auth { display: none !important; }
 }
 
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 26px;
-    padding-left: 0;
-    margin: 0;
+/* ======== Бургер-меню ======== */
+.burger-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 75vw;
+    max-width: 320px;
+    height: 100vh;
+    background: #1C1C1C;
+    padding: 36px 20px 20px 20px;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.16);
+    z-index: 110;
+    flex-direction: column;
+    transition: transform 0.3s;
+    transform: translateX(100%);
 }
-nav ul li a {
+.burger-menu.open { display: flex !important; transform: translateX(0);}
+.menu-overlay {
+    display: none;
+    position: fixed;
+    z-index: 101;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(23, 23, 23, 0.7);
+}
+.menu-overlay.open { display: block !important; }
+.nav-list { padding: 0; margin: 0; list-style: none; display: flex; flex-direction: column; gap: 16px;}
+.burger-menu .nav-list li a {
     color: #fce643;
     text-decoration: none;
-    font-size: 1.02rem;
-    font-weight: 600;
-    transition: color .2s;
-}
-nav ul li a:hover {
-    color: #ffffff;
-}
-
-.auth-buttons {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-}
-
-.btn {
-    display: inline-block;
-    padding: 9px 18px;
-    background: #9643fc;
-    color: #fff;
-    font-weight: 600;
-    font-size: 1rem;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 10px 0 10px 8px;
     border-radius: 8px;
+    display: block;
+    transition: color 0.2s, background 0.2s;
+}
+.burger-menu .nav-list li a:hover { color: #9643FC; background: #232323;}
+.burger-menu .auth-buttons {
+    display: flex; flex-direction: column; gap: 10px; margin-top: 22px;
+}
+.burger-menu .auth-buttons .btn {
+    width: 100%;
+    margin: 0;
+    background: transparent;
+    color: #9643FC;
+    border: 2px solid #9643FC;
+    border-radius: 12px;
+    padding: 12px 0;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
     text-decoration: none;
-    transition: background .2s, color .2s;
-    border: none;
-    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s, color 0.15s;
+    box-sizing: border-box;
+    display: block;
 }
-.btn:hover {
-    background: #fce643;
-    color: #161616;
+.burger-menu .auth-buttons .btn:hover { background: #9643FC; color: #fce643; }
+
+/* ====== ВСЁ ЖЁЛТОЕ В БЛОКЕ С ДЕТАЛЯМИ РЕЙСА ====== */
+.flight-detail-container,
+.flight-detail-container * {
+    color: #fce643 !important;
 }
 
-.logout-form button.logout-btn {
-    background: #9643fc;
-    color: #fff;
-    border: none;
-    padding: 9px 18px;
-    border-radius: 8px;
+/* ОТДЕЛЬНЫЕ ЦВЕТА ДЛЯ СТАТУСОВ И КНОПКИ */
+.status.free {
+    color: #3dff8b !important;
+}
+.status.booked {
+    color: #fa6464 !important;
+}
+.ticket-card button {
+    color: #fff !important;
+}
+
+/* ======== MAIN ======== */
+.flight-detail-container {
+    max-width: 950px;
+    margin: 90px auto 35px auto;
+    background: #212124;
+    border-radius: 28px;
+    box-shadow: 0 4px 32px 0 #6829b52a;
+    padding: 38px 44px 38px 44px;
+}
+.back-link {
+    color: #fce643;
+    font-size: 1.07rem;
+    text-decoration: none;
+    background: #181818;
+    padding: 9px 20px 9px 13px;
+    border-radius: 11px;
+    display: inline-block;
+    margin-bottom: 16px;
+    transition: background 0.15s, color 0.15s;
+    font-weight: 500;
+}
+.back-link:hover {
+    color: #9643fc;
+    background: #232323;
+}
+.flight-header {
+    display: flex;
+    gap: 22px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+}
+.flight-main-info h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 17px 0;
+    color: #fce643;
+}
+.flight-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 34px;
+    font-size: 1.05em;
+}
+.flight-meta span { min-width: 210px; }
+
+/* ======== Tickets section ======== */
+.tickets-section {
+    background: #18171b;
+    border-radius: 28px;
+    box-shadow: 0 4px 28px 0 #6829b52a;
+    padding: 32px 22px;
+    margin-top: 20px;
+}
+.tickets-section h2 {
+    font-size: 1.27rem;
+    color: #fce643;
+    margin-bottom: 17px;
+    margin-top: 0;
+}
+.ticket-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 22px;
+    margin-top: 18px;
+}
+.ticket-card {
+    background: #222026;
+    border-radius: 20px;
+    padding: 18px 20px 15px 20px;
+    box-shadow: 0 6px 24px 0 #3f2862cc;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow .18s, border-color .18s, transform .18s, background .18s;
+    border: 2px solid #9643FC44;
+    position: relative;
+    min-width: 0;
+}
+.ticket-card:hover {
+    border-color: #9643FC;
+    box-shadow: 0 0 36px 0 #6829b560;
+    background: #29242e;
+    transform: translateY(-4px) scale(1.025);
+}
+.class, .seat, .price {
+    margin-bottom: 10px;
+    font-size: 1.11em;
+    color: #fce643 !important;
+}
+.status {
+    margin-top: 7px;
     font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background .2s, color .2s;
 }
-.logout-form button.logout-btn:hover {
+.ticket-card form {
+    margin: 10px 0 0 0;
+}
+.ticket-card button {
+    background: #9643fc;
+    border: none;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 10px 22px;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+    margin-top: 7px;
+}
+.ticket-card button:hover {
     background: #fce643;
-    color: #161616;
+    color: #161616 !important;
 }
 
+/* ======== FOOTER ======== */
+footer {
+    margin-top: 40px;
+    background-color: #1C1C1C;
+    padding: 40px 0 22px 0;
+    text-align: center;
+    color: #fce643;
+}
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+.footer-content .logo-img {
+    height: 36px;
+    margin-bottom: 5px;
+    width: auto;
+}
+footer p {
+    color: #fce643;
+    font-size: 16px;
+}
+
+/* ======== Адаптив ======== */
+@media screen and (min-width: 1025px) {
+  .logo-img { height: 38px; }
+  .burger-btn, .burger-menu, .menu-overlay { display: none !important; }
+  .desktop-nav { display: flex !important; gap: 32px; margin-left: 40px; }
+  .desktop-auth .btn, .desktop-auth a {
+    background: transparent;
+    color: #9643FC;
+    border: 2px solid #9643FC;
+    border-radius: 12px;
+    padding: 7px 18px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+    display: inline-block;
+  }
+  .desktop-auth .btn:hover, .desktop-auth a:hover {
+    background: #9643FC; color: #fce643;
+  }
+  .flight-detail-container {
+    max-width: 950px;
+    margin: 94px auto 35px auto;
+    background: #212124;
+    border-radius: 28px;
+    box-shadow: 0 4px 32px 0 #6829b52a;
+    padding: 38px 44px 38px 44px;
+  }
+  .back-link { font-size: 1.09rem; }
+  .ticket-list { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px;}
+  .ticket-card { border-radius: 17px; padding: 17px 17px 13px 17px; }
+  .footer-content .logo-img { height: 36px; }
+}
+
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+  .container { padding: 0 18px; min-height: 56px; }
+  .logo-img { height: 28px; }
+  .burger-btn {
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    width: 42px; height: 42px; background: none; border: none; cursor: pointer; z-index: 105; padding: 0; margin-left: auto;
+  }
+  .burger-btn span { display: block; height: 4px; width: 29px; margin: 4px 0; background: #fce643; border-radius: 2px; transition: 0.3s; }
+  .burger-menu {
+    width: 75vw; max-width: 350px; padding: 36px 20px 20px 20px;
+  }
+  .flight-detail-container {
+    max-width: 98vw;
+    margin: 75px auto 22px auto;
+    border-radius: 22px;
+    box-shadow: 0 2px 16px 0 #6829b526;
+    padding: 22px 10px 24px 10px;
+  }
+  .back-link { font-size: 1em; padding: 6px 7px;}
+  .flight-header { gap: 9px; flex-direction: column;}
+  .flight-main-info h1 { font-size: 1.15em; margin-bottom: 11px; }
+  .flight-meta { gap: 6px 10px; font-size: 1em;}
+  .flight-meta span { min-width: 110px; }
+  .tickets-section h2 { font-size: 1.03rem; margin-bottom: 7px;}
+  .ticket-list { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .ticket-card { padding: 11px 5px 8px 7px; font-size: 0.97em; border-radius: 13px;}
+  .footer-content .logo-img { height: 21px;}
+  footer p { font-size: 12px;}
+}
+
+@media screen and (max-width: 600px) {
+  .container { padding: 0 7px; min-height: 44px;}
+  .logo-img { height: 17px;}
+  .burger-btn {
+    width: 32px; height: 32px; margin-left: auto;
+  }
+  .burger-btn span { height: 3px; width: 21px; margin: 3px 0;}
+  .burger-menu {
+    width: 99vw; max-width: 330px; padding: 20px 8px 8px 8px;
+  }
+  .flight-detail-container {
+    max-width: 99vw;
+    margin: 53px auto 14px auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px 0 #6829b513;
+    padding: 6px 1vw 8px 1vw;
+  }
+  .back-link { font-size: 0.95rem; padding: 5px 4px;}
+  .flight-header { gap: 3px; flex-direction: column;}
+  .flight-main-info h1 { font-size: 0.97em; margin-bottom: 6px; }
+  .flight-meta { gap: 2px 4px; font-size: 0.85em;}
+  .flight-meta span { min-width: 70px; }
+  .tickets-section h2 { font-size: 0.99rem; margin-bottom: 4px;}
+  .ticket-list { grid-template-columns: 1fr; gap: 5px; }
+  .ticket-card { padding: 6px 2px 4px 2px; font-size: 0.91em; border-radius: 7px;}
+  .footer-content .logo-img { height: 11px; }
+  footer p { font-size: 9px;}
+}
 
 ::-webkit-input-placeholder { color: #fce643; opacity: 1;}
 ::-moz-placeholder          { color: #fce643; opacity: 1;}

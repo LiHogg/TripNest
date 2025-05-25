@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <title>Выбор отеля — TripNest</title>
   <link rel="stylesheet" href="{% static 'hotel/css/hotel.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body class="dark-theme">
 
@@ -12,35 +13,62 @@
 <header class="header">
   <div class="container">
     <div class="logo">
-      <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" height="40">
+      <a href="/"><img src="{% static 'img/logo.png' %}" alt="TripNest Logo" height="40"></a>
     </div>
-    <nav class="nav">
-        <a href="/">Главная</a>
-        <a href="{% url 'trip:coming_soon' %}">Рестораны</a>
-        <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
-        <a href="{% url 'transport:transport_list' %}">Транспорт</a>
-        <a href="{% url 'trip:coming_soon' %}">Заказ еды</a>
+
+    <!-- Десктоп-меню -->
+    <nav class="nav desktop-nav">
+      <a href="/">Главная</a>
+      <a href="{% url 'trip:coming_soon' %}">Рестораны</a>
+      <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
+      <a href="{% url 'transport:transport_list' %}">Транспорт</a>
+      <a href="{% url 'trip:coming_soon' %}">Заказ еды</a>
     </nav>
-    <div class="auth-buttons">
-        <a href="{% url 'booking:cart' %}" class="btn">Корзина</a>
-        <a href="{% url 'user_profile:profile' %}">Профиль</a>
-        <form action="{% url 'logout' %}" method="post" class="logout-form" style="margin: 0;">
-            {% csrf_token %}
-            <button type="submit" class="btn logout-btn">Выйти</button>
-        </form>
+    <div class="auth-buttons desktop-auth">
+      <a href="{% url 'booking:cart' %}" class="btn">Корзина</a>
+      <a href="{% url 'user_profile:profile' %}">Профиль</a>
+      <form id="logout-form-desktop" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+        {% csrf_token %}
+      </form>
+      <a href="#" class="btn" onclick="document.getElementById('logout-form-desktop').submit(); return false;">Выйти</a>
     </div>
+
+    <!-- Бургер-кнопка (всегда последней, будет справа) -->
+    <button class="burger-btn" id="burgerBtn" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- Бургер-меню -->
+    <div class="burger-menu" id="burgerMenu">
+      <nav>
+        <ul class="nav-list">
+          <li><a href="/">Главная</a></li>
+          <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
+          <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
+          <li><a href="{% url 'transport:transport_list' %}">Транспорт</a></li>
+          <li><a href="{% url 'trip:coming_soon' %}">Заказ еды</a></li>
+        </ul>
+        <div class="auth-buttons">
+          <a href="{% url 'booking:cart' %}" class="btn">Корзина</a>
+          <a href="{% url 'user_profile:profile' %}">Профиль</a>
+          <form id="logout-form" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+            {% csrf_token %}
+          </form>
+          <a href="#" class="btn" onclick="document.getElementById('logout-form').submit(); return false;">Выйти</a>
+        </div>
+      </nav>
+    </div>
+    <div class="menu-overlay" id="menuOverlay"></div>
   </div>
 </header>
 
 <main class="hotel-main">
-
-  <!-- Форма выбора отеля -->
+  <!-- Форма выбора отеля и изображение -->
   <section class="hotel-search">
     <div class="form-container">
       <h2>Выбор подходящего отеля</h2>
       <p>Пожалуйста, заполните информацию:</p>
       <form method="get" action="">
-        <!-- Страна -->
         <label for="country-select">Страна</label>
         <select id="country-select" name="country">
           <option value="">Выберите страну</option>
@@ -48,40 +76,26 @@
             <option value="{{ country.id }}">{{ country.name }}</option>
           {% endfor %}
         </select>
-
-        <!-- Город (заполняется динамически) -->
         <label for="city-select">Город</label>
         <select id="city-select" name="city" disabled>
           <option value="">Сначала выберите страну</option>
         </select>
-
-        <!-- Дата -->
         <label for="check_in">Дата заезда</label>
         <input type="date" name="check_in" id="check_in">
-
-        <!-- Кол-во человек -->
         <label for="people">Количество людей</label>
         <input type="number" name="people" placeholder="Выберите количество людей" id="people">
-
-        <!-- С детьми -->
         <div class="checkbox-group">
           <input type="checkbox" name="kids" id="kids">
           <label for="kids">С детьми</label>
         </div>
-
-        <!-- Тип отеля -->
         <input type="text" name="type" placeholder="Выберите тип отеля (необязательно)">
-
-        <!-- Диапазон цены -->
         <div class="price-filter">
           <input type="number" name="price_min" placeholder="Цена от">
           <input type="number" name="price_max" placeholder="Цена до">
         </div>
-
         <button type="submit">Найти отели</button>
       </form>
     </div>
-
     <div class="img-preview">
       <img src="{% static 'hotel/img/reception.jpg' %}" alt="Reception">
     </div>
@@ -103,7 +117,6 @@
       {% endfor %}
     </div>
   </section>
-
 </main>
 
 <!-- Footer -->
@@ -123,7 +136,6 @@
       <a href="#">Telegram</a>
     </div>
   </div>
-
   <div class="footer-blob">
     <svg viewBox="0 0 1440 320">
       <path fill="#6829b5" fill-opacity="1"
@@ -131,11 +143,28 @@
       </path>
     </svg>
   </div>
-
   <p class="copyright">© TripNest, 2025. Все права защищены</p>
 </footer>
 
 <!-- JS для подгрузки городов -->
 <script src="{% static 'hotel/js/city_loader.js' %}"></script>
+<!-- JS для бургер-меню -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const burgerBtn = document.getElementById("burgerBtn");
+  const burgerMenu = document.getElementById("burgerMenu");
+  const menuOverlay = document.getElementById("menuOverlay");
+  burgerBtn.addEventListener("click", function() {
+    burgerMenu.classList.toggle("open");
+    menuOverlay.classList.toggle("open");
+    document.body.classList.toggle("menu-open");
+  });
+  menuOverlay.addEventListener("click", function() {
+    burgerMenu.classList.remove("open");
+    menuOverlay.classList.remove("open");
+    document.body.classList.remove("menu-open");
+  });
+});
+</script>
 </body>
 </html>

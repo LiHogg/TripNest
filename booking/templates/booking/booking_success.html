@@ -1,10 +1,85 @@
-<!DOCTYPE html>
 {% load static %}
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Успешное бронирование</title>
     <link rel="stylesheet" href="{% static 'booking/css/cart.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+          background: #171717;
+          color: #fce643;
+          margin: 0;
+          font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+        }
+        header {
+          background: #1C1C1C;
+          color: #fce643;
+          padding: 30px 0 20px 0;
+          text-align: center;
+        }
+        header h1 {
+          margin: 0 0 8px 0;
+          font-size: 2.1em;
+          font-weight: 700;
+        }
+        nav {
+          margin-top: 5px;
+          display: flex;
+          justify-content: center;
+          gap: 28px;
+        }
+        nav a {
+          color: #fce643;
+          text-decoration: none;
+          font-size: 1.08em;
+          font-weight: 500;
+          padding: 7px 17px;
+          border-radius: 9px;
+          transition: background 0.18s, color 0.18s;
+        }
+        nav a:hover {
+          background: #9643FC;
+          color: #fff;
+        }
+        main {
+          text-align: center;
+          padding: 80px 10px 120px 10px;
+        }
+        main h2 {
+          color: #fce643;
+          font-size: 1.5em;
+          margin-bottom: 18px;
+        }
+        main p {
+          font-size: 1.08em;
+          color: #e0e0a3;
+          margin-bottom: 30px;
+        }
+        .to-bookings-btn {
+          display: inline-block;
+          background: #9643FC;
+          color: #fce643;
+          padding: 13px 36px;
+          border-radius: 11px;
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 1.08em;
+          transition: background 0.15s, color 0.15s;
+          margin-top: 12px;
+        }
+        .to-bookings-btn:hover {
+          background: #fce643;
+          color: #1C1C1C;
+        }
+        @media (max-width: 700px) {
+          header h1 { font-size: 1.22em; }
+          nav a { font-size: 1em; padding: 5px 8px; }
+          main { padding: 44px 2vw 80px 2vw; }
+          .to-bookings-btn { font-size: 0.99em; padding: 10px 18vw; }
+        }
+    </style>
 </head>
 <body>
 
@@ -13,14 +88,14 @@
     <nav>
         <a href="/">На главную</a>
         <a href="{% url 'booking:my_bookings' %}">Мои бронирования</a>
-        <a href="{% url 'logout' %}">Выйти</a>
+        <a href="{% url 'user_profile:logout' %}">Выйти</a>
     </nav>
 </header>
 
-<main style="text-align:center; padding: 100px 20px;">
-    <h2 style="color: #fce643;">Спасибо за бронирование!</h2>
-    <p style="font-size: 18px; color: #aaa;">Ваши билеты успешно оформлены и добавлены в список ваших бронирований.</p>
-    <a href="{% url 'booking:my_bookings' %}" style="margin-top: 30px; display: inline-block; background: #9643FC; color: #fce643; padding: 12px 24px; border-radius: 10px; text-decoration: none; font-weight: 600;">Перейти к бронированиям</a>
+<main>
+    <h2>Спасибо за бронирование!</h2>
+    <p>Ваши билеты успешно оформлены и добавлены в список ваших бронирований.</p>
+    <a href="{% url 'booking:my_bookings' %}" class="to-bookings-btn">Перейти к бронированиям</a>
 </main>
 
 </body>

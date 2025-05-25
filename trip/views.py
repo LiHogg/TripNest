@@ -15,3 +15,6 @@ def home_user(request):
 
 def coming_soon(request):
     return render(request, 'trip/coming_soon.html')
+
+def home_guest(request):
+    return render(request, 'trip/home_guest.html')

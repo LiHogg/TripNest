@@ -1,100 +1,92 @@
-<!DOCTYPE html>
 {% load static %}
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Мои бронирования — TripNest</title>
-    <link rel="stylesheet" href="{% static 'booking/css/cart.css' %}">
-    <style>
-        .filter-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin: 40px 0 20px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            background-color: #9643FC;
-            color: #fce643;
-            padding: 12px 26px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            transition: background 0.2s;
-        }
-
-        .filter-btn:hover {
-            background-color: #7c2de2;
-        }
-
-        .booking-card {
-            background-color: #1C1C1C;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(150, 67, 252, 0.2);
-            margin-bottom: 20px;
-        }
-
-        .booking-card h3 {
-            margin-top: 0;
-            color: #fce643;
-        }
-
-        .booking-card p {
-            margin: 6px 0;
-            color: #fce643;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'booking/css/my_bookings.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-
 <header>
-    <h1 style="padding: 30px;">Мои бронирования</h1>
+    <h1>Мои бронирования</h1>
 </header>
 
 <section class="filter-buttons">
     <a href="{% url 'booking:my_bookings' %}?type=hotel" class="filter-btn">Жильё</a>
     <a href="{% url 'booking:my_bookings' %}?type=excursion" class="filter-btn">Экскурсии</a>
     <a href="{% url 'booking:my_bookings' %}?type=transport" class="filter-btn">Транспорт</a>
+    <a href="{% url 'trip:coming_soon' %}?type=restaurant" class="filter-btn">Рестораны</a>
+    <a href="{% url 'trip:coming_soon' %}?type=food" class="filter-btn">Заказ еды</a>
 </section>
 
-<main style="padding: 0 30px; max-width: 1000px; margin: 0 auto;">
-    {% if tickets %}
-        {% for ticket in tickets %}
-            <div class="booking-card">
-                <h3>Рейс: {{ ticket.flight_ticket.flight.flight_number }}</h3>
-                <p>Маршрут: {{ ticket.flight_ticket.flight.departure_city }} → {{ ticket.flight_ticket.flight.arrival_city }}</p>
-                <p>Дата: {{ ticket.flight_ticket.flight.departure_date|date:"d.m.Y H:i" }}</p>
-                <p>Класс: {{ ticket.flight_ticket.get_flight_class_display }}</p>
-                <p>Место: {{ ticket.flight_ticket.seat_number }}</p>
-                <p>Цена: {{ ticket.flight_ticket.price }} ₽</p>
-            </div>
-        {% endfor %}
-    {% elif hotels %}
-        {% for booking in hotels %}
-            <div class="booking-card">
-                <h3>Отель: {{ booking.hotel_name }}</h3>
-                <p>Тип номера: {{ booking.room_type }}</p>
-                <p>Дата заезда: {{ booking.check_in }}</p>
-                <p>Дата выезда: {{ booking.check_out }}</p>
-                <p>Гостей: {{ booking.guests }}</p>
-            </div>
-        {% endfor %}
-    {% elif excursions %}
-        {% for booking in excursions %}
-            <div class="booking-card">
-                <h3>Экскурсия: {{ booking.excursion_title }}</h3>
-                <p>Гид: {{ booking.guide_name }}</p>
-                <p>Дата: {{ booking.date }}</p>
-                <p>Участников: {{ booking.people }}</p>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p style="text-align:center; color: #888;">Бронирования не найдены.</p>
-    {% endif %}
-</main>
+<section class="calendar-section">
+    <div class="calendar-container">
+        <div id="myBookingsCalendar"></div>
+    </div>
+</section>
+
+<!-- Скрытый список для передачи дат и описаний JS-скрипту -->
+<div id="bookingList" class="booking-list" style="display:none;">
+    {% for booking in all_bookings %}
+        <div class="booking-item"
+             data-date="{{ booking.date|date:'Y-m-d' }}"
+             data-details="{{ booking.details|escapejs }}">
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Popup для детализации -->
+<div id="bookingPopup" class="booking-popup" style="display:none;">
+    <h3>Детали бронирования</h3>
+    <div class="popup-details"></div>
+    <button class="close-btn" onclick="document.getElementById('bookingPopup').style.display='none'">Закрыть</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker-full.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let bookings = [];
+    let detailsByDate = {};
+    document.querySelectorAll('.booking-item').forEach(el => {
+        let date = el.getAttribute('data-date');
+        let details = el.getAttribute('data-details');
+        bookings.push(date);
+        if (!detailsByDate[date]) detailsByDate[date] = [];
+        detailsByDate[date].push(details);
+    });
+
+    const calendar = new Datepicker(document.getElementById('myBookingsCalendar'), {
+        language: 'ru',
+        minDate: new Date(new Date().getFullYear(), 0, 1),
+        maxDate: new Date(new Date().getFullYear() + 1, 11, 31),
+        todayHighlight: true,
+        beforeShowDay: function(date) {
+            const d = date.toISOString().split('T')[0];
+            if (bookings.includes(d)) {
+                return { classes: 'has-booking', tooltip: 'Есть бронирование' };
+            }
+        }
+    });
+
+    document.getElementById('myBookingsCalendar').addEventListener('click', function(e) {
+        const cell = e.target.closest('.datepicker-cell');
+        if (!cell) return;
+        if (cell.classList.contains('has-booking')) {
+            const d = cell.dataset.date;
+            if (detailsByDate[d]) {
+                let html = '';
+                detailsByDate[d].forEach(function(detail) {
+                    html += '<p>' + detail + '</p>';
+                });
+                document.querySelector('#bookingPopup .popup-details').innerHTML = html;
+                document.getElementById('bookingPopup').style.display = 'block';
+            }
+        }
+    });
+});
+</script>
 
 </body>
 </html>
