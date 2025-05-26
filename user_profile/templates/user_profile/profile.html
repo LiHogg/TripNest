@@ -78,7 +78,7 @@
         <div class="profile-actions">
             <button onclick="window.location.href='{% url 'user_profile:edit_profile' %}'" class="btn">Редактировать</button>
             <button onclick="window.location.href='{% url 'user_profile:profile_details' %}'" class="btn">Вся информация</button>
-            <button onclick="window.location.href='/calendar/'" class="btn">Календарь планов</button>
+            <button onclick="window.location.href='{% url 'booking:my_bookings' %}'" class="btn">Календарь планов</button>
         </div>
     </section>
     <section class="history-section">

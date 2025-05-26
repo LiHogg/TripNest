@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&!6ycloltj#0^ie+@4(5w28q11t^2e__f-206-o=f$-4bv95p*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['trip-nest.ru', 'www.trip-nest.ru' ]
 
 # Куда редиректить неавторизованного
 LOGIN_URL = '/user/login/'
@@ -95,13 +95,19 @@ WSGI_APPLICATION = 'TripNest.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tripnest',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        'NAME': 'srv233800_tripnest',     # ← Имя базы данных
+        'USER': 'srv233800_LiHogg',       # ← Имя пользователя базы
+        'PASSWORD': 'LiamHogg12',  # ← Пароль, который ты задал
+        'HOST': 'mysql-233800.srv.hoster.ru',              # ← Обычно так, если не указано иное
         'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
+
+
 
 
 # Password validation
