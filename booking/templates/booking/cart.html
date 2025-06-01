@@ -9,135 +9,139 @@
 </head>
 <body class="dark-theme">
 
-<!-- Header -->
-<header class="header">
-  <div class="container">
-    <div class="logo">
-      <a href="/">
-        <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" height="40">
-      </a>
+  <!-- Header с бургер-меню и обычной навигацией -->
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <a href="/"><img src="{% static 'img/logo.png' %}" alt="TripNest Logo" height="40"></a>
+      </div>
+      <nav class="nav main-nav">
+        <a href="/">Главная</a>
+        <a href="{% url 'hotel:hotel_list' %}">Жильё</a>
+        <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
+        <a href="{% url 'transport:transport_list' %}">Транспорт</a>
+      </nav>
+      <div class="auth-buttons main-auth">
+        <a href="{% url 'booking:cart' %}" class="cart-link">Корзина</a>
+        <a href="{% url 'user_profile:profile' %}">Профиль</a>
+        <form id="logout-form" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+          {% csrf_token %}
+        </form>
+        <a href="#" onclick="document.getElementById('logout-form').submit(); return false;">Выйти</a>
+      </div>
+      <div class="burger" id="burger">
+        <span></span><span></span><span></span>
+      </div>
+      <nav class="nav burger-nav" id="burger-nav">
+        <a href="/">Главная</a>
+        <a href="{% url 'hotel:hotel_list' %}">Жильё</a>
+        <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
+        <a href="{% url 'transport:transport_list' %}">Транспорт</a>
+        <a href="{% url 'booking:cart' %}">Корзина</a>
+        <a href="{% url 'user_profile:profile' %}">Профиль</a>
+        <a href="#" onclick="document.getElementById('logout-form').submit(); return false;">Выйти</a>
+      </nav>
     </div>
-    <nav class="nav">
-      <a href="/">Главная</a>
-      <a href="{% url 'hotel:hotel_list' %}">Жильё</a>
-      <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
-      <a href="{% url 'transport:transport_list' %}">Транспорт</a>
-      <a href="{% url 'excursion:excursion_list' %}">Заказ еды</a>
-    </nav>
-    <div class="auth-buttons">
-      <a href="{% url 'user_profile:profile' %}">Профиль</a>
-      <a href="/logout/">Выйти</a>
-    </div>
-  </div>
-</header>
+  </header>
 
-<main class="cart container">
-  <!-- Back button -->
-  <div class="back-link" style="margin: 20px 0;">
-    <a href="javascript:history.back()">&larr; Назад</a>
-  </div>
+  <main class="cart-main">
+    <h1>Ваша корзина</h1>
 
-  <h1 class="page-title">Ваша корзина</h1>
+    {% if items %}
+      <ul class="cart-items">
+        {% for item in items %}
+          <li class="cart-item">
 
-  {% if items %}
-    <div class="cart-items">
-      {% for item in items %}
+            {# Авиа #}
+            {% if item.flight_ticket %}
+              ✈️ Рейс №{{ item.flight_ticket.flight.flight_number }}<br>
+              Откуда → куда: {{ item.flight_ticket.flight.departure_city }} → {{ item.flight_ticket.flight.arrival_city }}<br>
+              Вылет: {{ item.flight_ticket.flight.departure_time|date:"H:i d.m.Y" }}<br>
+              Цена: {{ item.flight_ticket.price }} ₽
 
-        {# Номер отеля #}
-        {% if item.hotel_room %}
-          <div class="cart-item hotel-item">
-            <h3>{{ item.hotel_room.hotel.name }} — {{ item.hotel_room.room_class }}</h3>
-            <p>Цена за ночь: {{ item.hotel_room.price_per_night }} ₽</p>
-            <p>{{ item.hotel_room.description|truncatechars:100 }}</p>
+            {# Ж/д #}
+            {% elif item.train_ticket %}
+              🚆 Поезд №{{ item.train_ticket.train.train_number }}<br>
+              Маршрут: {{ item.train_ticket.train.departure_station }} → {{ item.train_ticket.train.arrival_station }}<br>
+              Отправление: {{ item.train_ticket.departure_time|date:"H:i d.m.Y" }}<br>
+              Цена: {{ item.train_ticket.price }} ₽
+
+            {# Отель #}
+            {% elif item.hotel_room %}
+              🏨 Отель «{{ item.hotel_room.hotel.name }}», {{ item.hotel_room.get_room_class_display }}<br>
+              Цена за ночь: {{ item.hotel_room.price_per_night }} ₽
+
+            {# Экскурсия #}
+            {% elif item.excursion %}
+              🗺 Экскурсия «{{ item.excursion.name }}»<br>
+              Город: {{ item.excursion.city.name }}<br>
+              Цена: {{ item.excursion.price_per_person }} ₽
+            {% endif %}
+
             <form method="post" action="{% url 'booking:remove_from_cart' item.id %}">
               {% csrf_token %}
-              <button type="submit">Удалить</button>
+              <button type="submit" class="btn-remove">Удалить</button>
             </form>
-          </div>
-        {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
 
-        {# Авиабилет #}
-        {% if item.flight_ticket %}
-          <div class="cart-item flight-item">
-            <h3>
-              Рейс: {{ item.flight_ticket.flight.flight_number }}
-              ({{ item.flight_ticket.flight.airline }})
-            </h3>
-            <p>
-              <strong>Дата и время вылета:</strong>
-              {{ item.flight_ticket.flight.departure_date|date:"d F Y" }}
-              в {{ item.flight_ticket.flight.departure_date|time:"H:i" }}
-            </p>
-            <p>
-              <strong>Откуда:</strong>
-              {{ item.flight_ticket.flight.departure_city.name }}
-              → <strong>Куда:</strong>
-              {{ item.flight_ticket.flight.arrival_city.name }}
-            </p>
-            <p>
-              <strong>Класс:</strong>
-              {{ item.flight_ticket.get_flight_class_display }}
-              , место №{{ item.flight_ticket.seat_number }}
-            </p>
-            <form method="post" action="{% url 'booking:remove_from_cart' item.id %}">
-              {% csrf_token %}
-              <button type="submit">Удалить</button>
-            </form>
-          </div>
-        {% endif %}
+      {# Блок итоговой суммы #}
+      <div class="cart-summary">
+        Итого: {{ total }} ₽
+      </div>
 
-        {# Поездной билет #}
-        {% if item.train_ticket %}
-          <div class="cart-item train-item">
-            <h3>Поезд: {{ item.train_ticket.train.train_number }}</h3>
-            <p>
-              <strong>Дата и время отправления:</strong>
-              {{ item.train_ticket.train.departure_date|date:"d F Y" }} в {{ item.train_ticket.train.departure_date|time:"H:i" }}
-            </p>
-            <p>
-              <strong>Класс:</strong>
-              {{ item.train_ticket.get_train_class_display }}
-              , место №{{ item.train_ticket.seat_number }}
-            </p>
-            <form method="post" action="{% url 'booking:remove_from_cart' item.id %}">
-              {% csrf_token %}
-              <button type="submit">Удалить</button>
-            </form>
-          </div>
-        {% endif %}
+      <div class="cart-actions">
+        <a href="{% url 'booking:confirm_booking' %}" class="btn-confirm">Оформить заказ</a>
+      </div>
+    {% else %}
+      <p>Корзина пуста</p>
+    {% endif %}
+  </main>
 
-        {# Экскурсия #}
-        {% if item.excursion %}
-          <div class="cart-item excursion-item">
-            <h3>Экскурсия: {{ item.excursion.name }}</h3>
-            <p>Гид: {{ item.excursion.guide_name }}</p>
-            <p>Город: {{ item.excursion.city.name }}</p>
-            <p>Цена: {{ item.excursion.price_per_person }} ₽/чел</p>
-            <form method="post" action="{% url 'booking:remove_from_cart' item.id %}">
-              {% csrf_token %}
-              <button type="submit">Удалить</button>
-            </form>
-          </div>
-        {% endif %}
-
-      {% endfor %}
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-logo">
+        <img src="{% static 'img/logo.png' %}" alt="TripNest Logo" height="30">
+        <p>
+          TripNest — всё для вашего комфорта в одном месте: отели, доставка еды, экскурсии, транспорт.<br>
+          Поддержка 24/7 • support@tripnest.com
+        </p>
+      </div>
+      <div class="social">
+        <p>Мы в социальных сетях:</p>
+        <a href="#">VK</a>
+        <a href="#">Skype</a>
+        <a href="#">Telegram</a>
+      </div>
     </div>
+    <p class="copyright">© TripNest, 2025. Все права защищены</p>
+  </footer>
+<!-- JS для бургер-меню -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const burgerBtn = document.getElementById("burgerBtn");
+  const burgerMenu = document.getElementById("burgerMenu");
+  const menuOverlay = document.getElementById("menuOverlay");
 
-    <div class="cart-actions">
-      <a href="{% url 'booking:confirm_booking' %}" class="btn btn-primary">Перейти к оформлению</a>
-    </div>
+  if (burgerBtn && burgerMenu && menuOverlay) {
+    // Открытие/закрытие меню
+    burgerBtn.addEventListener("click", function() {
+      burgerMenu.classList.toggle("open");
+      menuOverlay.classList.toggle("open");
+      document.body.classList.toggle("menu-open");
+    });
 
-  {% else %}
-    <p>Корзина пуста.</p>
-  {% endif %}
-</main>
+    // Клик вне меню — закрыть
+    menuOverlay.addEventListener("click", function() {
+      burgerMenu.classList.remove("open");
+      menuOverlay.classList.remove("open");
+      document.body.classList.remove("menu-open");
+    });
+  }
+});
+</script>
 
-<!-- Footer -->
-<footer class="footer">
-  <div class="container">
-    <p>© TripNest, 2025</p>
-  </div>
-</footer>
 
 </body>
 </html>

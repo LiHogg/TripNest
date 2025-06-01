@@ -1,422 +1,299 @@
 body {
-    background: #171717;
+    background: #161616;
     color: #fce643;
-    margin: 0;
     font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-/* --- HEADER --- */
-header {
-    background: #1C1C1C;
+body, body * {
     color: #fce643;
-    padding: 0;
-    box-shadow: 0 3px 17px #0003;
-    position: relative;
-    z-index: 101;
-    min-height: 72px;
+    box-sizing: border-box;
+}
+
+/* ====== HEADER (Desktop) ====== */
+.header {
+    background-color: #131313;
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    box-sizing: border-box;
+}
+.container {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 40px;
+    min-height: 68px;
+    position: relative;
 }
-.logo {
+.logo-img {
+    height: 32px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.desktop-nav {
     display: flex;
-    align-items: center;
-    padding: 17px 27px 17px 27px;
+    gap: 28px;
+    margin-left: 40px;
 }
-.logo img {
-    height: 38px;
-    width: auto;
-    display: block;
-}
-.nav.desktop-nav {
-    display: flex;
-}
-.nav-list {
-    display: flex;
-    gap: 20px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-.nav-list li a {
+.desktop-nav a {
     color: #fce643;
-    text-decoration: none;
-    font-size: 1.09em;
     font-weight: 600;
-    padding: 10px 12px;
-    border-radius: 10px;
-    transition: background 0.19s, color 0.19s;
+    font-size: 1.16rem;
+    text-decoration: none;
+    transition: color .18s;
+    border-radius: 8px;
+    padding: 7px 16px;
 }
-.nav-list li a:hover,
-.nav-list li a:focus {
-    background: #9643FC;
-    color: #fffceb;
+.desktop-nav a:hover {
+    color: #9643fc;
+    background: #191919;
 }
-.auth-buttons {
+.desktop-auth {
     display: flex;
-    align-items: center;
-    gap: 17px;
-    margin-right: 24px;
+    gap: 16px;
 }
-.auth-buttons .btn,
-.auth-buttons .cart-link {
-    display: inline-block;
-    padding: 9px 19px;
-    background: #9643FC;
+.desktop-auth .btn {
+    border: 2px solid #9643fc;
+    background: transparent;
     color: #fce643;
-    border-radius: 9px;
-    text-decoration: none;
+    border-radius: 12px;
+    padding: 7px 22px;
     font-weight: 600;
-    font-size: 1.06em;
-    border: none;
-    cursor: pointer;
+    font-size: 1.1rem;
     margin-left: 6px;
-    transition: background 0.19s, color 0.19s;
+    cursor: pointer;
+    transition: background .18s, color .18s, border .18s;
+    text-decoration: none;
 }
-.auth-buttons .btn:hover,
-.auth-buttons .cart-link:hover {
+.desktop-auth .btn:hover {
     background: #fce643;
-    color: #232325;
+    color: #161616;
+    border: 2px solid #fce643;
 }
 
+/* ======== Burger (Адаптивное меню) ======== */
 .burger-btn {
     display: none;
-    position: relative;
-    width: 42px;
-    height: 42px;
-    background: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 14px;
+    right: 32px;
+    width: 52px;
+    height: 52px;
+    background: transparent;
     border: none;
-    flex-shrink: 0;
-    margin-right: 18px;
+    outline: none;
     cursor: pointer;
-    z-index: 103;
+    z-index: 120;
+    padding: 0;
+    transition: background 0.18s;
 }
 .burger-btn span {
     display: block;
-    height: 5px;
-    margin: 6px 0;
-    border-radius: 2px;
+    height: 7px;
+    width: 38px;
+    margin: 5px 0;
     background: #fce643;
-    transition: 0.23s;
+    border-radius: 3px;
+    transition: 0.3s;
 }
+.burger-btn.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.burger-btn.open span:nth-child(2) { opacity: 0; }
+.burger-btn.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
 .burger-menu {
     display: none;
     position: fixed;
-    z-index: 102;
-    top: 0; left: 0;
-    width: 260px;
+    top: 0;
+    right: 0;
+    width: 75vw;
+    max-width: 320px;
     height: 100vh;
-    background: #232323;
-    padding: 42px 20px 20px 20px;
-    box-shadow: 3px 0 25px #000b;
+    background: #1C1C1C;
+    padding: 36px 20px 20px 20px;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.16);
+    z-index: 110;
     flex-direction: column;
-    transition: transform 0.23s;
-    transform: translateX(-110%);
+    transition: transform 0.3s;
+    transform: translateX(100%);
 }
 .burger-menu.open {
+    display: flex !important;
+    transform: translateX(0);
+}
+.burger-menu nav {
     display: flex;
-    transform: translateX(0%);
-}
-.burger-menu .nav-list {
     flex-direction: column;
-    gap: 0;
+    gap: 20px;
 }
-.burger-menu .nav-list li {
-    margin-bottom: 12px;
-}
-.burger-menu .nav-list li a {
-    display: block;
-    font-size: 1.12em;
+.burger-menu a.btn {
+    margin: 0 0 10px 0;
+    border: 2px solid #9643fc;
+    color: #fce643;
+    background: transparent;
+    border-radius: 12px;
+    padding: 8px 18px;
     font-weight: 600;
-    padding: 14px 0 14px 8px;
+    font-size: 1.12rem;
+    text-align: center;
+    transition: background .18s, color .18s, border .18s;
 }
-.burger-menu .auth-buttons {
-    flex-direction: column;
-    gap: 11px;
-    margin: 18px 0 0 0;
+.burger-menu a.btn:hover {
+    background: #fce643;
+    color: #161616;
+    border: 2px solid #fce643;
+}
+.burger-menu a {
+    color: #fce643;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.12rem;
+    padding: 6px 6px;
+    border-radius: 8px;
+    transition: background .18s, color .18s;
+}
+.burger-menu a:hover {
+    background: #191919;
+    color: #9643fc;
 }
 .menu-overlay {
     display: none;
     position: fixed;
     z-index: 101;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    background: #0009;
-    transition: opacity 0.18s;
-    opacity: 0;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(23, 23, 23, 0.7);
 }
 .menu-overlay.open {
-    display: block;
-    opacity: 1;
-}
-.desktop-nav, .desktop-auth { display: flex; }
-@media (max-width: 900px) {
-    .desktop-nav, .desktop-auth {
-        display: none !important;
-    }
-    .burger-btn {
-        display: block;
-    }
+    display: block !important;
 }
 
-/* --- КОНЕЦ HEADER --- */
-
-
-/* ФИЛЬТР-КНОПКИ */
+/* ========== Основной контент ========== */
+main {
+    padding-top: 90px;
+    max-width: 900px;
+    margin: 0 auto;
+}
 .filter-buttons {
     display: flex;
-    gap: 22px;
+    gap: 16px;
     justify-content: center;
-    margin: 38px 0 26px 0;
     flex-wrap: wrap;
+    margin: 32px 0;
 }
 .filter-btn {
-    background: #9643FC;
-    color: #fce643;
-    padding: 13px 31px;
-    border-radius: 13px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.05em;
-    font-family: inherit;
-    border: none;
-    outline: none;
-    box-shadow: 0 2px 13px rgba(150,67,252,0.11);
-    transition: background 0.22s, color 0.22s;
-    margin-bottom: 10px;
-    cursor: pointer;
-    display: inline-block;
-}
-.filter-btn:hover,
-.filter-btn:focus {
     background: #fce643;
-    color: #232325;
+    color: #171717;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: opacity 0.2s;
 }
-
-/* КАЛЕНДАРЬ */
+.filter-btn:hover { opacity: 0.8; }
 .calendar-section {
     display: flex;
     justify-content: center;
-    margin-bottom: 37px;
+    margin-bottom: 40px;
 }
 .calendar-container {
-    background: #232323;
-    border-radius: 19px;
-    padding: 23px;
-    box-shadow: 0 2px 16px rgba(150,67,252,0.11);
-    min-width: 315px;
-    max-width: 390px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background: #1C1C1C;
+    padding: 24px;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.14);
+    max-width: 410px;
 }
-
-/* FLATPICKR DARK THEME OVERRIDES */
 .flatpickr-calendar {
-    background: #232323 !important;
+    background: #1C1C1C !important;
+    border-radius: 14px !important;
     color: #fce643 !important;
-    border-radius: 19px !important;
-    box-shadow: 0 2px 16px rgba(150,67,252,0.11);
-}
-.flatpickr-days, .flatpickr-weekdays, .flatpickr-months {
-    background: #232323 !important;
 }
 .flatpickr-day {
     color: #fce643 !important;
-    font-weight: 500;
-    border-radius: 50% !important;
-    transition: background 0.18s, color 0.18s;
 }
 .flatpickr-day.has-booking {
     background: #fce643 !important;
-    color: #232323 !important;
-    box-shadow: 0 0 0 2px #9643FC44 !important;
-    font-weight: 700;
-    border-radius: 50% !important;
+    color: #171717 !important;
 }
-.flatpickr-day:hover, .flatpickr-day.selected, .flatpickr-day.today {
-    background: #9643FC !important;
-    color: #fce643 !important;
+.flatpickr-day.selected,
+.flatpickr-day.today,
+.flatpickr-day:hover {
+    background: #fce643 !important;
+    color: #171717 !important;
 }
-.flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
-    box-shadow: 0 0 0 2px #fce64355 !important;
-}
-.flatpickr-weekday {
-    color: #fce643 !important;
-    font-weight: 600;
-}
-.flatpickr-monthDropdown-month, .flatpickr-current-month input.cur-year {
-    color: #fce643 !important;
-    background: #232323 !important;
-}
-.flatpickr-input {
-    background: #232323;
-    color: #fce643;
-    border: 1.5px solid #9643FC;
-    padding: 12px 17px;
-    border-radius: 13px;
-    font-weight: 600;
-    font-size: 1.13em;
-    transition: box-shadow 0.2s;
-    margin-bottom: 0;
-}
-.flatpickr-input:focus {
-    box-shadow: 0 0 0 2px #9643FC77;
-    outline: none;
-}
-
-/* POPUP */
 .booking-popup {
     display: none;
     position: fixed;
-    z-index: 9999;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     background: #1C1C1C;
     color: #fce643;
-    padding: 36px 32px 27px 32px;
-    border-radius: 18px;
-    box-shadow: 0 6px 42px #000c;
-    min-width: 320px;
-    max-width: 92vw;
-    min-height: 150px;
-    text-align: left;
-    animation: fadeIn .22s;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.2);
+    z-index: 1001;
+    max-width: 90vw;
 }
 .booking-popup h3 {
     margin-top: 0;
-    color: #fce643;
-    font-size: 1.19em;
-    margin-bottom: 15px;
-    font-weight: 700;
-}
-.booking-popup p {
-    color: #fce643;
-    margin: 6px 0 7px 0;
-    line-height: 1.3;
-    font-size: 1.07em;
+    font-weight: 600;
 }
 .booking-popup .close-btn {
-    background: #9643FC;
-    color: #fce643;
-    border: none;
-    border-radius: 10px;
-    padding: 9px 24px;
-    font-size: 1.07em;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 19px;
-    float: right;
-    transition: background 0.2s, color 0.2s;
-}
-.booking-popup .close-btn:hover,
-.booking-popup .close-btn:focus {
     background: #fce643;
-    color: #232325;
+    color: #171717;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    float: right;
+    transition: opacity 0.2s;
+}
+.booking-popup .close-btn:hover {
+    opacity: 0.8;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translate(-50%, -57%);}
-    to { opacity: 1; transform: translate(-50%, -50%);}
-}
-
-/* Мелкие служебные */
-.booking-list { display: none; }
-
-/* ========= Планшеты ========== */
-@media (max-width: 1000px) and (min-width: 601px) {
-    header {
-        flex-direction: column;
-        align-items: stretch;
-        min-height: unset;
+/* ====== АДАПТИВНОСТЬ ====== */
+/* Tablet/Mobile (≤1024px): Показываем только бургер и бургер-меню */
+@media (max-width: 1024px) {
+    .header, .desktop-nav, .desktop-auth {
+        display: none !important;
     }
-    .logo {
-        padding: 14px 10px;
-        justify-content: center;
+    .burger-btn {
+        display: flex !important;
     }
-    .auth-buttons {
-        margin-right: 9px;
+    .burger-menu {
+        display: none;
     }
-    .nav-list li a {
-        padding: 8px 6px;
-        font-size: 1em;
+    .burger-menu.open {
+        display: flex !important;
     }
-    .filter-buttons {
-        gap: 18px;
-        margin: 18px 0 13px 0;
-    }
-    .filter-btn {
-        padding: 10px 7vw;
-        font-size: 1.03em;
-        border-radius: 10px;
-    }
-    .calendar-section {
-        margin-bottom: 15px;
+    main {
+        padding-top: 70px;
+        max-width: 100vw;
     }
     .calendar-container {
-        padding: 10px 4vw;
-        min-width: 225px;
-        max-width: 98vw;
-        border-radius: 13px;
-    }
-    .booking-popup {
-        min-width: 180px;
-        max-width: 90vw;
-        padding: 20px 8vw 14px 8vw;
-        border-radius: 13px;
-    }
-    .booking-popup h3 {
-        font-size: 1em;
-    }
-    .booking-popup p {
-        font-size: 0.98em;
+        padding: 16px;
+        max-width: 100vw;
     }
 }
-
-/* ========= Телефоны ========== */
-@media (max-width: 600px) {
-    body {
-        font-size: 0.97em;
+/* Desktop (от 1025px): Показываем только header, desktop-nav, desktop-auth */
+@media (min-width: 1025px) {
+    .burger-btn, .burger-menu, .menu-overlay {
+        display: none !important;
     }
-    header {
-        flex-direction: column;
-        min-height: unset;
-        padding: 0;
+    .header {
+        display: block !important;
     }
-    .logo {
-        padding: 7px 7px 7px 13px;
-        justify-content: center;
-    }
-    .nav-list li a {
-        padding: 10px 2px;
-        font-size: 0.99em;
-    }
-    .auth-buttons {
-        margin-right: 2px;
-        gap: 8px;
-    }
-    .filter-buttons {
-        flex-direction: column;
-        gap: 9px;
-        margin: 10px 0 9px 0;
-        align-items: stretch;
-    }
-    .filter-btn {
-        width: 98vw;
-    }
-    .calendar-container {
-        min-width: unset;
-        max-width: 99vw;
-        padding: 7px 2vw;
-        border-radius: 11px;
-    }
-    .flatpickr-input {
-        font-size: 0.98em;
-        padding: 8px 8px;
-    }
-    .booking-popup {
-        min-width: 140px;
-        padding: 12px 6vw 12px 6vw;
-        border-radius: 11px;
+    .desktop-nav, .desktop-auth {
+        display: flex !important;
     }
 }

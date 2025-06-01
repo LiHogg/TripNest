@@ -84,12 +84,16 @@ class ExcursionForm(forms.ModelForm):
 ExcursionAvailabilityFormSet = inlineformset_factory(
     Excursion,
     ExcursionAvailability,
-    form=forms.modelform_factory(ExcursionAvailability, fields=['available_date', 'start_time', 'available_slots'], widgets={
-        'available_date': forms.DateInput(attrs={'type': 'date'}),
-        'start_time': forms.TimeInput(attrs={'type': 'time'}),
-        'available_slots': forms.NumberInput(attrs={'min': 0}),
-    }),
-    extra=1,
+    form=forms.modelform_factory(
+        ExcursionAvailability,
+        fields=['available_date', 'start_time', 'available_slots'],
+        widgets={
+            'available_date': forms.DateInput(attrs={'type': 'date'}),
+            'start_time': forms.TimeInput(attrs={'type': 'time'}),
+            'available_slots': forms.NumberInput(attrs={'min': 0}),
+        }
+    ),
+    extra=1,   # <-- Только существующие, ни одной пустой строки!
     can_delete=True
 )
 

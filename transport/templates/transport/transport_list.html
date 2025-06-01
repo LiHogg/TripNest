@@ -33,21 +33,18 @@
         </button>
         <!-- Бургер-меню -->
         <div class="burger-menu" id="burgerMenu">
-            <nav>
-                <ul class="nav-list">
-                    <li><a href="/">Главная</a></li>
-                    <li><a href="{% url 'hotel:hotel_list' %}">Жильё</a></li>
-                    <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
-                    <li><a href="{% url 'transport:transport_list' %}">Транспорт</a></li>
-                </ul>
-                <div class="auth-buttons">
-                    <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
-                    <form id="logout-form" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
-                        {% csrf_token %}
-                    </form>
-                    <a href="#" class="btn" onclick="document.getElementById('logout-form').submit(); return false;">Выйти</a>
-                </div>
-            </nav>
+          <nav>
+            <ul>
+              <li><a href="/">Главная</a></li>
+              <li><a href="#">Жильё</a></li>
+              <li><a href="#">Экскурсии</a></li>
+              <li><a href="#">Транспорт</a></li>
+            </ul>
+            <div class="profile-block">
+              <span>Профиль</span>
+              <a href="#">Выйти</a>
+            </div>
+          </nav>
         </div>
         <div class="menu-overlay" id="menuOverlay"></div>
     </div>

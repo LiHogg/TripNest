@@ -12,74 +12,71 @@
 </head>
 <body>
 
-<!-- Шапка сайта -->
-<header>
-  <div class="logo">
-    <a href="/"><img src="{% static 'img/logo.png' %}" alt="TripNest"></a>
-  </div>
-  <!-- Десктопное меню -->
-  <nav class="nav desktop-nav">
-    <ul class="nav-list">
-      <li><a href="/">Главная</a></li>
-      <li><a href="{% url 'hotel:hotel_list' %}">Жильё</a></li>
-      <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
-      <li><a href="{% url 'transport:transport_list' %}">Транспорт</a></li>
-      <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
-      <li><a href="{% url 'trip:coming_soon' %}">Еда</a></li>
-    </ul>
-  </nav>
-  <div class="auth-buttons desktop-auth">
-    <a href="{% url 'booking:cart' %}" class="cart-link">Корзина</a>
-    <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
-    <form id="logout-form-desktop" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
-      {% csrf_token %}
-    </form>
-    <a href="#" class="btn" onclick="document.getElementById('logout-form-desktop').submit(); return false;">Выйти</a>
-  </div>
-  <!-- Кнопка-бургер -->
-  <button class="burger-btn" id="burgerBtn" aria-label="Меню">
-    <span></span><span></span><span></span>
-  </button>
-  <!-- Выпадающее меню -->
-  <div class="burger-menu" id="burgerMenu">
-    <nav>
-      <ul class="nav-list">
-        <li><a href="/">Главная</a></li>
-        <li><a href="{% url 'hotel:hotel_list' %}">Жильё</a></li>
-        <li><a href="{% url 'excursion:excursion_list' %}">Экскурсии</a></li>
-        <li><a href="{% url 'transport:transport_list' %}">Транспорт</a></li>
-        <li><a href="{% url 'trip:coming_soon' %}">Рестораны</a></li>
-        <li><a href="{% url 'trip:coming_soon' %}">Еда</a></li>
-      </ul>
-      <div class="auth-buttons">
-        <a href="{% url 'booking:cart' %}" class="cart-link">Корзина</a>
-        <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
-        <form id="logout-form" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
-          {% csrf_token %}
-        </form>
-        <a href="#" class="btn" onclick="document.getElementById('logout-form').submit(); return false;">Выйти</a>
-      </div>
+<header class="header">
+  <div class="container">
+    <div class="logo">
+      <a href="/"><img src="{% static 'img/logo.png' %}" alt="TripNest" class="logo-img"></a>
+    </div>
+    <!-- Десктопное меню -->
+    <nav class="desktop-nav">
+      <a href="/">Главная</a>
+      <a href="{% url 'hotel:hotel_list' %}">Жильё</a>
+      <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
+      <a href="{% url 'transport:transport_list' %}">Транспорт</a>
+      <a href="{% url 'trip:coming_soon' %}">Рестораны</a>
+      <a href="{% url 'trip:coming_soon' %}">Еда</a>
     </nav>
+    <div class="desktop-auth">
+      <a href="{% url 'booking:cart' %}" class="btn">Корзина</a>
+      <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+      <form id="logout-form-desktop" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+        {% csrf_token %}
+      </form>
+      <a href="#" class="btn" onclick="document.getElementById('logout-form-desktop').submit(); return false;">Выйти</a>
+    </div>
   </div>
-  <div class="menu-overlay" id="menuOverlay"></div>
 </header>
 
-<section class="filter-buttons">
-    <a href="{% url 'booking:my_bookings' %}?type=hotel" class="filter-btn">Жильё</a>
-    <a href="{% url 'booking:my_bookings' %}?type=excursion" class="filter-btn">Экскурсии</a>
-    <a href="{% url 'booking:my_bookings' %}?type=transport" class="filter-btn">Транспорт</a>
-    <a href="{% url 'trip:coming_soon' %}?type=restaurant" class="filter-btn">Рестораны</a>
-    <a href="{% url 'trip:coming_soon' %}?type=food" class="filter-btn">Заказ еды</a>
-</section>
+<!-- ВАЖНО: Бургер-кнопка и меню ВНЕ header! -->
+<button class="burger-btn" id="burgerBtn" aria-label="Меню">
+  <span></span><span></span><span></span>
+</button>
+<div class="burger-menu" id="burgerMenu">
+  <nav>
+    <a href="/">Главная</a>
+    <a href="{% url 'hotel:hotel_list' %}">Жильё</a>
+    <a href="{% url 'excursion:excursion_list' %}">Экскурсии</a>
+    <a href="{% url 'transport:transport_list' %}">Транспорт</a>
+    <a href="{% url 'trip:coming_soon' %}">Рестораны</a>
+    <a href="{% url 'trip:coming_soon' %}">Еда</a>
+    <a href="{% url 'booking:cart' %}" class="btn">Корзина</a>
+    <a href="{% url 'user_profile:profile' %}" class="btn">Профиль</a>
+    <form id="logout-form" action="{% url 'user_profile:logout' %}" method="post" style="display:none;">
+      {% csrf_token %}
+    </form>
+    <a href="#" class="btn" onclick="document.getElementById('logout-form').submit(); return false;">Выйти</a>
+  </nav>
+</div>
+<div class="menu-overlay" id="menuOverlay"></div>
 
-<section class="calendar-section">
-    <div class="calendar-container">
-        <!-- Теперь календарь всегда видим! -->
-        <div id="myBookingsCalendar" class="calendar-flatpickr"></div>
-    </div>
-</section>
+<main>
+  <section class="filter-buttons">
+      <a href="{% url 'booking:my_bookings' %}?type=hotel" class="filter-btn">Жильё</a>
+      <a href="{% url 'booking:my_bookings' %}?type=excursion" class="filter-btn">Экскурсии</a>
+      <a href="{% url 'booking:my_bookings' %}?type=transport" class="filter-btn">Транспорт</a>
+      <a href="{% url 'trip:coming_soon' %}?type=restaurant" class="filter-btn">Рестораны</a>
+      <a href="{% url 'trip:coming_soon' %}?type=food" class="filter-btn">Заказ еды</a>
+  </section>
 
-<!-- Скрытый список для передачи дат и описаний JS-скрипту -->
+  <section class="calendar-section">
+      <div class="calendar-container">
+          <!-- Календарь всегда видим -->
+          <div id="myBookingsCalendar" class="calendar-flatpickr"></div>
+      </div>
+  </section>
+</main>
+
+<!-- Скрытый список для передачи JS -->
 <div id="bookingList" class="booking-list" style="display:none;">
     {% for booking in all_bookings %}
         <div class="booking-item"
@@ -89,14 +86,13 @@
     {% endfor %}
 </div>
 
-<!-- Popup для детализации -->
+<!-- Popup -->
 <div id="bookingPopup" class="booking-popup" style="display:none;">
     <h3>Детали бронирования</h3>
     <div class="popup-details"></div>
     <button class="close-btn" onclick="document.getElementById('bookingPopup').style.display='none'">Закрыть</button>
 </div>
 
-<!-- Flatpickr -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
 <script>
@@ -105,20 +101,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const burgerBtn = document.getElementById("burgerBtn");
     const burgerMenu = document.getElementById("burgerMenu");
     const menuOverlay = document.getElementById("menuOverlay");
-
     burgerBtn.addEventListener("click", function() {
         burgerMenu.classList.toggle("open");
         menuOverlay.classList.toggle("open");
         document.body.classList.toggle("menu-open");
     });
-
     menuOverlay.addEventListener("click", function() {
         burgerMenu.classList.remove("open");
         menuOverlay.classList.remove("open");
         document.body.classList.remove("menu-open");
     });
 
-    // Собираем даты с бронированиями
+    // Календарь и popup
     let bookings = [];
     let detailsByDate = {};
     document.querySelectorAll('.booking-item').forEach(el => {
@@ -129,13 +123,12 @@ document.addEventListener("DOMContentLoaded", function () {
         detailsByDate[date].push(details);
     });
 
-    // Flatpickr — режим inline (всегда виден!)
-    const calendar = flatpickr("#myBookingsCalendar", {
+    flatpickr("#myBookingsCalendar", {
         locale: "ru",
         minDate: "today",
         dateFormat: "Y-m-d",
         disable: [],
-        inline: true, // <<< ВАЖНО! Календарь всегда виден
+        inline: true,
         onDayCreate: function(dObj, dStr, fp, dayElem) {
             let date = dayElem.dateObj.toISOString().slice(0,10);
             if (bookings.includes(date)) {
@@ -143,9 +136,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 dayElem.setAttribute('title', 'Есть бронирование');
             }
         },
-        onChange: function(selectedDates, dateStr, instance) {
+        onChange: function(selectedDates, dateStr) {
             if (bookings.includes(dateStr)) {
-                // Показываем popup с деталями бронирования
                 let html = '';
                 detailsByDate[dateStr].forEach(function(detail) {
                     html += '<p>' + detail + '</p>';

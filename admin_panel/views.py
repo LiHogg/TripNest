@@ -13,6 +13,7 @@ from excursion.utils import generate_excursion_schedule
 from transport.models import Flight, Train
 from django.contrib.auth.models import User
 from transport.views import create_tickets_for_train
+
 # === DASHBOARD ===
 def dashboard(request):
     return render(request, 'admin_panel/dashboard.html')
@@ -69,7 +70,7 @@ def country_create(request):
         form = CountryForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('admin_panel:country_list')
+            return redirect('admin_panel:admin_country_list')
     else:
         form = CountryForm()
     return render(request, 'admin_panel/country_form.html', {'form': form, 'title': 'Добавить страну'})
@@ -80,7 +81,7 @@ def country_edit(request, pk):
         form = CountryForm(request.POST, instance=country)
         if form.is_valid():
             form.save()
-            return redirect('admin_panel:country_list')
+            return redirect('admin_panel:admin_country_list')
     else:
         form = CountryForm(instance=country)
     return render(request, 'admin_panel/country_form.html', {'form': form, 'title': 'Редактировать страну'})
@@ -88,7 +89,7 @@ def country_edit(request, pk):
 def country_delete(request, pk):
     country = get_object_or_404(Country, pk=pk)
     country.delete()
-    return redirect('admin_panel:country_list')
+    return redirect('admin_panel:admin_country_list')
 
 # === CITY CRUD ===
 def city_list(request):
@@ -100,7 +101,7 @@ def city_create(request):
         form = CityForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('admin_panel:city_list')
+            return redirect('admin_panel:admin_city_list')
     else:
         form = CityForm()
     return render(request, 'admin_panel/city_form.html', {'form': form, 'title': 'Добавить город'})
@@ -111,7 +112,7 @@ def city_edit(request, pk):
         form = CityForm(request.POST, instance=city)
         if form.is_valid():
             form.save()
-            return redirect('admin_panel:city_list')
+            return redirect('admin_panel:admin_city_list')
     else:
         form = CityForm(instance=city)
     return render(request, 'admin_panel/city_form.html', {'form': form, 'title': 'Редактировать город'})
@@ -119,8 +120,7 @@ def city_edit(request, pk):
 def city_delete(request, pk):
     city = get_object_or_404(City, pk=pk)
     city.delete()
-    return redirect('admin_panel:city_list')
-
+    return redirect('admin_panel:admin_city_list')
 
 # === HOTEL CRUD ===
 def hotel_list(request):
@@ -171,21 +171,23 @@ def excursion_list(request):
     excursions = Excursion.objects.all()
     return render(request, 'admin_panel/excursion_list.html', {'excursions': excursions})
 
-
 def excursion_create(request):
     if request.method == 'POST':
         form = ExcursionForm(request.POST, request.FILES)
-        availability_formset = ExcursionAvailabilityFormSet(request.POST)
-        if form.is_valid() and availability_formset.is_valid():
+        if form.is_valid():
             excursion = form.save()
-            sd = form.cleaned_data.get('start_date')  # начальная дата
-            ed = form.cleaned_data.get('end_date')    # конечная дата
-            if sd and ed:
-                # Генерация с 10:00 по умолчанию, если не указано
-                generate_excursion_schedule(excursion, sd, ed, '10:00')
-            availability_formset.instance = excursion
-            availability_formset.save()
-            return redirect('admin_panel:excursion_list')
+            availability_formset = ExcursionAvailabilityFormSet(request.POST, request.FILES, instance=excursion)
+            if availability_formset.is_valid():
+                availability_formset.save()
+                sd = form.cleaned_data.get('start_date')
+                ed = form.cleaned_data.get('end_date')
+                if sd and ed:
+                    generate_excursion_schedule(excursion, sd, ed, '10:00')
+                return redirect('admin_panel:excursion_list')
+            else:
+                print('Formset errors:', availability_formset.errors)
+        else:
+            availability_formset = ExcursionAvailabilityFormSet(request.POST, request.FILES)
     else:
         form = ExcursionForm()
         availability_formset = ExcursionAvailabilityFormSet()
@@ -195,30 +197,21 @@ def excursion_create(request):
         'title': 'Добавить экскурсию'
     })
 
-
 def excursion_edit(request, pk):
     excursion = get_object_or_404(Excursion, pk=pk)
     if request.method == 'POST':
         form = ExcursionForm(request.POST, request.FILES, instance=excursion)
-        availability_formset = ExcursionAvailabilityFormSet(request.POST, instance=excursion)
-        if form.is_valid() and availability_formset.is_valid():
-            excursion = form.save()
-            sd = form.cleaned_data.get('start_date')
-            ed = form.cleaned_data.get('end_date')
-            if sd and ed:
-                # Удаляем старое расписание и генерируем новое с 10:00
-                excursion.availability.all().delete()
-                generate_excursion_schedule(excursion, sd, ed, '10:00')
-            availability_formset.save()
+        if form.is_valid():
+            form.save()
             return redirect('admin_panel:excursion_list')
     else:
         form = ExcursionForm(instance=excursion)
-        availability_formset = ExcursionAvailabilityFormSet(instance=excursion)
     return render(request, 'admin_panel/excursion_form.html', {
         'form': form,
-        'availability_formset': availability_formset,
         'title': 'Редактировать экскурсию'
     })
+
+
 
 
 def excursion_delete(request, pk):
@@ -271,7 +264,6 @@ def train_list(request):
     trains = Train.objects.all().select_related('departure_city', 'arrival_city')
     return render(request, 'admin_panel/train_list.html', {'trains': trains})
 
-
 def train_edit(request, pk):
     train = get_object_or_404(Train, pk=pk)
     if request.method == 'POST':
@@ -283,7 +275,6 @@ def train_edit(request, pk):
         form = TrainForm(instance=train)
     return render(request, 'admin_panel/train_form.html', {'form': form, 'title': 'Редактировать поезд'})
 
-
 def train_delete(request, pk):
     train = get_object_or_404(Train, pk=pk)
     train.delete()
@@ -294,7 +285,7 @@ def train_create(request):
         form = TrainForm(request.POST)
         if form.is_valid():
             train = form.save()
-            create_tickets_for_train(train)  # ← генерируем билеты
+            create_tickets_for_train(train)
             return redirect('admin_panel:train_list')
     else:
         form = TrainForm()

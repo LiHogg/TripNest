@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from datetime import timedelta
-from django.utils.http import urlencode
 from django.db.models import Count
 from .forms import BookingForm
 
@@ -48,7 +47,7 @@ def cleanup_old_flights_and_cart():
 def cart_view(request):
     cleanup_old_flights_and_cart()
 
-    # Снятие просроченных резервов
+    # Сбрасываем зарезервированные билеты, если время резерва истекло
     reserved_in_carts = BookingItem.objects.values_list('flight_ticket_id', flat=True)
     FlightTicket.objects.filter(
         reserved_until__lte=timezone.now(),
@@ -56,14 +55,27 @@ def cart_view(request):
     ).exclude(id__in=reserved_in_carts).update(reserved_until=None)
 
     draft, created = DraftBooking.objects.get_or_create(user=request.user)
+
     items = draft.items.select_related(
-        'flight_ticket__flight__departure_city',
-        'flight_ticket__flight__arrival_city',
+        'flight_ticket__flight',
+        'train_ticket__train',
         'hotel_room__hotel',
         'excursion__city'
     )
-    return render(request, 'booking/cart.html', {'items': items, 'draft': draft})
 
+    total = sum(
+        item.flight_ticket.price if item.flight_ticket else
+        item.train_ticket.price if item.train_ticket else
+        item.hotel_room.price_per_night if item.hotel_room else
+        item.excursion.price_per_person
+        for item in items
+    )
+
+    return render(request, 'booking/cart.html', {
+        'items': items,
+        'total': total,
+        'draft': draft,
+    })
 
 @login_required
 def add_to_cart(request, ticket_id):
@@ -76,31 +88,26 @@ def add_to_cart(request, ticket_id):
         ticket = get_object_or_404(TrainTicket, id=ticket_id, is_booked=False)
         is_flight = False
 
-    # проверяем, не зарезервирован ли он уже
     if ticket.reserved_until and ticket.reserved_until > timezone.now():
         return redirect('booking:cart')
 
     draft, _ = DraftBooking.objects.get_or_create(user=request.user)
 
-    # смотрим, есть ли уже в корзине
     if is_flight:
         exists = draft.items.filter(flight_ticket=ticket).exists()
     else:
         exists = draft.items.filter(train_ticket=ticket).exists()
 
     if not exists:
-        # создаём запись только в том поле, которое нужно
         if is_flight:
             BookingItem.objects.create(draft=draft, flight_ticket=ticket)
         else:
             BookingItem.objects.create(draft=draft, train_ticket=ticket)
 
-        # резервируем на 24 часа
         ticket.reserved_until = timezone.now() + timedelta(hours=24)
         ticket.save()
 
     return redirect('booking:cart')
-
 
 @login_required
 def remove_from_cart(request, item_id):
@@ -115,10 +122,8 @@ def remove_from_cart(request, item_id):
         item.delete()
         return redirect('transport:flight_detail', pk=flight.id)
 
-    # Во всех остальных случаях (номер, экскурсия) — просто удаляем и остаёмся в корзине
     item.delete()
     return redirect('booking:cart')
-
 
 @login_required
 def confirm_booking(request):
@@ -130,7 +135,6 @@ def confirm_booking(request):
         'excursion__city'
     )
 
-    # Рассчитываем общую стоимость всех элементов
     total = 0
     for item in items:
         if item.flight_ticket:
@@ -142,7 +146,6 @@ def confirm_booking(request):
         if item.excursion:
             total += item.excursion.price_per_person
 
-    # Подготавливаем данные пользователя для initial
     profile = getattr(request.user, 'profile', None)
     initial_data = {
         'contact_phone': getattr(profile, 'phone_number', ''),
@@ -153,7 +156,6 @@ def confirm_booking(request):
         form = BookingForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            # Создание финального Booking
             booking = Booking.objects.create(
                 user=request.user,
                 total_price=total,
@@ -161,18 +163,15 @@ def confirm_booking(request):
                 contact_email=cd['contact_email'],
                 payment_method=cd['payment_method']
             )
-            # Перенос элементов из DraftBooking
             for item in items:
                 item.booking = booking
                 item.save()
-                # Отмечаем билеты как купленные
                 if item.flight_ticket:
                     item.flight_ticket.is_booked = True
                     item.flight_ticket.save()
                 if item.train_ticket:
                     item.train_ticket.is_booked = True
                     item.train_ticket.save()
-            # Очищаем черновик
             draft.items.all().delete()
             return redirect('booking:booking_success', booking_id=booking.id)
     else:
@@ -206,7 +205,7 @@ def my_bookings(request):
         context['title'] = "Все ваши бронирования"
     return render(request, 'booking/my_bookings.html', context)
 
-
+@login_required
 def add_room_to_cart(request):
     if request.method == 'POST':
         hotel_id = request.POST.get('hotel_id')
@@ -239,7 +238,6 @@ def add_room_to_cart(request):
             BookingItem.objects.create(draft=draft, hotel_room=room)
 
         return redirect('booking:cart')
-
 
 @login_required
 def add_excursion_to_cart(request):

@@ -1,4 +1,8 @@
+{% load static %}
+
 <h2>Список отелей</h2>
+  <link rel="stylesheet" href="{% static 'admin_panel/css/style.css' %}">
+
 <a href="{% url 'admin_panel:dashboard' %}">← Назад к панели администратора</a>
 <br><br>
 <a href="{% url 'admin_panel:admin_hotel_create' %}">Добавить отель</a>

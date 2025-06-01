@@ -14,10 +14,13 @@ phone_validator = RegexValidator(
 
 # === РЕГИСТРАЦИЯ ПОЛЬЗОВАТЕЛЯ ===
 class UserRegistrationForm(forms.ModelForm):
+    username = forms.CharField(label='Логин')
+    email = forms.EmailField(label='E-mail')  # <-- явно EmailField
+
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput)
 
-    # Основные поля
+    # Дополнительные поля профиля
     first_name = forms.CharField(label='Имя')
     last_name = forms.CharField(label='Фамилия')
     phone_number = forms.CharField(
@@ -26,7 +29,6 @@ class UserRegistrationForm(forms.ModelForm):
     )
     address = forms.CharField(label='Адрес')
     nationality = forms.CharField(label='Гражданство')
-
     passport_number = forms.CharField(label='Номер паспорта')
     passport_issue_date = forms.DateField(
         label='Дата выдачи паспорта',
@@ -36,6 +38,19 @@ class UserRegistrationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name']
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '').strip()
+        # 1) проверяем, что только ASCII-символы
+        try:
+            email.encode('ascii')
+        except UnicodeEncodeError:
+            raise ValidationError('E-mail должен содержать только латинские буквы и цифры.')
+        # 2) дополнительный простой regexp (латиница, цифры и . _ + - перед и после @)
+        pattern = r'^[A-Za-z0-9._+-]+@[A-Za-z0-9._+-]+\.[A-Za-z]{2,}$'
+        if not re.match(pattern, email):
+            raise ValidationError('Введите корректный e-mail на латинице, например: user@example.com')
+        return email
 
     def clean_password2(self):
         cd = self.cleaned_data
@@ -58,15 +73,11 @@ class UserRegistrationForm(forms.ModelForm):
     def clean_phone_number(self):
         raw = self.cleaned_data.get('phone_number', '')
         digits = re.sub(r'\D', '', raw)
-        # Приводим 8xxx... к 7xxx...
         if digits.startswith('8'):
             digits = '7' + digits[1:]
-        # Ожидаем код страны 7 и ещё 10 цифр
         if not digits.startswith('7') or len(digits) != 11:
             raise ValidationError('Введите корректный телефонный номер')
-        # Форматируем по маске +7 123 456 78-90
         formatted = f"+7 {digits[1:4]} {digits[4:7]} {digits[7:9]}-{digits[9:11]}"
-        # Дополнительная валидация от phone_validator
         phone_validator(formatted)
         return formatted
 

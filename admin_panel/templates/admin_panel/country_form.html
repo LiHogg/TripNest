@@ -1,4 +1,7 @@
+    {% load static %}
 <h2>{{ title }}</h2>
+  <link rel="stylesheet" href="{% static 'admin_panel/css/style.css' %}">
+
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}

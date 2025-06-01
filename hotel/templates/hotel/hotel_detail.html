@@ -35,10 +35,10 @@
       <h2>Проверить доступность номеров</h2>
       <form method="get" class="check-form">
         <label>Дата заезда:
-          <input type="date" name="check_in" value="{{ check_in }}">
+         <input type="date" name="check_in" value="{{ check_in|date:'Y-m-d' }}">
         </label>
         <label>Дата выезда:
-          <input type="date" name="check_out" value="{{ check_out }}">
+         <input type="date" name="check_out" value="{{ check_out|date:'Y-m-d' }}">
         </label>
         <button type="submit">Показать доступные номера</button>
       </form>
@@ -59,6 +59,14 @@
                   <p><strong>Доступно:</strong> {{ availability|get_item:template.room_class|default:0 }}</p>
                 </div>
               </a>
+                <form method="post" action="{% url 'booking:add_room_to_cart' %}" style="margin-top: 10px;">
+                  {% csrf_token %}
+                  <input type="hidden" name="hotel_id" value="{{ hotel.id }}">
+                  <input type="hidden" name="room_class" value="{{ template.room_class }}">
+                  <input type="hidden" name="check_in" value="{{ check_in }}">
+                  <input type="hidden" name="check_out" value="{{ check_out }}">
+                  <button type="submit">Добавить в корзину</button>
+                </form>
             </div>
           {% endfor %}
         </div>

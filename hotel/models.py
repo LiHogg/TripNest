@@ -25,7 +25,8 @@ class Hotel(models.Model):
     def save(self, *args, **kwargs):
         is_new = self.pk is None
         super().save(*args, **kwargs)
-        if is_new:
+        # при создании или если ещё нет ни одной комнаты — генерируем их
+        if is_new or not self.rooms.exists():
             Room.create_rooms_for_hotel(self)
 
 
